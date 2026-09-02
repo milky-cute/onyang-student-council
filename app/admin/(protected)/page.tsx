@@ -1,21 +1,57 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 
 export const metadata: Metadata = {
   title: "임원 대시보드",
 };
 
-/** /admin — 로그인한 임원만 볼 수 있는 대시보드. 실제 관리 기능은 2단계에서 추가한다. */
+const SECTIONS = [
+  {
+    href: "/admin/board",
+    label: "학생회 게시판 관리",
+    description: "공지사항과 활동 포스터를 작성·수정·삭제합니다.",
+  },
+  {
+    href: "/admin/monthly",
+    label: "이달의 학생회 관리",
+    description: "부서별 월간 활동을 작성·수정·삭제합니다.",
+  },
+  {
+    href: "/admin/archive",
+    label: "아카이브 관리",
+    description: "앨범을 만들고 활동 사진을 업로드합니다.",
+  },
+  {
+    href: "/admin/requests",
+    label: "요구사항 관리",
+    description: "학생이 제출한 요구사항을 확인하고 답변합니다.",
+  },
+];
+
+/** /admin — 로그인한 임원만 볼 수 있는 대시보드. */
 export default function AdminDashboardPage() {
   return (
     <>
       <h1 className="text-2xl font-bold text-slate-900">임원 대시보드</h1>
       <p className="mt-2 text-sm text-slate-600">
-        로그인에 성공했습니다. 게시글 작성, 사진 업로드, 요구사항 답변 기능은
-        2단계에서 추가됩니다.
+        아래에서 게시판·이달의 학생회·아카이브·요구사항을 관리할 수 있습니다.
       </p>
 
-      <div className="mt-8 rounded-lg border border-dashed border-slate-300 bg-slate-50 px-6 py-12 text-center">
-        <p className="text-sm text-slate-600">준비중입니다</p>
+      <div className="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-2">
+        {SECTIONS.map((section) => (
+          <Link
+            key={section.href}
+            href={section.href}
+            className="group rounded-lg border border-slate-200 px-5 py-5 transition-colors hover:border-brand-700 hover:bg-brand-50"
+          >
+            <p className="font-semibold text-slate-900 group-hover:text-brand-700">
+              {section.label}
+            </p>
+            <p className="mt-1.5 text-sm text-slate-600">
+              {section.description}
+            </p>
+          </Link>
+        ))}
       </div>
     </>
   );
