@@ -31,6 +31,8 @@ export type BoardPost = {
   title: string;
   content: string | null;
   image_url: string | null;
+  /** 목록 상단 고정 여부 (0003_board_posts_pinned.sql) */
+  is_pinned: boolean;
   author_id: string | null;
   created_at: string;
 };
@@ -107,7 +109,7 @@ export type Database = {
       >;
       board_posts: Table<
         BoardPost,
-        Generated<BoardPost, "id" | "created_at">,
+        Generated<BoardPost, "id" | "created_at" | "is_pinned">,
         Partial<BoardPost>
       >;
       monthly_activities: Table<
