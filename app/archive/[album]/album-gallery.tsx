@@ -32,6 +32,23 @@ export function AlbumGallery({ photos }: { photos: Photo[] }) {
     return () => window.removeEventListener("keydown", handleKey);
   }, [openIndex, photos.length]);
 
+  async function handleDownload(url: string, filename: string) {
+    try {
+      const res = await fetch(url);
+      const blob = await res.blob();
+      const objectUrl = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = objectUrl;
+      a.download = filename;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      URL.revokeObjectURL(objectUrl);
+    } catch (error) {
+      console.error("사진 다운로드 실패:", error);
+    }
+  }
+
   return (
     <>
       <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4">
@@ -61,6 +78,29 @@ export function AlbumGallery({ photos }: { photos: Photo[] }) {
           className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 px-4 py-8"
           onClick={() => setOpenIndex(null)}
         >
+          <button
+            type="button"
+            onClick={(e) => {
+              e.stopPropagation();
+              handleDownload(activePhoto.image_url, `${activePhoto.title || "photo"}.jpg`);
+            }}
+            aria-label="사진 저장"
+            className="absolute right-16 top-4 flex size-10 items-center justify-center rounded-full bg-white/10 text-white hover:bg-white/20"
+          >
+            <svg
+              aria-hidden
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              className="size-5"
+            >
+              <path d="M12 3v12m0 0l-4-4m4 4l4-4M5 21h14" />
+            </svg>
+          </button>
+
           <button
             type="button"
             onClick={() => setOpenIndex(null)}

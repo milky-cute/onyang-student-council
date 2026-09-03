@@ -94,6 +94,8 @@ export type CalendarEvent = {
   description: string | null;
   /** 'YYYY-MM-DD' 형식 (Postgres date, 0004_calendar.sql) */
   event_date: string;
+  /** '#rrggbb' 형식의 표시 색상 (0005_calendar_event_color.sql, feature/round3-calendar-polish) */
+  color: string;
   author_id: string | null;
   created_at: string;
 };
@@ -139,7 +141,7 @@ export type Database = {
       >;
       calendar_events: Table<
         CalendarEvent,
-        Generated<CalendarEvent, "id" | "created_at">,
+        Generated<CalendarEvent, "id" | "created_at" | "color">,
         Partial<CalendarEvent>
       >;
     };
