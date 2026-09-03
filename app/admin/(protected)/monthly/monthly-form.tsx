@@ -11,14 +11,13 @@ import { saveMonthlyActivity, type MonthlyFormState } from "./actions";
 const FIELD_CLASS =
   "rounded-md border border-slate-300 px-3 py-2.5 text-sm outline-none focus:border-brand-700 focus:ring-1 focus:ring-brand-700";
 
-/** 부서명은 자유 입력이지만, 자주 쓰는 이름을 추천 목록으로 띄워준다. */
-const DEPARTMENT_SUGGESTIONS = [
-  "기획부",
-  "홍보부",
-  "봉사부",
-  "체육부",
-  "학예부",
-  "총무부",
+/** 학생회 부서 목록. 새 부서가 생기면 여기만 고치면 된다. */
+const DEPARTMENTS = [
+  "회장단",
+  "학습부",
+  "운영기획부",
+  "대외협력부",
+  "복지안전부",
 ];
 
 /** 이번 달을 'YYYY-MM' 으로. 새 활동 등록 시 기본값. */
@@ -62,20 +61,22 @@ export function MonthlyForm({ activity }: { activity?: MonthlyActivity }) {
         >
           부서
         </label>
-        <input
+        <select
           id="department"
           name="department"
           required
-          list="department-suggestions"
-          placeholder="예: 기획부"
           defaultValue={activity?.department ?? ""}
           className={`${FIELD_CLASS} w-full sm:w-56`}
-        />
-        <datalist id="department-suggestions">
-          {DEPARTMENT_SUGGESTIONS.map((department) => (
-            <option key={department} value={department} />
+        >
+          <option value="" disabled>
+            부서 선택
+          </option>
+          {DEPARTMENTS.map((department) => (
+            <option key={department} value={department}>
+              {department}
+            </option>
           ))}
-        </datalist>
+        </select>
       </div>
 
       <div className="flex flex-col gap-1.5">

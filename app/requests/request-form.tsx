@@ -138,18 +138,19 @@ export function RequestForm() {
         <label htmlFor="category" className="text-sm font-medium text-slate-700">
           카테고리
         </label>
-        <select
+        <input
           id="category"
+          list="category-suggestions"
           value={form.category}
           onChange={(e) => update("category", e.target.value)}
-          className="rounded-md border border-slate-300 px-3 py-2.5 text-sm outline-none focus:border-brand-700 focus:ring-1 focus:ring-brand-700"
-        >
+          placeholder="목록에서 고르거나 새로 입력하세요"
+          className="w-full rounded-md border border-slate-300 px-3 py-2.5 text-sm outline-none focus:border-brand-700 focus:ring-1 focus:ring-brand-700 sm:w-64"
+        />
+        <datalist id="category-suggestions">
           {CATEGORIES.map((c) => (
-            <option key={c} value={c}>
-              {c}
-            </option>
+            <option key={c} value={c} />
           ))}
-        </select>
+        </datalist>
       </div>
 
       <div className="flex flex-col gap-1.5">

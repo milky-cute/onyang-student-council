@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
@@ -23,12 +24,13 @@ export function SiteHeader() {
       <div className="mx-auto flex h-16 w-full max-w-6xl items-center justify-between px-4">
         {/* 로고 + 학교명 */}
         <Link href="/" className="flex items-center gap-2.5">
-          <span
-            aria-hidden
-            className="flex size-9 items-center justify-center rounded-lg bg-brand-700 text-sm font-bold text-white"
-          >
-            온양
-          </span>
+          <Image
+            src="/logo.jpg"
+            alt={`${SITE.schoolName} ${SITE.councilName} 로고`}
+            width={36}
+            height={36}
+            className="size-9 shrink-0 rounded-full"
+          />
           <span className="flex flex-col leading-tight">
             <span className="text-[15px] font-bold text-slate-900">
               {SITE.schoolName}
