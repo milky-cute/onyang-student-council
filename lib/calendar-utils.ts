@@ -1,0 +1,110 @@
+/**
+ * 캘린더 공용 로직.
+ *
+ * /calendar 의 CalendarView 가 쓰는 날짜 그리드·요일 색상 규칙을 모아둔
+ * 순수 함수 모음이다. 상태를 갖지 않으므로 서버 컴포넌트에서도 그대로 쓸 수 있고,
+ * 홈 화면 캘린더 위젯(별도 브랜치)도 이 모듈을 재사용한다.
+ */
+
+export const WEEKDAYS = ["일", "월", "화", "수", "목", "금", "토"];
+
+/** 일정 색상 기본값 — 브랜드 블루 계열 */
+export const DEFAULT_EVENT_COLOR = "#2563eb";
+
+/** 임원이 고르는 프리셋 색상 */
+export const COLOR_PRESETS = [
+  { value: "#dc2626", label: "공휴일" },
+  { value: "#2563eb", label: "일반 일정" },
+  { value: "#16a34a", label: "행사" },
+  { value: "#9333ea", label: "시험 · 평가" },
+] as const;
+
+function pad(n: number) {
+  return String(n).padStart(2, "0");
+}
+
+/** (2026, 8, 3) → '2026-09-03'. month 는 0-based. */
+export function toDateKey(year: number, month: number, day: number) {
+  return `${year}-${pad(month + 1)}-${pad(day)}`;
+}
+
+/**
+ * 요일별 글자색.
+ * 일요일은 빨강, 토요일은 파랑, 나머지는 fallback 을 그대로 쓴다.
+ */
+export function weekdayTextClass(weekday: number, fallback = "text-slate-700") {
+  if (weekday === 0) return "text-red-600";
+  if (weekday === 6) return "text-blue-600";
+  return fallback;
+}
+
+export type MonthDay = {
+  day: number;
+  /** 'YYYY-MM-DD' */
+  dateKey: string;
+  /** 0(일) ~ 6(토) */
+  weekday: number;
+};
+
+/** 달력 그리드에 필요한 앞쪽 빈 칸 수와 날짜 목록. month 는 0-based. */
+export function buildMonthGrid(year: number, month: number) {
+  const leadingBlanks = new Date(year, month, 1).getDay();
+  const daysInMonth = new Date(year, month + 1, 0).getDate();
+
+  const days: MonthDay[] = Array.from({ length: daysInMonth }, (_, i) => {
+    const day = i + 1;
+    return {
+      day,
+      dateKey: toDateKey(year, month, day),
+      weekday: new Date(year, month, day).getDay(),
+    };
+  });
+
+  return { leadingBlanks, days };
+}
+
+/** 해당 달의 1일 ~ 말일을 'YYYY-MM-DD' 로. Supabase gte/lte 필터에 쓴다. */
+export function monthRange(year: number, month: number) {
+  const lastDay = new Date(year, month + 1, 0).getDate();
+  return {
+    start: toDateKey(year, month, 1),
+    end: toDateKey(year, month, lastDay),
+  };
+}
+
+/** 날짜별로 이벤트를 묶는다. */
+export function groupEventsByDate<T extends { event_date: string }>(events: T[]) {
+  const map = new Map<string, T[]>();
+  for (const event of events) {
+    const list = map.get(event.event_date) ?? [];
+    list.push(event);
+    map.set(event.event_date, list);
+  }
+  return map;
+}
+
+const SEOUL_DATE_FORMAT = new Intl.DateTimeFormat("en-CA", {
+  timeZone: "Asia/Seoul",
+  year: "numeric",
+  month: "2-digit",
+  day: "2-digit",
+});
+
+/**
+ * 한국 시간 기준 오늘. month 는 0-based.
+ *
+ * 서버(Vercel)는 UTC 로 동작하므로 서버 컴포넌트에서 '이번 달'을 구할 때
+ * 월말·월초에 한 달 어긋나지 않도록 이 함수를 쓴다.
+ */
+export function seoulToday() {
+  const [year, month, day] = SEOUL_DATE_FORMAT.format(new Date())
+    .split("-")
+    .map(Number);
+
+  return {
+    year,
+    month: month - 1,
+    day,
+    dateKey: toDateKey(year, month - 1, day),
+  };
+}
