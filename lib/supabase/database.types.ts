@@ -88,6 +88,16 @@ export type MyRequest = Pick<
   | "answered_at"
 >;
 
+export type CalendarEvent = {
+  id: string;
+  title: string;
+  description: string | null;
+  /** 'YYYY-MM-DD' 형식 (Postgres date, 0004_calendar.sql) */
+  event_date: string;
+  author_id: string | null;
+  created_at: string;
+};
+
 type Table<Row, Insert, Update> = {
   Row: Row;
   Insert: Insert;
@@ -126,6 +136,11 @@ export type Database = {
         StudentRequest,
         Generated<StudentRequest, "id" | "created_at" | "status">,
         Partial<StudentRequest>
+      >;
+      calendar_events: Table<
+        CalendarEvent,
+        Generated<CalendarEvent, "id" | "created_at">,
+        Partial<CalendarEvent>
       >;
     };
     Views: Record<never, never>;

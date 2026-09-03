@@ -44,4 +44,9 @@ export const NAV_ITEMS: NavItem[] = [
     label: "요구사항",
     description: "학교에 바라는 점을 남기고, 답변을 확인할 수 있습니다.",
   },
+  {
+    href: "/calendar",
+    label: "일정",
+    description: "학생회가 등록한 학사일정과 행사를 달력으로 확인하세요.",
+  },
 ];
