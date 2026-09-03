@@ -8,13 +8,20 @@ import { createClient } from "@/lib/supabase/server";
 const MAX_FILE_SIZE = 5 * 1024 * 1024;
 const ALLOWED_TYPES = new Set(["image/jpeg", "image/png", "image/webp", "image/gif"]);
 
+/**
+ * Storage 오브젝트 키(경로)에 쓸 ASCII 전용 슬러그를 만든다.
+ * Supabase Storage 키는 영문/숫자/일부 기호만 허용하므로, 한글 등 비 ASCII 문자는
+ * 전부 제거한다 — 한글 앨범 이름을 그대로 넣으면 "Invalid key" 오류로 업로드가 실패한다.
+ * 화면에 보이는 앨범 이름(그룹핑)은 이 슬러그가 아니라 DB의 album 컬럼이 담당하므로,
+ * 슬러그가 비어도(=완전히 한글 이름) 문제없다.
+ */
 function slugifyAlbum(album: string) {
   const slug = album
     .trim()
-    .replace(/[^\p{L}\p{N}\-_ ]/gu, "")
+    .replace(/[^a-zA-Z0-9\-_ ]/g, "")
     .replace(/\s+/g, "-")
     .slice(0, 60);
-  return slug || "album";
+  return slug || `album-${randomUUID().slice(0, 8)}`;
 }
 
 /** 앨범 생성 + 사진 여러 장 업로드. Storage 업로드와 DB insert 모두 임원만 가능(RLS 이중 방어). */
@@ -75,7 +82,11 @@ export async function POST(request: Request) {
       .upload(path, file, { contentType: file.type });
 
     if (uploadError) {
-      return NextResponse.json({ error: `업로드 실패: ${file.name}` }, { status: 500 });
+      console.error("archive upload failed:", uploadError);
+      return NextResponse.json(
+        { error: `업로드 실패: ${file.name} (${uploadError.message})` },
+        { status: 500 },
+      );
     }
 
     const {
