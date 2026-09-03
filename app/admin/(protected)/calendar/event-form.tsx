@@ -3,7 +3,16 @@
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
-const initialForm = { title: "", description: "", eventDate: "" };
+import { DEFAULT_EVENT_COLOR } from "@/lib/calendar-utils";
+
+import { ColorPicker } from "./color-picker";
+
+const initialForm = {
+  title: "",
+  description: "",
+  eventDate: "",
+  color: DEFAULT_EVENT_COLOR,
+};
 
 type FormState = typeof initialForm;
 
@@ -94,6 +103,8 @@ export function EventForm() {
           className="rounded-md border border-slate-300 px-3 py-2.5 text-sm outline-none focus:border-brand-700 focus:ring-1 focus:ring-brand-700"
         />
       </div>
+
+      <ColorPicker value={form.color} onChange={(color) => update("color", color)} />
 
       {error && (
         <p role="alert" className="text-sm text-red-600">

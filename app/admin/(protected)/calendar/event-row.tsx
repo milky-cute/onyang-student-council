@@ -3,11 +3,16 @@
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
+import { DEFAULT_EVENT_COLOR } from "@/lib/calendar-utils";
+
+import { ColorPicker } from "./color-picker";
+
 type Event = {
   id: string;
   title: string;
   description: string | null;
   event_date: string;
+  color: string;
 };
 
 export function EventRow({ event }: { event: Event }) {
@@ -16,6 +21,7 @@ export function EventRow({ event }: { event: Event }) {
   const [title, setTitle] = useState(event.title);
   const [description, setDescription] = useState(event.description ?? "");
   const [eventDate, setEventDate] = useState(event.event_date);
+  const [color, setColor] = useState(event.color || DEFAULT_EVENT_COLOR);
   const [pending, setPending] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -33,7 +39,7 @@ export function EventRow({ event }: { event: Event }) {
       const res = await fetch(`/api/calendar/${event.id}`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ title, description, eventDate }),
+        body: JSON.stringify({ title, description, eventDate, color }),
       });
       const body = await res.json();
 
@@ -77,7 +83,14 @@ export function EventRow({ event }: { event: Event }) {
     return (
       <div className="flex flex-wrap items-center justify-between gap-3 rounded-lg border border-slate-200 px-4 py-3">
         <div>
-          <p className="text-sm font-semibold text-slate-900">{event.title}</p>
+          <p className="flex items-center gap-2 text-sm font-semibold text-slate-900">
+            <span
+              aria-hidden
+              className="size-2.5 shrink-0 rounded-full"
+              style={{ backgroundColor: event.color || DEFAULT_EVENT_COLOR }}
+            />
+            {event.title}
+          </p>
           <p className="mt-0.5 text-xs text-slate-500">{event.event_date}</p>
           {event.description && (
             <p className="mt-1 text-sm text-slate-600">{event.description}</p>
@@ -135,6 +148,7 @@ export function EventRow({ event }: { event: Event }) {
         rows={2}
         className="rounded-md border border-slate-300 px-3 py-2 text-sm outline-none focus:border-brand-700 focus:ring-1 focus:ring-brand-700"
       />
+      <ColorPicker value={color} onChange={setColor} />
       {error && (
         <p role="alert" className="text-sm text-red-600">
           {error}
