@@ -26,6 +26,11 @@ const SECTIONS = [
     label: "요구사항 관리",
     description: "학생이 제출한 요구사항을 확인하고 답변합니다.",
   },
+  {
+    href: "/admin/calendar",
+    label: "일정 관리",
+    description: "학사일정 · 행사를 등록하면 /calendar 에서 누구나 볼 수 있습니다.",
+  },
 ];
 
 /** /admin — 로그인한 임원만 볼 수 있는 대시보드. */
