@@ -2,22 +2,22 @@
 
 import { useMemo, useState } from "react";
 
+import {
+  DEFAULT_EVENT_COLOR,
+  WEEKDAYS,
+  buildMonthGrid,
+  groupEventsByDate,
+  toDateKey,
+  weekdayTextClass,
+} from "@/lib/calendar-utils";
+
 type CalendarEvent = {
   id: string;
   title: string;
   description: string | null;
   event_date: string;
+  color: string;
 };
-
-const WEEKDAYS = ["일", "월", "화", "수", "목", "금", "토"];
-
-function pad(n: number) {
-  return String(n).padStart(2, "0");
-}
-
-function toDateKey(year: number, month: number, day: number) {
-  return `${year}-${pad(month + 1)}-${pad(day)}`;
-}
 
 export function CalendarView({ events }: { events: CalendarEvent[] }) {
   const today = new Date();
@@ -27,18 +27,9 @@ export function CalendarView({ events }: { events: CalendarEvent[] }) {
     toDateKey(today.getFullYear(), today.getMonth(), today.getDate()),
   );
 
-  const eventsByDate = useMemo(() => {
-    const map = new Map<string, CalendarEvent[]>();
-    for (const event of events) {
-      const list = map.get(event.event_date) ?? [];
-      list.push(event);
-      map.set(event.event_date, list);
-    }
-    return map;
-  }, [events]);
+  const eventsByDate = useMemo(() => groupEventsByDate(events), [events]);
 
-  const firstWeekday = new Date(viewYear, viewMonth, 1).getDay();
-  const daysInMonth = new Date(viewYear, viewMonth + 1, 0).getDate();
+  const { leadingBlanks, days } = buildMonthGrid(viewYear, viewMonth);
   const todayKey = toDateKey(today.getFullYear(), today.getMonth(), today.getDate());
 
   function goToPrevMonth() {
@@ -58,11 +49,6 @@ export function CalendarView({ events }: { events: CalendarEvent[] }) {
       setViewMonth((m) => m + 1);
     }
   }
-
-  const days = Array.from({ length: daysInMonth }, (_, i) => {
-    const day = i + 1;
-    return { day, dateKey: toDateKey(viewYear, viewMonth, day) };
-  });
 
   const selectedEvents = eventsByDate.get(selectedDate) ?? [];
 
@@ -113,41 +99,73 @@ export function CalendarView({ events }: { events: CalendarEvent[] }) {
       </div>
 
       <div>
-        <div className="grid grid-cols-7 gap-1 text-center text-xs font-medium text-slate-500">
-          {WEEKDAYS.map((w) => (
-            <div key={w} className="py-1">
-              {w}
+        <div className="grid grid-cols-7 gap-1 text-center text-xs font-medium">
+          {WEEKDAYS.map((weekday, index) => (
+            <div
+              key={weekday}
+              className={`py-1 ${weekdayTextClass(index, "text-slate-500")}`}
+            >
+              {weekday}
             </div>
           ))}
         </div>
 
         <div className="grid grid-cols-7 gap-1">
-          {Array.from({ length: firstWeekday }).map((_, i) => (
+          {Array.from({ length: leadingBlanks }).map((_, i) => (
             <div key={`blank-${i}`} />
           ))}
-          {days.map(({ day, dateKey }) => {
-            const hasEvents = eventsByDate.has(dateKey);
+          {days.map(({ day, dateKey, weekday }) => {
+            const dayEvents = eventsByDate.get(dateKey) ?? [];
+            const firstEvent = dayEvents[0];
+            const extraCount = dayEvents.length - 1;
             const isSelected = dateKey === selectedDate;
             const isToday = dateKey === todayKey;
+
             return (
               <button
                 key={dateKey}
                 type="button"
                 onClick={() => setSelectedDate(dateKey)}
-                className={`flex aspect-square flex-col items-center justify-center gap-0.5 rounded-md text-sm transition-colors ${
+                className={`flex min-h-[3.5rem] flex-col items-center gap-1 rounded-md px-0.5 py-1.5 text-sm transition-colors ${
                   isSelected
-                    ? "bg-brand-700 font-semibold text-white"
+                    ? "bg-brand-700 font-semibold"
                     : isToday
-                      ? "border border-brand-700 font-semibold text-brand-700"
-                      : "text-slate-700 hover:bg-slate-100"
+                      ? "border border-brand-700 font-semibold"
+                      : "hover:bg-slate-100"
                 }`}
               >
-                <span>{day}</span>
-                {hasEvents && (
-                  <span
-                    aria-hidden
-                    className={`size-1 rounded-full ${isSelected ? "bg-white" : "bg-brand-700"}`}
-                  />
+                <span
+                  className={
+                    isSelected
+                      ? "text-white"
+                      : isToday
+                        ? "text-brand-700"
+                        : weekdayTextClass(weekday)
+                  }
+                >
+                  {day}
+                </span>
+
+                {firstEvent && (
+                  <span className="flex w-full min-w-0 items-center gap-0.5">
+                    <span
+                      className="min-w-0 flex-1 truncate rounded px-1 py-px text-[10px] leading-tight text-white"
+                      style={{
+                        backgroundColor: firstEvent.color || DEFAULT_EVENT_COLOR,
+                      }}
+                    >
+                      {firstEvent.title}
+                    </span>
+                    {extraCount > 0 && (
+                      <span
+                        className={`shrink-0 text-[10px] ${
+                          isSelected ? "text-white/80" : "text-slate-500"
+                        }`}
+                      >
+                        +{extraCount}
+                      </span>
+                    )}
+                  </span>
                 )}
               </button>
             );
@@ -162,13 +180,20 @@ export function CalendarView({ events }: { events: CalendarEvent[] }) {
         ) : (
           <ul className="mt-3 flex flex-col gap-3">
             {selectedEvents.map((event) => (
-              <li key={event.id}>
-                <p className="text-sm font-semibold text-slate-900">{event.title}</p>
-                {event.description && (
-                  <p className="mt-1 whitespace-pre-wrap text-sm text-slate-600">
-                    {event.description}
-                  </p>
-                )}
+              <li key={event.id} className="flex gap-2">
+                <span
+                  aria-hidden
+                  className="mt-1.5 size-2.5 shrink-0 rounded-full"
+                  style={{ backgroundColor: event.color || DEFAULT_EVENT_COLOR }}
+                />
+                <div className="min-w-0">
+                  <p className="text-sm font-semibold text-slate-900">{event.title}</p>
+                  {event.description && (
+                    <p className="mt-1 whitespace-pre-wrap text-sm text-slate-600">
+                      {event.description}
+                    </p>
+                  )}
+                </div>
               </li>
             ))}
           </ul>

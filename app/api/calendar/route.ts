@@ -3,6 +3,8 @@ import { NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
 
 const DATE_RE = /^\d{4}-\d{2}-\d{2}$/;
+const COLOR_RE = /^#[0-9a-fA-F]{6}$/;
+const DEFAULT_COLOR = "#2563eb";
 
 /** 일정 등록. calendar_events insert 는 RLS 로 임원만 허용된다(이중 방어). */
 export async function POST(request: Request) {
@@ -32,7 +34,7 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "잘못된 요청입니다." }, { status: 400 });
   }
 
-  const { title, description, eventDate } = (body ?? {}) as Record<string, unknown>;
+  const { title, description, eventDate, color } = (body ?? {}) as Record<string, unknown>;
 
   if (
     typeof title !== "string" ||
@@ -46,11 +48,18 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "입력값이 올바르지 않습니다." }, { status: 400 });
   }
 
+  // 색상을 안 보내면 기본값(브랜드 블루)으로 처리한다.
+  const eventColor = color === undefined ? DEFAULT_COLOR : color;
+  if (typeof eventColor !== "string" || !COLOR_RE.test(eventColor)) {
+    return NextResponse.json({ error: "색상 값이 올바르지 않습니다." }, { status: 400 });
+  }
+
   const { error } = await supabase.from("calendar_events").insert({
     title: title.trim(),
     description:
       typeof description === "string" && description.trim() ? description.trim() : null,
     event_date: eventDate,
+    color: eventColor.toLowerCase(),
     author_id: user.id,
   });
 
