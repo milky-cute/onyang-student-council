@@ -43,7 +43,7 @@ export default async function ArchivePage() {
     <>
       <PageHeader
         title="아카이브"
-        description="지난 학생회 활동 사진을 앨범별로 모아두었습니다."
+        description="지난 학생자치회 활동 사진을 앨범별로 모아두었습니다."
       />
       <div className="mx-auto w-full max-w-6xl px-4 py-12 sm:py-16">
         {albums.length === 0 ? (
@@ -52,7 +52,7 @@ export default async function ArchivePage() {
               아직 등록된 앨범이 없습니다
             </p>
             <p className="mt-2 text-sm text-slate-600">
-              학생회 활동 사진이 등록되면 이곳에서 볼 수 있어요.
+              학생자치회 활동 사진이 등록되면 이곳에서 볼 수 있어요.
             </p>
           </div>
         ) : (

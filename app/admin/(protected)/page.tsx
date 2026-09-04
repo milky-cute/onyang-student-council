@@ -8,12 +8,12 @@ export const metadata: Metadata = {
 const SECTIONS = [
   {
     href: "/admin/board",
-    label: "학생회 게시판 관리",
+    label: "학생자치회 게시판 관리",
     description: "공지사항과 활동 포스터를 작성·수정·삭제합니다.",
   },
   {
     href: "/admin/monthly",
-    label: "이달의 학생회 관리",
+    label: "이달의 학생자치회 관리",
     description: "부서별 월간 활동을 작성·수정·삭제합니다.",
   },
   {
@@ -39,7 +39,7 @@ export default function AdminDashboardPage() {
     <>
       <h1 className="text-2xl font-bold text-slate-900">임원 대시보드</h1>
       <p className="mt-2 text-sm text-slate-600">
-        아래에서 게시판·이달의 학생회·아카이브·요구사항을 관리할 수 있습니다.
+        아래에서 게시판·이달의 학생자치회·아카이브·요구사항을 관리할 수 있습니다.
       </p>
 
       <div className="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-2">

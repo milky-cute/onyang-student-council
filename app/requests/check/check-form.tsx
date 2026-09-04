@@ -144,7 +144,7 @@ export function CheckForm() {
                 <p className="mt-3 whitespace-pre-wrap text-sm text-slate-700">{r.content}</p>
                 {r.answer && (
                   <div className="mt-3 rounded-md bg-brand-50 px-3 py-3">
-                    <p className="text-xs font-semibold text-brand-700">학생회 답변</p>
+                    <p className="text-xs font-semibold text-brand-700">학생자치회 답변</p>
                     <p className="mt-1 whitespace-pre-wrap text-sm text-slate-700">{r.answer}</p>
                   </div>
                 )}

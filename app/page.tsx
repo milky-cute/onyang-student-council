@@ -39,7 +39,7 @@ export default async function HomePage() {
                 href="/board"
                 className="rounded-md bg-brand-700 px-5 py-3 text-sm font-semibold text-white transition-colors hover:bg-brand-800"
               >
-                학생회 게시판 보기
+                학생자치회 게시판 보기
               </Link>
               <Link
                 href="/requests"

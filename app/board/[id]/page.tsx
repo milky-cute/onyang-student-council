@@ -12,7 +12,7 @@ async function getPost(id: string) {
   const supabase = await createClient();
   const { data } = await supabase
     .from("board_posts")
-    .select("id, type, title, content, image_url, is_pinned, created_at")
+    .select("id, type, title, content, image_url, is_pinned, department, created_at")
     .eq("id", id)
     .maybeSingle();
   return data;
@@ -54,6 +54,9 @@ export default async function BoardPostPage({ params }: Params) {
             }`}
           >
             {post.type === "notice" ? "공지" : "포스터"}
+          </span>
+          <span className="rounded bg-slate-100 px-2 py-0.5 text-xs font-medium text-slate-600">
+            {post.department ?? "학생자치회"}
           </span>
         </div>
 

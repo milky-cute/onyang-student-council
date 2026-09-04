@@ -22,7 +22,7 @@ export default async function CalendarPage() {
     <>
       <PageHeader
         title="일정"
-        description="학생회가 등록한 학사일정 · 행사를 달력에서 확인하세요."
+        description="학생자치회가 등록한 학사일정 · 행사를 달력에서 확인하세요."
         backHref="/"
       />
       <div className="mx-auto w-full max-w-4xl px-4 py-12 sm:py-16">

@@ -33,6 +33,8 @@ export type BoardPost = {
   image_url: string | null;
   /** 목록 상단 고정 여부 (0003_board_posts_pinned.sql) */
   is_pinned: boolean;
+  /** 작성 시점 담당 임원의 부서 스냅샷. null 이면 화면에서 "학생자치회"로 표시 (0006) */
+  department: string | null;
   author_id: string | null;
   created_at: string;
 };
@@ -71,6 +73,10 @@ export type StudentRequest = {
   status: RequestStatus;
   answer: string | null;
   answered_by: string | null;
+  /** 답변 시점 담당 임원의 부서 스냅샷. null 이면 화면에서 "학생자치회"로 표시 (0006) */
+  answered_department: string | null;
+  /** 답변완료된 글을 get_public_requests() 로 공개할지 여부 (0006) */
+  is_public: boolean;
   created_at: string;
   answered_at: string | null;
 };
@@ -84,6 +90,19 @@ export type MyRequest = Pick<
   | "content"
   | "status"
   | "answer"
+  | "created_at"
+  | "answered_at"
+>;
+
+/** get_public_requests() 가 돌려주는 행 (답변완료 + 공개된 것만, 학생 개인정보 제외) */
+export type PublicRequest = Pick<
+  StudentRequest,
+  | "id"
+  | "title"
+  | "category"
+  | "content"
+  | "answer"
+  | "answered_department"
   | "created_at"
   | "answered_at"
 >;
@@ -136,7 +155,7 @@ export type Database = {
       >;
       requests: Table<
         StudentRequest,
-        Generated<StudentRequest, "id" | "created_at" | "status">,
+        Generated<StudentRequest, "id" | "created_at" | "status" | "is_public">,
         Partial<StudentRequest>
       >;
       calendar_events: Table<
@@ -169,6 +188,10 @@ export type Database = {
           p_pin: string;
         };
         Returns: MyRequest[];
+      };
+      get_public_requests: {
+        Args: Record<string, never>;
+        Returns: PublicRequest[];
       };
     };
     Enums: Record<never, never>;

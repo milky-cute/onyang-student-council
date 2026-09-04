@@ -54,7 +54,7 @@ export function AnswerForm({
     return (
       <div className="rounded-md bg-brand-50 px-3 py-3">
         <div className="flex items-center justify-between gap-2">
-          <p className="text-xs font-semibold text-brand-700">학생회 답변</p>
+          <p className="text-xs font-semibold text-brand-700">학생자치회 답변</p>
           <button
             type="button"
             onClick={() => setEditing(true)}

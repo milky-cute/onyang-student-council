@@ -31,6 +31,16 @@ export async function saveBoardPost(
     return { error: "로그인이 만료되었습니다. 다시 로그인해 주세요." };
   }
 
+  const { data: officer } = await supabase
+    .from("officers")
+    .select("department")
+    .eq("id", user.id)
+    .maybeSingle();
+
+  if (!officer) {
+    return { error: "임원만 게시글을 작성할 수 있습니다." };
+  }
+
   const id = readText(formData, "id");
   const type = readText(formData, "type");
   const title = readText(formData, "title");
@@ -51,6 +61,7 @@ export async function saveBoardPost(
     content: content || null,
     image_url: imageUrl || null,
     is_pinned: isPinned,
+    department: officer.department,
   };
 
   const { error } = id
