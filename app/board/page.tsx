@@ -7,7 +7,7 @@ import { formatDate } from "@/lib/format-date";
 import { createClient } from "@/lib/supabase/server";
 
 export const metadata: Metadata = {
-  title: "학생회 게시판",
+  title: "학생자치회 게시판",
 };
 
 const FILTERS = [
@@ -33,7 +33,7 @@ export default async function BoardPage({
 
   let query = supabase
     .from("board_posts")
-    .select("id, type, title, content, image_url, is_pinned, created_at")
+    .select("id, type, title, content, image_url, is_pinned, department, created_at")
     // 고정된 글이 항상 맨 위, 나머지는 최신순
     .order("is_pinned", { ascending: false })
     .order("created_at", { ascending: false });
@@ -47,8 +47,8 @@ export default async function BoardPage({
   return (
     <>
       <PageHeader
-        title="학생회 게시판"
-        description="진행중인 활동 포스터와 학생회 공지사항을 확인하세요."
+        title="학생자치회 게시판"
+        description="진행중인 활동 포스터와 학생자치회 공지사항을 확인하세요."
       />
 
       <div className="mx-auto w-full max-w-6xl px-4 py-10 sm:py-14">
@@ -127,6 +127,9 @@ export default async function BoardPage({
                         }`}
                       >
                         {post.type === "notice" ? "공지" : "포스터"}
+                      </span>
+                      <span className="rounded bg-slate-100 px-2 py-0.5 text-xs font-medium text-slate-600">
+                        {post.department ?? "학생자치회"}
                       </span>
                     </div>
 
