@@ -17,7 +17,7 @@ export default async function AdminCalendarPage() {
   const supabase = await createClient();
   const { data: events } = await supabase
     .from("calendar_events")
-    .select("id, title, description, event_date, color")
+    .select("id, title, description, event_date, color, is_dday")
     .order("event_date", { ascending: true });
 
   return (

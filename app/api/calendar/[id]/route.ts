@@ -38,7 +38,10 @@ export async function PATCH(request: Request, { params }: Params) {
     return NextResponse.json({ error: "잘못된 요청입니다." }, { status: 400 });
   }
 
-  const { title, description, eventDate, color } = (body ?? {}) as Record<string, unknown>;
+  const { title, description, eventDate, color, isDday } = (body ?? {}) as Record<
+    string,
+    unknown
+  >;
 
   if (
     typeof title !== "string" ||
@@ -47,6 +50,9 @@ export async function PATCH(request: Request, { params }: Params) {
     !DATE_RE.test(eventDate)
   ) {
     return NextResponse.json({ error: "제목과 날짜를 올바르게 입력해주세요." }, { status: 400 });
+  }
+  if (isDday !== undefined && typeof isDday !== "boolean") {
+    return NextResponse.json({ error: "입력값이 올바르지 않습니다." }, { status: 400 });
   }
 
   // 색상을 안 보내면 기본값(브랜드 블루)으로 처리한다.
@@ -63,6 +69,7 @@ export async function PATCH(request: Request, { params }: Params) {
         typeof description === "string" && description.trim() ? description.trim() : null,
       event_date: eventDate,
       color: eventColor.toLowerCase(),
+      is_dday: isDday === true,
     })
     .eq("id", id)
     .select("id")

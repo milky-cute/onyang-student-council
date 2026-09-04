@@ -37,13 +37,37 @@ export function SiteFooter() {
           </nav>
         </div>
 
-        <div className="mt-8 flex flex-col gap-2 border-t border-slate-200 pt-6 text-xs text-slate-500 sm:flex-row sm:items-center sm:justify-between">
+        <div className="mt-8 flex flex-col gap-4 border-t border-slate-200 pt-6 text-xs text-slate-500 sm:flex-row sm:items-center sm:justify-between">
           <p>
             © {new Date().getFullYear()} {SITE.fullName}
           </p>
-          <Link href="/admin" className="hover:text-brand-700">
-            임원 로그인
-          </Link>
+          <div className="flex items-center gap-4">
+            <a
+              href="https://www.instagram.com/onyang_high_official/"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="인스타그램"
+              className="text-slate-500 hover:text-brand-700"
+            >
+              <svg
+                aria-hidden
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                className="size-5"
+              >
+                <rect x="2" y="2" width="20" height="20" rx="5" />
+                <circle cx="12" cy="12" r="4" />
+                <circle cx="17.5" cy="6.5" r="0.5" fill="currentColor" stroke="none" />
+              </svg>
+            </a>
+            <Link href="/admin" className="hover:text-brand-700">
+              임원 로그인
+            </Link>
+          </div>
         </div>
       </div>
     </footer>

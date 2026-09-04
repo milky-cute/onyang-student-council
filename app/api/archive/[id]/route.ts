@@ -1,3 +1,4 @@
+import { revalidateTag } from "next/cache";
 import { NextResponse } from "next/server";
 
 import { STORAGE_BUCKET } from "@/lib/supabase/env";
@@ -61,6 +62,10 @@ export async function DELETE(_request: Request, { params }: Params) {
   if (path) {
     await supabase.storage.from(STORAGE_BUCKET).remove([path]);
   }
+
+  // /archive 와 앨범 페이지가 캐시된 사진 목록을 쓰므로 삭제 즉시 갱신한다.
+  // expire: 0 — 지운 사진이 남아 보이지 않도록 다음 요청에서 바로 새로 조회하게 한다.
+  revalidateTag("archive", { expire: 0 });
 
   return NextResponse.json({ ok: true });
 }

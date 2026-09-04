@@ -13,6 +13,7 @@ type Event = {
   description: string | null;
   event_date: string;
   color: string;
+  is_dday: boolean;
 };
 
 export function EventRow({ event }: { event: Event }) {
@@ -22,6 +23,7 @@ export function EventRow({ event }: { event: Event }) {
   const [description, setDescription] = useState(event.description ?? "");
   const [eventDate, setEventDate] = useState(event.event_date);
   const [color, setColor] = useState(event.color || DEFAULT_EVENT_COLOR);
+  const [isDday, setIsDday] = useState(event.is_dday);
   const [pending, setPending] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -39,7 +41,7 @@ export function EventRow({ event }: { event: Event }) {
       const res = await fetch(`/api/calendar/${event.id}`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ title, description, eventDate, color }),
+        body: JSON.stringify({ title, description, eventDate, color, isDday }),
       });
       const body = await res.json();
 
@@ -90,6 +92,11 @@ export function EventRow({ event }: { event: Event }) {
               style={{ backgroundColor: event.color || DEFAULT_EVENT_COLOR }}
             />
             {event.title}
+            {event.is_dday && (
+              <span className="rounded-full bg-amber-100 px-2 py-0.5 text-[11px] font-semibold text-amber-800">
+                D-day
+              </span>
+            )}
           </p>
           <p className="mt-0.5 text-xs text-slate-500">{event.event_date}</p>
           {event.description && (
@@ -149,6 +156,15 @@ export function EventRow({ event }: { event: Event }) {
         className="rounded-md border border-slate-300 px-3 py-2 text-sm outline-none focus:border-brand-700 focus:ring-1 focus:ring-brand-700"
       />
       <ColorPicker value={color} onChange={setColor} />
+      <label className="flex items-center gap-2 text-sm font-medium text-slate-700">
+        <input
+          type="checkbox"
+          checked={isDday}
+          onChange={(e) => setIsDday(e.target.checked)}
+          className="size-4 rounded border-slate-300 text-brand-700 focus:ring-brand-700"
+        />
+        D-day로 표시
+      </label>
       {error && (
         <p role="alert" className="text-sm text-red-600">
           {error}

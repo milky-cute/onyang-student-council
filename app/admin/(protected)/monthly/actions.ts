@@ -1,6 +1,6 @@
 "use server";
 
-import { revalidatePath } from "next/cache";
+import { revalidatePath, updateTag } from "next/cache";
 import { redirect } from "next/navigation";
 
 import { createClient } from "@/lib/supabase/server";
@@ -62,6 +62,9 @@ export async function saveMonthlyActivity(
     return { error: `저장하지 못했습니다: ${error.message}` };
   }
 
+  // /monthly 가 unstable_cache 로 조회 결과를 캐시하므로 태그도 함께 무효화한다.
+  // (updateTag 는 캐시를 즉시 만료시켜 임원이 방금 저장한 내용을 바로 볼 수 있게 한다.)
+  updateTag("monthly");
   revalidatePath("/monthly");
   revalidatePath("/admin/monthly");
 
@@ -75,6 +78,7 @@ export async function deleteMonthlyActivity(formData: FormData) {
   const supabase = await createClient();
   await supabase.from("monthly_activities").delete().eq("id", id);
 
+  updateTag("monthly");
   revalidatePath("/monthly");
   revalidatePath("/admin/monthly");
 
