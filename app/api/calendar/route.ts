@@ -34,7 +34,10 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "잘못된 요청입니다." }, { status: 400 });
   }
 
-  const { title, description, eventDate, color } = (body ?? {}) as Record<string, unknown>;
+  const { title, description, eventDate, color, isDday } = (body ?? {}) as Record<
+    string,
+    unknown
+  >;
 
   if (
     typeof title !== "string" ||
@@ -45,6 +48,9 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "제목과 날짜를 올바르게 입력해주세요." }, { status: 400 });
   }
   if (description !== undefined && typeof description !== "string") {
+    return NextResponse.json({ error: "입력값이 올바르지 않습니다." }, { status: 400 });
+  }
+  if (isDday !== undefined && typeof isDday !== "boolean") {
     return NextResponse.json({ error: "입력값이 올바르지 않습니다." }, { status: 400 });
   }
 
@@ -60,6 +66,7 @@ export async function POST(request: Request) {
       typeof description === "string" && description.trim() ? description.trim() : null,
     event_date: eventDate,
     color: eventColor.toLowerCase(),
+    is_dday: isDday === true,
     author_id: user.id,
   });
 

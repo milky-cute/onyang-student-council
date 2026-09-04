@@ -90,6 +90,7 @@ export type MyRequest = Pick<
   | "content"
   | "status"
   | "answer"
+  | "answered_department"
   | "created_at"
   | "answered_at"
 >;
@@ -115,6 +116,8 @@ export type CalendarEvent = {
   event_date: string;
   /** '#rrggbb' 형식의 표시 색상 (0005_calendar_event_color.sql) */
   color: string;
+  /** 홈 화면 D-day 표시 대상 여부 (0007_calendar_dday_and_my_requests_department.sql) */
+  is_dday: boolean;
   author_id: string | null;
   created_at: string;
 };
@@ -160,7 +163,7 @@ export type Database = {
       >;
       calendar_events: Table<
         CalendarEvent,
-        Generated<CalendarEvent, "id" | "created_at" | "color">,
+        Generated<CalendarEvent, "id" | "created_at" | "color" | "is_dday">,
         Partial<CalendarEvent>
       >;
     };

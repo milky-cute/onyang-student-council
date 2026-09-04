@@ -18,7 +18,7 @@ export default async function AdminRequestsPage() {
   const { data: requests } = await supabase
     .from("requests")
     .select(
-      "id, student_name, student_number, title, category, content, status, answer, is_public, created_at",
+      "id, student_name, student_number, title, category, content, status, answer, answered_department, is_public, created_at",
     )
     .order("status", { ascending: true })
     .order("created_at", { ascending: false });
@@ -69,7 +69,12 @@ export default async function AdminRequestsPage() {
                 <p className="mt-3 whitespace-pre-wrap text-sm text-slate-700">{r.content}</p>
 
                 <div className="mt-4">
-                  <AnswerForm requestId={r.id} initialAnswer={r.answer} status={r.status} />
+                  <AnswerForm
+                    requestId={r.id}
+                    initialAnswer={r.answer}
+                    status={r.status}
+                    answeredDepartment={r.answered_department}
+                  />
                 </div>
               </div>
             ))}

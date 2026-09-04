@@ -12,6 +12,7 @@ const initialForm = {
   description: "",
   eventDate: "",
   color: DEFAULT_EVENT_COLOR,
+  isDday: false,
 };
 
 type FormState = typeof initialForm;
@@ -105,6 +106,16 @@ export function EventForm() {
       </div>
 
       <ColorPicker value={form.color} onChange={(color) => update("color", color)} />
+
+      <label className="flex items-center gap-2 text-sm font-medium text-slate-700">
+        <input
+          type="checkbox"
+          checked={form.isDday}
+          onChange={(e) => update("isDday", e.target.checked)}
+          className="size-4 rounded border-slate-300 text-brand-700 focus:ring-brand-700"
+        />
+        D-day로 표시
+      </label>
 
       {error && (
         <p role="alert" className="text-sm text-red-600">

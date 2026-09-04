@@ -1,9 +1,10 @@
 import type { Metadata } from "next";
+import { unstable_cache } from "next/cache";
 import Image from "next/image";
 import Link from "next/link";
 
 import { PageHeader } from "@/components/page-header";
-import { createClient } from "@/lib/supabase/server";
+import { createPublicClient } from "@/lib/supabase/public";
 
 // 담당 브랜치: feature/archive-requests
 
@@ -11,18 +12,33 @@ export const metadata: Metadata = {
   title: "아카이브",
 };
 
+// 로그인 상태를 전혀 쓰지 않는 공개 읽기 페이지라 60초 단위로 정적 캐시한다.
+// 관리자가 사진을 등록/삭제하면 app/api/archive 라우트의 revalidateTag("archive") 로 즉시 갱신된다.
+export const revalidate = 60;
+
 type Album = {
   name: string;
   coverUrl: string;
   count: number;
 };
 
+// Supabase 클라이언트의 내부 fetch 는 force-cache 를 쓰지 않아 라우트 캐시만으로는
+// 매 요청 DB 를 다시 때린다. 쿼리 자체를 unstable_cache 로 감싸 캐시한다.
+const getArchivePhotos = unstable_cache(
+  async () => {
+    const supabase = createPublicClient();
+    const { data } = await supabase
+      .from("archive_photos")
+      .select("album, image_url, created_at")
+      .order("created_at", { ascending: false });
+    return data;
+  },
+  ["archive-photos"],
+  { tags: ["archive"], revalidate: 60 },
+);
+
 export default async function ArchivePage() {
-  const supabase = await createClient();
-  const { data: photos } = await supabase
-    .from("archive_photos")
-    .select("album, image_url, created_at")
-    .order("created_at", { ascending: false });
+  const photos = await getArchivePhotos();
 
   const albums: Album[] = [];
   const seen = new Map<string, Album>();

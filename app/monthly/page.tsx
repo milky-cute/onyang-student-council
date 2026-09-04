@@ -1,9 +1,10 @@
 import type { Metadata } from "next";
+import { unstable_cache } from "next/cache";
 import Image from "next/image";
 
 import { PageHeader } from "@/components/page-header";
 import { formatYearMonth } from "@/lib/format-date";
-import { createClient } from "@/lib/supabase/server";
+import { createPublicClient } from "@/lib/supabase/public";
 
 import { MonthSelect } from "./month-select";
 
@@ -20,41 +21,71 @@ type Activity = {
   created_at: string;
 };
 
+// 이 페이지는 ?ym= 쿼리(searchParams)를 읽어 매 요청 새로 렌더링되므로
+// export const revalidate 는 효과가 없다. 대신 실제 DB 조회를 unstable_cache 로
+// 감싸 Supabase 쿼리 자체를 60초간 캐시한다. 관리자가 활동을 등록/수정/삭제하면
+// saveMonthlyActivity/deleteMonthlyActivity 의 revalidatePath("/monthly") 로
+// 즉시 갱신된다(기존에도 호출하던 코드지만, 캐시가 없어 지금까지는 사실상 no-op 였다).
+const getMonthlyMonths = unstable_cache(
+  async (): Promise<string[] | null> => {
+    const supabase = createPublicClient();
+    const { data, error } = await supabase
+      .from("monthly_activities")
+      .select("year_month")
+      .order("year_month", { ascending: false });
+
+    if (error) return null;
+    return [...new Set(data.map((row) => row.year_month))];
+  },
+  ["monthly-months"],
+  { tags: ["monthly"], revalidate: 60 },
+);
+
+const getMonthlyActivities = unstable_cache(
+  async (yearMonth: string): Promise<Activity[] | null> => {
+    const supabase = createPublicClient();
+    const { data, error } = await supabase
+      .from("monthly_activities")
+      .select("id, department, title, description, image_url, created_at")
+      .eq("year_month", yearMonth)
+      .order("department", { ascending: true })
+      .order("created_at", { ascending: false });
+
+    if (error) return null;
+    return data;
+  },
+  ["monthly-activities"],
+  { tags: ["monthly"], revalidate: 60 },
+);
+
 export default async function MonthlyPage({
   searchParams,
 }: {
   searchParams: Promise<{ ym?: string }>;
 }) {
   const requestedMonth = (await searchParams).ym;
-  const supabase = await createClient();
 
   // 활동이 등록된 연월 목록 (드롭다운 채우기용)
-  const { data: monthRows, error: monthError } = await supabase
-    .from("monthly_activities")
-    .select("year_month")
-    .order("year_month", { ascending: false });
-
-  const months = [...new Set((monthRows ?? []).map((row) => row.year_month))];
+  const monthRows = await getMonthlyMonths();
+  const monthError = monthRows === null;
+  const months = monthRows ?? [];
   const selectedMonth =
     requestedMonth && months.includes(requestedMonth) ? requestedMonth : months[0];
 
   // 선택한 달의 활동. 부서별로 묶어 보여준다.
   let activities: Activity[] = [];
-  let activityError = null;
+  let activityError = false;
 
   if (selectedMonth) {
-    const result = await supabase
-      .from("monthly_activities")
-      .select("id, department, title, description, image_url, created_at")
-      .eq("year_month", selectedMonth)
-      .order("department", { ascending: true })
-      .order("created_at", { ascending: false });
-
-    activities = result.data ?? [];
-    activityError = result.error;
+    const result = await getMonthlyActivities(selectedMonth);
+    if (result === null) {
+      activityError = true;
+    } else {
+      activities = result;
+    }
   }
 
-  const error = monthError ?? activityError;
+  const error = monthError || activityError;
 
   // 부서명 → 활동 목록
   const byDepartment = new Map<string, Activity[]>();

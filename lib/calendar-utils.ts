@@ -108,3 +108,12 @@ export function seoulToday() {
     dateKey: toDateKey(year, month - 1, day),
   };
 }
+
+/** 'YYYY-MM-DD' 두 날짜 사이의 일수 차이 (a - b). D-day 계산에 쓴다. */
+export function diffDays(a: string, b: string) {
+  const toUTC = (key: string) => {
+    const [year, month, day] = key.split("-").map(Number);
+    return Date.UTC(year, month - 1, day);
+  };
+  return Math.round((toUTC(a) - toUTC(b)) / (24 * 60 * 60 * 1000));
+}

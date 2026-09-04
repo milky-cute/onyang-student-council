@@ -1,6 +1,7 @@
 import Link from "next/link";
 
 import { HomeCalendarWidget } from "@/components/home-calendar-widget";
+import { diffDays, seoulToday } from "@/lib/calendar-utils";
 import { NAV_ITEMS, SITE } from "@/lib/site-config";
 import { createClient } from "@/lib/supabase/server";
 
@@ -17,6 +18,18 @@ export default async function HomePage() {
     .select("id, title, event_date, color")
     .gte("event_date", monthStart)
     .lte("event_date", monthEnd);
+
+  const today = seoulToday();
+  const { data: ddayEvent } = await supabase
+    .from("calendar_events")
+    .select("id, title, event_date")
+    .eq("is_dday", true)
+    .gte("event_date", today.dateKey)
+    .order("event_date", { ascending: true })
+    .limit(1)
+    .maybeSingle();
+
+  const ddayCount = ddayEvent ? diffDays(ddayEvent.event_date, today.dateKey) : 0;
 
   return (
     <>
@@ -51,6 +64,14 @@ export default async function HomePage() {
           </div>
 
           <div className="w-full lg:max-w-sm lg:shrink-0">
+            {ddayEvent && (
+              <div className="mb-4 flex items-center justify-between gap-3 rounded-xl border border-amber-200 bg-amber-50 px-5 py-4">
+                <span className="text-sm font-semibold text-amber-900">{ddayEvent.title}</span>
+                <span className="text-2xl font-extrabold text-amber-600">
+                  {ddayCount === 0 ? "D-DAY" : `D-${ddayCount}`}
+                </span>
+              </div>
+            )}
             <HomeCalendarWidget events={events ?? []} />
           </div>
         </div>
