@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 
+import { AdminBackLink } from "@/components/admin-back-link";
 import { formatDate } from "@/lib/format-date";
 import { createClient } from "@/lib/supabase/server";
 
@@ -19,6 +20,7 @@ export default async function AdminBoardPage() {
 
   return (
     <>
+      <AdminBackLink />
       <div className="flex flex-wrap items-center justify-between gap-4">
         <div>
           <h1 className="text-2xl font-bold text-slate-900">게시판 관리</h1>

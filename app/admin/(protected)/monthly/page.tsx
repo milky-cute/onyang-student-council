@@ -1,11 +1,12 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 
+import { AdminBackLink } from "@/components/admin-back-link";
 import { formatYearMonth } from "@/lib/format-date";
 import { createClient } from "@/lib/supabase/server";
 
 export const metadata: Metadata = {
-  title: "이달의 학생회 관리",
+  title: "이달의 학생자치회 관리",
 };
 
 export default async function AdminMonthlyPage() {
@@ -27,10 +28,11 @@ export default async function AdminMonthlyPage() {
 
   return (
     <>
+      <AdminBackLink />
       <div className="flex flex-wrap items-center justify-between gap-4">
         <div>
           <h1 className="text-2xl font-bold text-slate-900">
-            이달의 학생회 관리
+            이달의 학생자치회 관리
           </h1>
           <p className="mt-1 text-sm text-slate-600">
             부서별 활동을 연월을 지정해 등록합니다.
