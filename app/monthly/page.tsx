@@ -8,7 +8,7 @@ import { createClient } from "@/lib/supabase/server";
 import { MonthSelect } from "./month-select";
 
 export const metadata: Metadata = {
-  title: "이달의 학생회",
+  title: "이달의 학생자치회",
 };
 
 type Activity = {
@@ -67,7 +67,7 @@ export default async function MonthlyPage({
   return (
     <>
       <PageHeader
-        title="이달의 학생회"
+        title="이달의 학생자치회"
         description="매월 각 부서가 어떤 활동을 했는지 정리해 보여드립니다."
       />
 

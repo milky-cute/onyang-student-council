@@ -7,10 +7,10 @@
 
 export const SITE = {
   schoolName: "온양고등학교",
-  councilName: "학생회",
-  fullName: "온양고등학교 학생회",
+  councilName: "학생자치회",
+  fullName: "온양고등학교 학생자치회",
   description:
-    "온양고등학교 학생회의 공지사항, 부서별 활동, 활동 사진, 학생 요구사항을 한곳에서 확인할 수 있는 공식 웹사이트입니다.",
+    "온양고등학교 학생자치회의 공지사항, 부서별 활동, 활동 사진, 학생 요구사항을 한곳에서 확인할 수 있는 공식 웹사이트입니다.",
 } as const;
 
 export type NavItem = {
@@ -26,18 +26,18 @@ export type NavItem = {
 export const NAV_ITEMS: NavItem[] = [
   {
     href: "/board",
-    label: "학생회 게시판",
-    description: "진행중인 활동 포스터와 학생회 공지사항을 확인하세요.",
+    label: "학생자치회 게시판",
+    description: "진행중인 활동 포스터와 학생자치회 공지사항을 확인하세요.",
   },
   {
     href: "/monthly",
-    label: "이달의 학생회",
+    label: "이달의 학생자치회",
     description: "매월 각 부서가 어떤 활동을 했는지 정리해 보여드립니다.",
   },
   {
     href: "/archive",
     label: "아카이브",
-    description: "지난 학생회 활동 사진을 앨범별로 모아두었습니다.",
+    description: "지난 학생자치회 활동 사진을 앨범별로 모아두었습니다.",
   },
   {
     href: "/requests",
@@ -47,6 +47,6 @@ export const NAV_ITEMS: NavItem[] = [
   {
     href: "/calendar",
     label: "일정",
-    description: "학생회가 등록한 학사일정과 행사를 달력으로 확인하세요.",
+    description: "학생자치회가 등록한 학사일정과 행사를 달력으로 확인하세요.",
   },
 ];
