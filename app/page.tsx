@@ -13,21 +13,24 @@ export default async function HomePage() {
   const monthEndDate = new Date(now.getFullYear(), now.getMonth() + 1, 0);
   const monthEnd = `${monthEndDate.getFullYear()}-${String(monthEndDate.getMonth() + 1).padStart(2, "0")}-${String(monthEndDate.getDate()).padStart(2, "0")}`;
 
-  const { data: events } = await supabase
-    .from("calendar_events")
-    .select("id, title, event_date, color")
-    .gte("event_date", monthStart)
-    .lte("event_date", monthEnd);
-
   const today = seoulToday();
-  const { data: ddayEvent } = await supabase
-    .from("calendar_events")
-    .select("id, title, event_date")
-    .eq("is_dday", true)
-    .gte("event_date", today.dateKey)
-    .order("event_date", { ascending: true })
-    .limit(1)
-    .maybeSingle();
+
+  // 서로 의존하지 않는 두 조회라 한 번에 보낸다 (직렬로 기다리면 왕복이 두 번).
+  const [{ data: events }, { data: ddayEvent }] = await Promise.all([
+    supabase
+      .from("calendar_events")
+      .select("id, title, event_date, color")
+      .gte("event_date", monthStart)
+      .lte("event_date", monthEnd),
+    supabase
+      .from("calendar_events")
+      .select("id, title, event_date")
+      .eq("is_dday", true)
+      .gte("event_date", today.dateKey)
+      .order("event_date", { ascending: true })
+      .limit(1)
+      .maybeSingle(),
+  ]);
 
   const ddayCount = ddayEvent ? diffDays(ddayEvent.event_date, today.dateKey) : 0;
 

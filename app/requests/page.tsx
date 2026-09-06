@@ -21,6 +21,7 @@ export default async function RequestsPage() {
       <PageHeader
         title="요구사항"
         description="학교에 바라는 점을 남기고, 답변을 확인할 수 있습니다."
+        backHref="/"
       />
       <div className="mx-auto w-full max-w-2xl px-4 py-12 sm:py-16">
         <div className="flex flex-wrap items-center justify-between gap-3">
