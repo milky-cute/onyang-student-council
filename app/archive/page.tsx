@@ -60,6 +60,7 @@ export default async function ArchivePage() {
       <PageHeader
         title="아카이브"
         description="지난 학생자치회 활동 사진을 앨범별로 모아두었습니다."
+        backHref="/"
       />
       <div className="mx-auto w-full max-w-6xl px-4 py-12 sm:py-16">
         {albums.length === 0 ? (

@@ -100,6 +100,7 @@ export default async function MonthlyPage({
       <PageHeader
         title="이달의 학생자치회"
         description="매월 각 부서가 어떤 활동을 했는지 정리해 보여드립니다."
+        backHref="/"
       />
 
       <div className="mx-auto w-full max-w-6xl px-4 py-10 sm:py-14">

@@ -32,11 +32,24 @@ export default async function BoardPostPage({ params }: Params) {
 
   return (
     <article className="mx-auto w-full max-w-3xl px-4 py-10 sm:py-14">
+      {/* 목록에서 보던 종류 필터를 유지한 채 돌아간다. */}
       <Link
         href={post.type === "notice" ? "/board?type=notice" : "/board?type=poster"}
-        className="text-sm text-brand-700 hover:underline"
+        aria-label="게시판으로 돌아가기"
+        className="flex size-9 items-center justify-center rounded-md border border-slate-300 text-slate-600 hover:bg-slate-50"
       >
-        ← 게시판으로 돌아가기
+        <svg
+          aria-hidden
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          className="size-5"
+        >
+          <path d="M15 18l-6-6 6-6" />
+        </svg>
       </Link>
 
       <header className="mt-6 border-b border-slate-200 pb-6">

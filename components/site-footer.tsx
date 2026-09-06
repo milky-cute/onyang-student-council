@@ -46,8 +46,7 @@ export function SiteFooter() {
               href="https://www.instagram.com/onyang_high_official/"
               target="_blank"
               rel="noopener noreferrer"
-              aria-label="인스타그램"
-              className="text-slate-500 hover:text-brand-700"
+              className="flex items-center gap-1.5 text-slate-500 hover:text-brand-700"
             >
               <svg
                 aria-hidden
@@ -63,6 +62,7 @@ export function SiteFooter() {
                 <circle cx="12" cy="12" r="4" />
                 <circle cx="17.5" cy="6.5" r="0.5" fill="currentColor" stroke="none" />
               </svg>
+              학생자치회 인스타
             </a>
             <Link href="/admin" className="hover:text-brand-700">
               임원 로그인

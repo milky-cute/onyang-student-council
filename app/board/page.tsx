@@ -49,6 +49,7 @@ export default async function BoardPage({
       <PageHeader
         title="학생자치회 게시판"
         description="진행중인 활동 포스터와 학생자치회 공지사항을 확인하세요."
+        backHref="/"
       />
 
       <div className="mx-auto w-full max-w-6xl px-4 py-10 sm:py-14">
