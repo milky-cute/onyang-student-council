@@ -122,6 +122,27 @@ export type CalendarEvent = {
   created_at: string;
 };
 
+/** lost_found_items.type — 'found' = 습득물(주웠어요), 'lost' = 분실물(잃어버렸어요) */
+export type LostFoundType = "found" | "lost";
+
+export type LostFoundItem = {
+  id: string;
+  type: LostFoundType;
+  title: string;
+  description: string | null;
+  /** 습득물이면 주운 장소(필수), 분실물이면 잃어버린 장소(선택) */
+  location: string | null;
+  /** 습득물 전용 보관 장소. 분실물이면 null (0008_lost_found.sql) */
+  storage_location: string | null;
+  image_url: string | null;
+  reporter_name: string;
+  /** 작성자 학급(예: '2학년 3반'). 연락처는 받지 않는다. */
+  reporter_class: string;
+  /** 주인을 찾았는지 여부. 임원만 바꿀 수 있다. */
+  is_resolved: boolean;
+  created_at: string;
+};
+
 type Table<Row, Insert, Update> = {
   Row: Row;
   Insert: Insert;
@@ -165,6 +186,11 @@ export type Database = {
         CalendarEvent,
         Generated<CalendarEvent, "id" | "created_at" | "color" | "is_dday">,
         Partial<CalendarEvent>
+      >;
+      lost_found_items: Table<
+        LostFoundItem,
+        Generated<LostFoundItem, "id" | "created_at" | "is_resolved">,
+        Partial<LostFoundItem>
       >;
     };
     Views: Record<never, never>;
