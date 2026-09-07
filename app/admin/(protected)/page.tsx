@@ -31,11 +31,6 @@ const SECTIONS = [
     label: "일정 관리",
     description: "학사일정 · 행사를 등록하면 /calendar 에서 누구나 볼 수 있습니다.",
   },
-  {
-    href: "/admin/lost-found",
-    label: "분실물센터 관리",
-    description: "학생이 등록한 습득물 · 분실물을 완료 처리하거나 삭제합니다.",
-  },
 ];
 
 /** /admin — 로그인한 임원만 볼 수 있는 대시보드. */
