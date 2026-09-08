@@ -7,6 +7,7 @@ import {
   WEEKDAYS,
   buildMonthGrid,
   groupEventsByDate,
+  isHolidayColor,
   toDateKey,
   weekdayTextClass,
 } from "@/lib/calendar-utils";
@@ -120,6 +121,8 @@ export function CalendarView({ events }: { events: CalendarEvent[] }) {
             const extraCount = dayEvents.length - 1;
             const isSelected = dateKey === selectedDate;
             const isToday = dateKey === todayKey;
+            // 공휴일 일정이 하나라도 있으면 평일·토요일이어도 날짜를 빨갛게 쓴다.
+            const isHoliday = dayEvents.some((event) => isHolidayColor(event.color));
 
             return (
               <button
@@ -140,7 +143,9 @@ export function CalendarView({ events }: { events: CalendarEvent[] }) {
                       ? "text-white"
                       : isToday
                         ? "text-brand-700"
-                        : weekdayTextClass(weekday)
+                        : isHoliday
+                          ? "text-red-600"
+                          : weekdayTextClass(weekday)
                   }
                 >
                   {day}
