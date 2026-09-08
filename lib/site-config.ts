@@ -49,4 +49,9 @@ export const NAV_ITEMS: NavItem[] = [
     label: "일정",
     description: "학생자치회가 등록한 학사일정과 행사를 달력으로 확인하세요.",
   },
+  {
+    href: "/lost-found",
+    label: "분실물센터",
+    description: "학생자치회가 보관 중인 분실물을 확인하고 찾아가세요.",
+  },
 ];

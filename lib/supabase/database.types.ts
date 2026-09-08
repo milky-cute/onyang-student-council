@@ -122,6 +122,22 @@ export type CalendarEvent = {
   created_at: string;
 };
 
+/** 분실물센터 습득물. 등록은 임원만, 조회는 누구나 (0010_lost_found_admin.sql) */
+export type LostFoundItem = {
+  id: string;
+  /** 물품 이름 (예: '검정색 우산') */
+  title: string;
+  description: string | null;
+  /** 습득 장소 — 어디서 주웠는지 */
+  location: string;
+  /** 보관 장소 — 주인이 찾으러 갈 곳 */
+  storage_location: string;
+  image_url: string | null;
+  /** 주인이 찾아갔는지 여부 */
+  is_resolved: boolean;
+  created_at: string;
+};
+
 type Table<Row, Insert, Update> = {
   Row: Row;
   Insert: Insert;
@@ -165,6 +181,11 @@ export type Database = {
         CalendarEvent,
         Generated<CalendarEvent, "id" | "created_at" | "color" | "is_dday">,
         Partial<CalendarEvent>
+      >;
+      lost_found_items: Table<
+        LostFoundItem,
+        Generated<LostFoundItem, "id" | "created_at" | "is_resolved">,
+        Partial<LostFoundItem>
       >;
     };
     Views: Record<never, never>;
