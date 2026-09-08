@@ -11,13 +11,27 @@ export const WEEKDAYS = ["일", "월", "화", "수", "목", "금", "토"];
 /** 일정 색상 기본값 — 브랜드 블루 계열 */
 export const DEFAULT_EVENT_COLOR = "#2563eb";
 
+/**
+ * 공휴일 프리셋 색상.
+ * 이 색 일정이 있는 날은 캘린더에서 날짜 숫자도 일요일처럼 빨갛게 표시한다.
+ */
+export const HOLIDAY_COLOR = "#dc2626";
+
 /** 임원이 고르는 프리셋 색상 */
 export const COLOR_PRESETS = [
-  { value: "#dc2626", label: "공휴일" },
+  { value: HOLIDAY_COLOR, label: "공휴일" },
   { value: "#2563eb", label: "일반 일정" },
   { value: "#16a34a", label: "행사" },
   { value: "#9333ea", label: "시험 · 평가" },
 ] as const;
+
+/**
+ * 일정 색상이 공휴일 프리셋인지.
+ * 색상은 저장 시 소문자로 정규화되지만, 직접 입력한 값이 섞여도 되도록 비교할 때 한 번 더 낮춘다.
+ */
+export function isHolidayColor(color: string | null | undefined) {
+  return color?.toLowerCase() === HOLIDAY_COLOR;
+}
 
 function pad(n: number) {
   return String(n).padStart(2, "0");
