@@ -1,7 +1,9 @@
 import Link from "next/link";
 
 import { HomeCalendarWidget } from "@/components/home-calendar-widget";
+import { TodayMealCard } from "@/components/today-meal-card";
 import { diffDays, seoulToday } from "@/lib/calendar-utils";
+import { getMeal } from "@/lib/meal";
 import { NAV_ITEMS, SITE } from "@/lib/site-config";
 import { createClient } from "@/lib/supabase/server";
 
@@ -15,8 +17,9 @@ export default async function HomePage() {
 
   const today = seoulToday();
 
-  // 서로 의존하지 않는 두 조회라 한 번에 보낸다 (직렬로 기다리면 왕복이 두 번).
-  const [{ data: events }, { data: ddayEvent }] = await Promise.all([
+  // 서로 의존하지 않는 조회라 한 번에 보낸다 (직렬로 기다리면 왕복이 여러 번).
+  // 급식 조회는 실패해도 예외 없이 status: "error" 를 돌려주므로 여기서 같이 기다려도 안전하다.
+  const [{ data: events }, { data: ddayEvent }, meal] = await Promise.all([
     supabase
       .from("calendar_events")
       .select("id, title, event_date, color")
@@ -30,6 +33,7 @@ export default async function HomePage() {
       .order("event_date", { ascending: true })
       .limit(1)
       .maybeSingle(),
+    getMeal(today.dateKey),
   ]);
 
   const ddayCount = ddayEvent ? diffDays(ddayEvent.event_date, today.dateKey) : 0;
@@ -38,7 +42,7 @@ export default async function HomePage() {
     <>
       {/* 히어로 */}
       <section className="border-b border-slate-200 bg-brand-50">
-        <div className="mx-auto flex w-full max-w-6xl flex-col gap-10 px-4 py-16 sm:py-24 lg:flex-row lg:items-center lg:justify-between">
+        <div className="mx-auto flex w-full max-w-6xl flex-col gap-10 px-4 py-12 sm:py-16 lg:flex-row lg:items-center lg:justify-between">
           <div>
             <p className="text-sm font-semibold text-brand-700">
               {SITE.schoolName} {SITE.councilName}
@@ -66,7 +70,8 @@ export default async function HomePage() {
             </div>
           </div>
 
-          <div className="w-full lg:max-w-sm lg:shrink-0">
+          {/* 급식은 학생들이 매일 찾는 정보라 첫 화면(D-day 바로 아래)에 둔다. */}
+          <div className="w-full lg:max-w-md lg:shrink-0">
             {ddayEvent && (
               <div className="mb-4 flex items-center justify-between gap-3 rounded-xl border border-amber-200 bg-amber-50 px-5 py-4">
                 <span className="text-sm font-semibold text-amber-900">{ddayEvent.title}</span>
@@ -75,31 +80,43 @@ export default async function HomePage() {
                 </span>
               </div>
             )}
-            <HomeCalendarWidget events={events ?? []} />
+            <TodayMealCard dateKey={today.dateKey} meal={meal} />
           </div>
         </div>
       </section>
 
-      {/* 메뉴 카드 */}
       <section className="mx-auto w-full max-w-6xl px-4 py-16">
-        <h2 className="text-xl font-bold text-slate-900">둘러보기</h2>
-        <ul className="mt-6 grid gap-4 sm:grid-cols-2">
-          {NAV_ITEMS.map((item) => (
-            <li key={item.href}>
-              <Link
-                href={item.href}
-                className="group flex h-full flex-col rounded-lg border border-slate-200 bg-white p-6 transition-colors hover:border-brand-300 hover:bg-brand-50"
-              >
-                <span className="text-base font-semibold text-slate-900 group-hover:text-brand-700">
-                  {item.label}
-                </span>
-                <span className="mt-2 text-sm leading-relaxed text-slate-600">
-                  {item.description}
-                </span>
-              </Link>
-            </li>
-          ))}
-        </ul>
+        <div className="grid gap-12 lg:grid-cols-[minmax(0,1fr)_22rem]">
+          {/* 이번 달 일정 — 모바일에서는 둘러보기보다 먼저, 데스크톱에서는 오른쪽 */}
+          <div className="lg:order-last">
+            <h2 className="text-xl font-bold text-slate-900">이번 달 일정</h2>
+            <div className="mt-6">
+              <HomeCalendarWidget events={events ?? []} />
+            </div>
+          </div>
+
+          {/* 메뉴 카드 */}
+          <div>
+            <h2 className="text-xl font-bold text-slate-900">둘러보기</h2>
+            <ul className="mt-6 grid gap-4 sm:grid-cols-2">
+              {NAV_ITEMS.map((item) => (
+                <li key={item.href}>
+                  <Link
+                    href={item.href}
+                    className="group flex h-full flex-col rounded-lg border border-slate-200 bg-white p-6 transition-colors hover:border-brand-300 hover:bg-brand-50"
+                  >
+                    <span className="text-base font-semibold text-slate-900 group-hover:text-brand-700">
+                      {item.label}
+                    </span>
+                    <span className="mt-2 text-sm leading-relaxed text-slate-600">
+                      {item.description}
+                    </span>
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
       </section>
     </>
   );
