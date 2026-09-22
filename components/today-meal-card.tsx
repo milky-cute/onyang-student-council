@@ -11,7 +11,7 @@ export function TodayMealCard({ dateKey, meal }: { dateKey: string; meal: MealRe
 
   const meals = meal.status === "ok" ? meal.meals : [];
   const primary = meals.find((m) => m.name === "중식") ?? meals[0];
-  const others = meals.filter((m) => m !== primary);
+  const others = meals.filter((m) => m !== primary && m.name !== "조식");
 
   return (
     <section
