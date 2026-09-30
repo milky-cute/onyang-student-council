@@ -10,6 +10,7 @@ const initialForm = {
   description: "",
   location: "",
   storageLocation: "",
+  privateNote: "",
 };
 
 const inputClass =
@@ -54,6 +55,7 @@ export function ItemForm() {
     payload.set("description", form.description);
     payload.set("location", form.location);
     payload.set("storageLocation", form.storageLocation);
+    payload.set("privateNote", form.privateNote);
     if (file) payload.set("image", file);
 
     setPending(true);
@@ -141,6 +143,23 @@ export function ItemForm() {
             className={inputClass}
           />
         </div>
+      </div>
+
+      <div className="flex flex-col gap-1.5">
+        <label htmlFor="privateNote" className="text-sm font-medium text-slate-700">
+          확인용 특징 (관리자만 보임, 선택)
+        </label>
+        <input
+          id="privateNote"
+          value={form.privateNote}
+          onChange={(e) => update("privateNote", e.target.value)}
+          maxLength={FIELD_LIMITS.privateNote}
+          placeholder="예: 케이스 뒷면 고양이 스티커, 왼쪽 모서리 흠집"
+          className={inputClass}
+        />
+        <p className="text-xs text-slate-500">
+          공개 목록에는 나오지 않아요. 찾으러 온 학생에게 물어봐서 본인 물건인지 확인할 때 쓰세요.
+        </p>
       </div>
 
       <div className="flex flex-col gap-1.5">

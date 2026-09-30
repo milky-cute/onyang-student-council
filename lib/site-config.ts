@@ -25,6 +25,11 @@ export type NavItem = {
 /** 헤더 · 모바일 메뉴 · 홈 카드가 공유하는 메뉴 정의 */
 export const NAV_ITEMS: NavItem[] = [
   {
+    href: "/lost-found",
+    label: "분실물센터",
+    description: "학생자치회가 보관 중인 분실물을 확인하고 찾아가세요.",
+  },
+  {
     href: "/board",
     label: "학생자치회 게시판",
     description: "진행중인 활동 포스터와 학생자치회 공지사항을 확인하세요.",
@@ -48,10 +53,5 @@ export const NAV_ITEMS: NavItem[] = [
     href: "/calendar",
     label: "일정",
     description: "학생자치회가 등록한 학사일정과 행사를 달력으로 확인하세요.",
-  },
-  {
-    href: "/lost-found",
-    label: "분실물센터",
-    description: "학생자치회가 보관 중인 분실물을 확인하고 찾아가세요.",
   },
 ];

@@ -138,6 +138,20 @@ export type LostFoundItem = {
   created_at: string;
 };
 
+/**
+ * 분실물의 임원 전용 정보. 조회도 임원만 가능 (0011_lost_found_private.sql)
+ * 공개 페이지에서는 절대 조회하지 않는다.
+ */
+export type LostFoundPrivate = {
+  /** lost_found_items.id (삭제 시 함께 삭제) */
+  item_id: string;
+  /** 주인 확인용 특징 (예: 케이스 스티커, 흠집 위치) */
+  private_note: string | null;
+  /** 받아간 사람 (이름·학번) */
+  claimed_by: string | null;
+  claimed_at: string | null;
+};
+
 type Table<Row, Insert, Update> = {
   Row: Row;
   Insert: Insert;
@@ -186,6 +200,11 @@ export type Database = {
         LostFoundItem,
         Generated<LostFoundItem, "id" | "created_at" | "is_resolved">,
         Partial<LostFoundItem>
+      >;
+      lost_found_private: Table<
+        LostFoundPrivate,
+        Generated<LostFoundPrivate, "private_note" | "claimed_by" | "claimed_at">,
+        Partial<LostFoundPrivate>
       >;
     };
     Views: Record<never, never>;

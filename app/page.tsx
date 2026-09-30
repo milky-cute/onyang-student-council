@@ -1,6 +1,7 @@
 import Link from "next/link";
 
 import { HomeCalendarWidget } from "@/components/home-calendar-widget";
+import { HomeLostFoundCard } from "@/components/home-lost-found-card";
 import { TodayMealCard } from "@/components/today-meal-card";
 import { diffDays, seoulToday } from "@/lib/calendar-utils";
 import { getMeal } from "@/lib/meal";
@@ -19,7 +20,14 @@ export default async function HomePage() {
 
   // 서로 의존하지 않는 조회라 한 번에 보낸다 (직렬로 기다리면 왕복이 여러 번).
   // 급식 조회는 실패해도 예외 없이 status: "error" 를 돌려주므로 여기서 같이 기다려도 안전하다.
-  const [{ data: events }, { data: ddayEvent }, meal] = await Promise.all([
+  // Supabase 조회도 실패하면 throw 대신 error 를 돌려준다(분실물 카드는 그때 안내 문구만 보여준다).
+  const [
+    { data: events },
+    { data: ddayEvent },
+    meal,
+    { count: lostFoundCount, error: lostFoundError },
+    { data: lostFoundThumbs },
+  ] = await Promise.all([
     supabase
       .from("calendar_events")
       .select("id, title, event_date, color")
@@ -34,6 +42,18 @@ export default async function HomePage() {
       .limit(1)
       .maybeSingle(),
     getMeal(today.dateKey),
+    // 분실물은 공개 테이블(lost_found_items)만 조회한다. 비공개 정보는 홈에서 읽지 않는다.
+    supabase
+      .from("lost_found_items")
+      .select("id", { count: "exact", head: true })
+      .eq("is_resolved", false),
+    supabase
+      .from("lost_found_items")
+      .select("id, title, image_url")
+      .eq("is_resolved", false)
+      .not("image_url", "is", null)
+      .order("created_at", { ascending: false })
+      .limit(3),
   ]);
 
   const ddayCount = ddayEvent ? diffDays(ddayEvent.event_date, today.dateKey) : 0;
@@ -81,6 +101,12 @@ export default async function HomePage() {
               </div>
             )}
             <TodayMealCard dateKey={today.dateKey} meal={meal} />
+            <HomeLostFoundCard
+              count={lostFoundError ? null : (lostFoundCount ?? 0)}
+              thumbnails={(lostFoundThumbs ?? []).flatMap((item) =>
+                item.image_url ? [{ id: item.id, title: item.title, image_url: item.image_url }] : [],
+              )}
+            />
           </div>
         </div>
       </section>

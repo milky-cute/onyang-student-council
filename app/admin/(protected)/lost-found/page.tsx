@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 
 import { AdminBackLink } from "@/components/admin-back-link";
+import { seoulToday } from "@/lib/calendar-utils";
+import { retentionDeadline } from "@/lib/lost-found";
 import { createClient } from "@/lib/supabase/server";
 
 import { ItemForm } from "./item-form";
@@ -14,11 +16,18 @@ export const metadata: Metadata = {
 
 export default async function AdminLostFoundPage() {
   const supabase = await createClient();
-  const { data: items } = await supabase
-    .from("lost_found_items")
-    .select("id, title, description, location, storage_location, image_url, is_resolved, created_at")
-    .order("is_resolved", { ascending: true })
-    .order("created_at", { ascending: false });
+  const [{ data: items }, { data: privateRows }] = await Promise.all([
+    supabase
+      .from("lost_found_items")
+      .select("id, title, description, location, storage_location, image_url, is_resolved, created_at")
+      .order("is_resolved", { ascending: true })
+      .order("created_at", { ascending: false }),
+    // 임원 전용 정보. RLS 가 임원이 아니면 빈 결과를 돌려준다.
+    supabase.from("lost_found_private").select("item_id, private_note, claimed_by, claimed_at"),
+  ]);
+
+  const privateByItem = new Map((privateRows ?? []).map((row) => [row.item_id, row]));
+  const todayKey = seoulToday().dateKey;
 
   return (
     <>
@@ -40,7 +49,19 @@ export default async function AdminLostFoundPage() {
           {!items || items.length === 0 ? (
             <p className="text-sm text-slate-600">아직 등록된 물품이 없습니다.</p>
           ) : (
-            items.map((item) => <ItemRow key={item.id} item={item} />)
+            items.map((item) => {
+              const deadline = retentionDeadline(item.created_at);
+              return (
+                <ItemRow
+                  key={item.id}
+                  item={item}
+                  privateInfo={privateByItem.get(item.id) ?? null}
+                  deadlineLabel={deadline.label}
+                  // 자동 삭제는 하지 않는다. 기한이 지난 미완료 물건만 표시해서 임원이 판단하게 한다.
+                  isExpired={!item.is_resolved && todayKey > deadline.dateKey}
+                />
+              );
+            })
           )}
         </div>
       </div>
