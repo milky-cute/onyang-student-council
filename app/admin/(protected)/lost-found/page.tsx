@@ -3,10 +3,12 @@ import type { Metadata } from "next";
 import { AdminBackLink } from "@/components/admin-back-link";
 import { seoulToday } from "@/lib/calendar-utils";
 import { retentionDeadline } from "@/lib/lost-found";
+import { getPickupSettings } from "@/lib/lost-found-settings";
 import { createClient } from "@/lib/supabase/server";
 
 import { ItemForm } from "./item-form";
 import { ItemRow } from "./item-row";
+import { PickupSettingsForm } from "./pickup-settings-form";
 
 // (protected) 레이아웃이 로그인 여부를 이미 확인하므로 이 페이지는 화면만 담당한다.
 
@@ -16,7 +18,7 @@ export const metadata: Metadata = {
 
 export default async function AdminLostFoundPage() {
   const supabase = await createClient();
-  const [{ data: items }, { data: privateRows }] = await Promise.all([
+  const [{ data: items }, { data: privateRows }, pickup] = await Promise.all([
     supabase
       .from("lost_found_items")
       .select("id, title, description, location, storage_location, image_url, is_resolved, created_at")
@@ -24,6 +26,7 @@ export default async function AdminLostFoundPage() {
       .order("created_at", { ascending: false }),
     // 임원 전용 정보. RLS 가 임원이 아니면 빈 결과를 돌려준다.
     supabase.from("lost_found_private").select("item_id, private_note, claimed_by, claimed_at"),
+    getPickupSettings(),
   ]);
 
   const privateByItem = new Map((privateRows ?? []).map((row) => [row.item_id, row]));
@@ -41,6 +44,8 @@ export default async function AdminLostFoundPage() {
             표시되어 같은 물건을 다시 문의하는 일이 줄어듭니다.
           </p>
         </div>
+
+        <PickupSettingsForm place={pickup.place} hours={pickup.hours} />
 
         <ItemForm />
 

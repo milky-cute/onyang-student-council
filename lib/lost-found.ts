@@ -21,9 +21,15 @@ export const FIELD_LIMITS = {
   storageLocation: 100,
   privateNote: 500,
   claimedBy: 50,
+  pickupPlace: 50,
+  pickupHours: 100,
 } as const;
 
-/** /lost-found 맨 위 "찾으러 오는 법" 안내 문구. 운영 방식이 바뀌면 여기만 고친다. */
+/**
+ * "찾으러 오는 법" 안내 문구.
+ * place · hours 는 임원이 관리 화면에서 고치는 lost_found_settings 값을 쓰고,
+ * 여기 값은 그 테이블을 읽지 못했을 때의 대체값이다. verifyNote 는 항상 이 상수를 쓴다.
+ */
 export const LOST_FOUND_PICKUP = {
   place: "학생회실",
   hours: "점심시간",
