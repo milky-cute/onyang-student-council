@@ -19,4 +19,39 @@ export const FIELD_LIMITS = {
   description: 1000,
   location: 100,
   storageLocation: 100,
+  privateNote: 500,
+  claimedBy: 50,
 } as const;
+
+/** /lost-found 맨 위 "찾으러 오는 법" 안내 문구. 운영 방식이 바뀌면 여기만 고친다. */
+export const LOST_FOUND_PICKUP = {
+  place: "학생회실",
+  hours: "점심시간",
+  verifyNote: "본인 물건인지 확인하기 위해 특징을 물어볼 수 있어요.",
+} as const;
+
+/** 등록일로부터 이 기간(일)까지 보관한다. 지나도 자동 삭제하지 않고 관리 화면에만 표시한다. */
+export const LOST_FOUND_RETENTION_DAYS = 30;
+
+const SEOUL_DATE_FORMAT = new Intl.DateTimeFormat("en-CA", {
+  timeZone: "Asia/Seoul",
+  year: "numeric",
+  month: "2-digit",
+  day: "2-digit",
+});
+
+/**
+ * 보관 기한 = 등록일(한국 시간) + LOST_FOUND_RETENTION_DAYS.
+ * dateKey('YYYY-MM-DD')는 seoulToday().dateKey 와 문자열로 비교할 수 있다.
+ */
+export function retentionDeadline(createdAt: string) {
+  const [year, month, day] = SEOUL_DATE_FORMAT.format(new Date(createdAt))
+    .split("-")
+    .map(Number);
+  const deadline = new Date(Date.UTC(year, month - 1, day + LOST_FOUND_RETENTION_DAYS));
+
+  return {
+    dateKey: deadline.toISOString().slice(0, 10),
+    label: `${deadline.getUTCMonth() + 1}월 ${deadline.getUTCDate()}일`,
+  };
+}

@@ -1,8 +1,11 @@
 import type { Metadata } from "next";
 import Image from "next/image";
+import Link from "next/link";
 
+import { LostFoundPickupGuide } from "@/components/lost-found-pickup-guide";
 import { PageHeader } from "@/components/page-header";
 import { formatDate } from "@/lib/format-date";
+import { retentionDeadline } from "@/lib/lost-found";
 import { createClient } from "@/lib/supabase/server";
 
 export const metadata: Metadata = {
@@ -29,15 +32,7 @@ export default async function LostFoundPage() {
       />
 
       <div className="mx-auto w-full max-w-5xl px-4 py-10 sm:py-14">
-        <div className="rounded-lg border border-brand-200 bg-brand-50 px-5 py-4">
-          <p className="text-sm font-semibold text-slate-900">
-            내 물건을 찾았다면
-          </p>
-          <p className="mt-1 text-sm leading-relaxed text-slate-700">
-            아래 <strong>보관 장소</strong>로 찾아가서 학생자치회 임원에게 말씀해주세요.
-            물건을 주우신 경우에도 학생자치회로 가져다주시면 대신 등록해 드립니다.
-          </p>
-        </div>
+        <LostFoundPickupGuide />
 
         {!items || items.length === 0 ? (
           <div className="mt-8 rounded-lg border border-dashed border-slate-300 bg-slate-50 px-6 py-16 text-center">
@@ -59,61 +54,65 @@ export default async function LostFoundPage() {
               {items.map((item) => (
                 <li
                   key={item.id}
-                  className={`flex flex-col overflow-hidden rounded-lg border border-slate-200 bg-white ${
+                  className={
                     // 찾아간 물건도 목록에 남긴다 — 같은 물건을 또 문의하는 걸 줄이려는 목적.
                     item.is_resolved ? "opacity-50" : ""
-                  }`}
+                  }
                 >
-                  {item.image_url && (
-                    <div className="relative aspect-[4/3] w-full bg-slate-100">
-                      <Image
-                        src={item.image_url}
-                        alt={item.title}
-                        fill
-                        sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
-                        className="object-cover"
-                      />
-                    </div>
-                  )}
-
-                  <div className="flex flex-1 flex-col p-5">
-                    <div className="flex flex-wrap items-center gap-2">
-                      <h2 className="text-base font-semibold text-slate-900">
-                        {item.title}
-                      </h2>
-                      {item.is_resolved && (
-                        <span className="rounded-full bg-slate-200 px-2.5 py-0.5 text-xs font-semibold text-slate-600">
-                          찾아감
-                        </span>
-                      )}
-                    </div>
-
-                    {item.description && (
-                      <p className="mt-2 whitespace-pre-wrap text-sm leading-relaxed text-slate-600">
-                        {item.description}
-                      </p>
+                  <Link
+                    href={`/lost-found/${item.id}`}
+                    className="flex h-full flex-col overflow-hidden rounded-lg border border-slate-200 bg-white transition-colors hover:border-brand-300"
+                  >
+                    {item.image_url && (
+                      <div className="relative aspect-[4/3] w-full bg-slate-100">
+                        <Image
+                          src={item.image_url}
+                          alt={item.title}
+                          fill
+                          sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
+                          className="object-cover"
+                        />
+                      </div>
                     )}
 
-                    <dl className="mt-3 flex flex-col gap-1 text-sm">
-                      <div className="flex gap-2">
-                        <dt className="shrink-0 text-slate-500">주운 곳</dt>
-                        <dd className="text-slate-700">{item.location}</dd>
+                    <div className="flex flex-1 flex-col p-5">
+                      <div className="flex flex-wrap items-center gap-2">
+                        <h2 className="text-base font-semibold text-slate-900">
+                          {item.title}
+                        </h2>
+                        {item.is_resolved && (
+                          <span className="rounded-full bg-slate-200 px-2.5 py-0.5 text-xs font-semibold text-slate-600">
+                            찾아감
+                          </span>
+                        )}
                       </div>
-                      <div className="flex gap-2">
-                        <dt className="shrink-0 text-slate-500">보관 장소</dt>
-                        <dd className="font-semibold text-brand-700">
-                          {item.storage_location}
-                        </dd>
-                      </div>
-                    </dl>
 
-                    <time
-                      dateTime={item.created_at}
-                      className="mt-4 text-xs text-slate-500"
-                    >
-                      {formatDate(item.created_at)} 등록
-                    </time>
-                  </div>
+                      {item.description && (
+                        <p className="mt-2 whitespace-pre-wrap text-sm leading-relaxed text-slate-600">
+                          {item.description}
+                        </p>
+                      )}
+
+                      <dl className="mt-3 flex flex-col gap-1 text-sm">
+                        <div className="flex gap-2">
+                          <dt className="shrink-0 text-slate-500">주운 곳</dt>
+                          <dd className="text-slate-700">{item.location}</dd>
+                        </div>
+                        <div className="flex gap-2">
+                          <dt className="shrink-0 text-slate-500">보관 장소</dt>
+                          <dd className="font-semibold text-brand-700">
+                            {item.storage_location}
+                          </dd>
+                        </div>
+                      </dl>
+
+                      <p className="mt-4 text-xs text-slate-500">
+                        <time dateTime={item.created_at}>{formatDate(item.created_at)} 등록</time>
+                        {!item.is_resolved &&
+                          ` · ${retentionDeadline(item.created_at).label}까지 보관`}
+                      </p>
+                    </div>
+                  </Link>
                 </li>
               ))}
             </ul>

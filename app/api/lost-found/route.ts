@@ -34,6 +34,8 @@ export async function POST(request: Request) {
   const description = String(formData.get("description") ?? "").trim();
   const location = String(formData.get("location") ?? "").trim();
   const storageLocation = String(formData.get("storageLocation") ?? "").trim();
+  // 주인 확인용 특징. 공개 테이블이 아니라 lost_found_private 에만 저장한다.
+  const privateNote = String(formData.get("privateNote") ?? "").trim();
 
   if (!title || !location || !storageLocation) {
     return NextResponse.json(
@@ -46,7 +48,8 @@ export async function POST(request: Request) {
     title.length > FIELD_LIMITS.title ||
     description.length > FIELD_LIMITS.description ||
     location.length > FIELD_LIMITS.location ||
-    storageLocation.length > FIELD_LIMITS.storageLocation;
+    storageLocation.length > FIELD_LIMITS.storageLocation ||
+    privateNote.length > FIELD_LIMITS.privateNote;
 
   if (tooLong) {
     return NextResponse.json({ error: "입력값이 너무 깁니다." }, { status: 400 });
@@ -93,19 +96,38 @@ export async function POST(request: Request) {
     imageUrl = publicUrl;
   }
 
-  const { error } = await supabase.from("lost_found_items").insert({
-    title,
-    description: description || null,
-    location,
-    storage_location: storageLocation,
-    image_url: imageUrl,
-  });
+  const { data: item, error } = await supabase
+    .from("lost_found_items")
+    .insert({
+      title,
+      description: description || null,
+      location,
+      storage_location: storageLocation,
+      image_url: imageUrl,
+    })
+    .select("id")
+    .single();
 
-  if (error) {
+  if (error || !item) {
     return NextResponse.json(
-      { error: `등록하지 못했습니다: ${error.message}` },
+      { error: `등록하지 못했습니다: ${error?.message ?? "알 수 없는 오류"}` },
       { status: 500 },
     );
+  }
+
+  if (privateNote) {
+    const { error: privateError } = await supabase
+      .from("lost_found_private")
+      .insert({ item_id: item.id, private_note: privateNote });
+
+    if (privateError) {
+      // 확인용 특징 없이 물품만 등록된 상태로 남기지 않는다(특징을 다시 입력할 화면이 없음).
+      await supabase.from("lost_found_items").delete().eq("id", item.id);
+      return NextResponse.json(
+        { error: `확인용 특징을 저장하지 못해 등록을 취소했습니다: ${privateError.message}` },
+        { status: 500 },
+      );
+    }
   }
 
   revalidatePath("/lost-found");

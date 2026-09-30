@@ -1,7 +1,7 @@
 import { revalidatePath } from "next/cache";
 import { NextResponse } from "next/server";
 
-import { STORAGE_BUCKET_LOST_FOUND } from "@/lib/lost-found";
+import { FIELD_LIMITS, STORAGE_BUCKET_LOST_FOUND } from "@/lib/lost-found";
 
 import { requireOfficer } from "../require-officer";
 
@@ -28,9 +28,17 @@ export async function PATCH(request: Request, { params }: Params) {
     return NextResponse.json({ error: "잘못된 요청입니다." }, { status: 400 });
   }
 
-  const { isResolved } = (body ?? {}) as Record<string, unknown>;
+  const { isResolved, claimedBy } = (body ?? {}) as Record<string, unknown>;
   if (typeof isResolved !== "boolean") {
     return NextResponse.json({ error: "입력값이 올바르지 않습니다." }, { status: 400 });
+  }
+  if (claimedBy !== undefined && typeof claimedBy !== "string") {
+    return NextResponse.json({ error: "입력값이 올바르지 않습니다." }, { status: 400 });
+  }
+  // 받아간 사람은 선택 입력이다. 싼 물건까지 기록을 강제하지 않는다.
+  const claimer = typeof claimedBy === "string" ? claimedBy.trim() : "";
+  if (claimer.length > FIELD_LIMITS.claimedBy) {
+    return NextResponse.json({ error: "입력값이 너무 깁니다." }, { status: 400 });
   }
 
   const { data, error } = await supabase
@@ -47,8 +55,29 @@ export async function PATCH(request: Request, { params }: Params) {
     return NextResponse.json({ error: "물품을 찾을 수 없습니다." }, { status: 404 });
   }
 
+  // 수령 기록(lost_found_private). 완료할 때 이름을 적었으면 남기고, 완료를 해제하면 지운다.
+  // 확인용 특징(private_note)은 건드리지 않는다 — upsert 는 보낸 컬럼만 갱신한다.
+  let privateError = null;
+  if (isResolved && claimer) {
+    ({ error: privateError } = await supabase
+      .from("lost_found_private")
+      .upsert({ item_id: id, claimed_by: claimer, claimed_at: new Date().toISOString() }));
+  } else if (!isResolved) {
+    ({ error: privateError } = await supabase
+      .from("lost_found_private")
+      .update({ claimed_by: null, claimed_at: null })
+      .eq("item_id", id));
+  }
+
   revalidatePath("/lost-found");
   revalidatePath("/admin/lost-found");
+
+  if (privateError) {
+    return NextResponse.json(
+      { error: `완료 상태는 바꿨지만 수령 기록을 저장하지 못했습니다: ${privateError.message}` },
+      { status: 500 },
+    );
+  }
 
   return NextResponse.json({ ok: true });
 }
