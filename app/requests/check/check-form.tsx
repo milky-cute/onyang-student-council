@@ -114,7 +114,7 @@ export function CheckForm() {
         <button
           type="submit"
           disabled={pending}
-          className="self-start rounded-md bg-brand-700 px-4 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-brand-800 disabled:opacity-60"
+          className="min-h-11 self-start rounded-lg bg-brand-700 px-4 text-sm font-semibold text-white transition-colors hover:bg-brand-800 disabled:opacity-60"
         >
           {pending ? "조회 중…" : "조회하기"}
         </button>
@@ -128,7 +128,7 @@ export function CheckForm() {
             </p>
           ) : (
             results.map((r) => (
-              <div key={r.id} className="rounded-lg border border-slate-200 px-4 py-4">
+              <div key={r.id} className="card px-4 py-4">
                 <div className="flex flex-wrap items-center justify-between gap-2">
                   <p className="font-semibold text-slate-900">{r.title}</p>
                   <span

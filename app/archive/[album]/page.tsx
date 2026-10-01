@@ -52,7 +52,7 @@ export default async function ArchiveAlbumPage({ params }: Props) {
         description={`앨범 속 사진 ${photos.length}장`}
         backHref="/archive"
       />
-      <div className="mx-auto w-full max-w-6xl px-4 py-12 sm:py-16">
+      <div className="mx-auto w-full max-w-6xl px-4 pt-4 pb-10 lg:pt-6 lg:pb-14">
         <AlbumGallery photos={photos} />
       </div>
     </>

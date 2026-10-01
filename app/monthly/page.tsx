@@ -103,7 +103,7 @@ export default async function MonthlyPage({
         backHref="/"
       />
 
-      <div className="mx-auto w-full max-w-6xl px-4 py-10 sm:py-14">
+      <div className="mx-auto w-full max-w-6xl px-4 pt-4 pb-10 lg:pt-6 lg:pb-14">
         {error && (
           <p
             role="alert"
@@ -114,7 +114,7 @@ export default async function MonthlyPage({
         )}
 
         {!error && months.length === 0 && (
-          <div className="rounded-lg border border-dashed border-slate-300 bg-slate-50 px-6 py-16 text-center">
+          <div className="rounded-2xl border border-dashed border-slate-300 bg-white px-6 py-16 text-center">
             <p className="text-sm text-slate-600">
               아직 등록된 활동이 없습니다.
             </p>
@@ -131,7 +131,7 @@ export default async function MonthlyPage({
             </div>
 
             {byDepartment.size === 0 ? (
-              <div className="mt-8 rounded-lg border border-dashed border-slate-300 bg-slate-50 px-6 py-16 text-center">
+              <div className="mt-8 rounded-2xl border border-dashed border-slate-300 bg-white px-6 py-16 text-center">
                 <p className="text-sm text-slate-600">
                   이 달에 등록된 활동이 없습니다.
                 </p>
@@ -149,7 +149,7 @@ export default async function MonthlyPage({
                       {list.map((activity) => (
                         <li
                           key={activity.id}
-                          className="flex h-full flex-col overflow-hidden rounded-lg border border-slate-200 bg-white"
+                          className="card flex h-full flex-col overflow-hidden"
                         >
                           {activity.image_url && (
                             <div className="relative aspect-[4/3] w-full bg-slate-100">

@@ -68,7 +68,7 @@ export function RequestForm() {
 
   if (submitted) {
     return (
-      <div className="mt-8 rounded-lg border border-brand-200 bg-brand-50 px-6 py-10 text-center">
+      <div className="mt-8 rounded-2xl border border-brand-200 bg-brand-50 px-6 py-10 text-center">
         <p className="text-lg font-semibold text-slate-900">제출이 완료되었습니다</p>
         <p className="mt-2 text-sm text-slate-600">
           입력하신 이름 · 학번 · PIN을 기억해두시면{" "}
@@ -189,7 +189,7 @@ export function RequestForm() {
       <button
         type="submit"
         disabled={pending}
-        className="mt-2 rounded-md bg-brand-700 px-4 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-brand-800 disabled:opacity-60"
+        className="mt-2 min-h-11 rounded-lg bg-brand-700 px-4 text-sm font-semibold text-white transition-colors hover:bg-brand-800 disabled:opacity-60"
       >
         {pending ? "제출 중…" : "제출하기"}
       </button>
