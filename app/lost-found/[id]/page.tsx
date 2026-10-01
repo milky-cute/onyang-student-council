@@ -68,7 +68,9 @@ export default async function LostFoundItemPage({ params }: Props) {
         backHref="/lost-found"
       />
 
-      <div className="mx-auto flex w-full max-w-3xl flex-col gap-4 px-4 pt-3 pb-10 lg:pt-6 lg:pb-14">
+      {/* 제목(PageHeader)과 같은 1152px 열의 왼쪽에 맞추고, 읽기 좋은 폭(768px)으로 둔다. */}
+      <div className="mx-auto w-full max-w-6xl px-4 pt-3 pb-10 lg:pt-6 lg:pb-14">
+        <div className="flex max-w-3xl flex-col gap-4">
         {!item.is_resolved && <LostFoundPickupGuide place={pickup.place} hours={pickup.hours} />}
 
         <article className="card overflow-hidden">
@@ -84,7 +86,7 @@ export default async function LostFoundItemPage({ params }: Props) {
             />
           ) : (
             <div
-              className={`flex aspect-[4/3] w-full flex-col items-center justify-center gap-1.5 ${
+              className={`flex aspect-[4/3] max-h-80 w-full flex-col items-center justify-center gap-1.5 ${
                 item.is_resolved ? "bg-slate-100 text-slate-500" : "bg-brand-50 text-brand-700"
               }`}
             >
@@ -143,6 +145,7 @@ export default async function LostFoundItemPage({ params }: Props) {
             </dl>
           </div>
         </article>
+        </div>
       </div>
     </>
   );
