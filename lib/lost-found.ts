@@ -56,8 +56,13 @@ export function retentionDeadline(createdAt: string) {
     .map(Number);
   const deadline = new Date(Date.UTC(year, month - 1, day + LOST_FOUND_RETENTION_DAYS));
 
+  const deadlineMonth = deadline.getUTCMonth() + 1;
+  const deadlineDay = deadline.getUTCDate();
+
   return {
     dateKey: deadline.toISOString().slice(0, 10),
-    label: `${deadline.getUTCMonth() + 1}월 ${deadline.getUTCDate()}일`,
+    label: `${deadlineMonth}월 ${deadlineDay}일`,
+    /** 목록 카드처럼 좁은 자리에 쓰는 'MM.DD' (예: '10.31') */
+    shortLabel: `${String(deadlineMonth).padStart(2, "0")}.${String(deadlineDay).padStart(2, "0")}`,
   };
 }

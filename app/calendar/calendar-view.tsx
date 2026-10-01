@@ -60,7 +60,7 @@ export function CalendarView({ events }: { events: CalendarEvent[] }) {
           type="button"
           onClick={goToPrevMonth}
           aria-label="이전 달"
-          className="flex size-9 items-center justify-center rounded-md border border-slate-300 text-slate-600 hover:bg-slate-50"
+          className="flex size-11 items-center justify-center rounded-full border border-slate-200 text-slate-600 hover:bg-slate-50 focus-visible:outline-2 focus-visible:outline-brand-700"
         >
           <svg
             aria-hidden
@@ -82,7 +82,7 @@ export function CalendarView({ events }: { events: CalendarEvent[] }) {
           type="button"
           onClick={goToNextMonth}
           aria-label="다음 달"
-          className="flex size-9 items-center justify-center rounded-md border border-slate-300 text-slate-600 hover:bg-slate-50"
+          className="flex size-11 items-center justify-center rounded-full border border-slate-200 text-slate-600 hover:bg-slate-50 focus-visible:outline-2 focus-visible:outline-brand-700"
         >
           <svg
             aria-hidden
@@ -178,7 +178,7 @@ export function CalendarView({ events }: { events: CalendarEvent[] }) {
         </div>
       </div>
 
-      <div className="rounded-lg border border-slate-200 px-4 py-4">
+      <div className="rounded-xl bg-slate-50 px-4 py-4">
         <p className="text-sm font-semibold text-slate-900">{selectedDate.replace(/-/g, ". ")}</p>
         {selectedEvents.length === 0 ? (
           <p className="mt-2 text-sm text-slate-600">등록된 일정이 없습니다.</p>

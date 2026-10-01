@@ -3,6 +3,7 @@ import Image from "next/image";
 import { notFound } from "next/navigation";
 import { cache } from "react";
 
+import { BoxIcon, CalendarIcon, CameraIcon, ClockIcon, MapPinIcon } from "@/components/icons";
 import { LostFoundPickupGuide } from "@/components/lost-found-pickup-guide";
 import { PageHeader } from "@/components/page-header";
 import { formatDate } from "@/lib/format-date";
@@ -67,55 +68,84 @@ export default async function LostFoundItemPage({ params }: Props) {
         backHref="/lost-found"
       />
 
-      <div className="mx-auto flex w-full max-w-3xl flex-col gap-8 px-4 py-10 sm:py-14">
+      {/* 제목(PageHeader)과 같은 1152px 열의 왼쪽에 맞추고, 읽기 좋은 폭(768px)으로 둔다. */}
+      <div className="mx-auto w-full max-w-6xl px-4 pt-3 pb-10 lg:pt-6 lg:pb-14">
+        <div className="flex max-w-3xl flex-col gap-4">
         {!item.is_resolved && <LostFoundPickupGuide place={pickup.place} hours={pickup.hours} />}
 
-        <article className={item.is_resolved ? "opacity-60" : ""}>
-          {item.image_url && (
+        <article className="card overflow-hidden">
+          {item.image_url ? (
             <Image
               src={item.image_url}
               alt={item.title}
               width={1200}
               height={900}
               sizes="(min-width: 768px) 768px, 100vw"
-              className="h-auto w-full rounded-lg border border-slate-200"
+              // 찾아간 물건은 목록과 같이 흑백 + 흐리게
+              className={`h-auto w-full ${item.is_resolved ? "opacity-60 grayscale" : ""}`}
             />
+          ) : (
+            <div
+              className={`flex aspect-[4/3] max-h-80 w-full flex-col items-center justify-center gap-1.5 ${
+                item.is_resolved ? "bg-slate-100 text-slate-500" : "bg-brand-50 text-brand-700"
+              }`}
+            >
+              <CameraIcon className="size-10" />
+              <span className="text-sm font-medium">사진 없음</span>
+            </div>
           )}
 
-          <div className="mt-6 flex flex-wrap items-center gap-2">
-            <h2 className="text-xl font-bold text-slate-900">{item.title}</h2>
-            {item.is_resolved && (
-              <span className="rounded-full bg-slate-200 px-2.5 py-0.5 text-xs font-semibold text-slate-600">
-                주인 찾음
-              </span>
+          <div className="p-5">
+            <div className="flex flex-wrap items-center gap-2">
+              <h2 className="text-xl font-bold text-slate-900">{item.title}</h2>
+              {item.is_resolved ? (
+                <span className="rounded-full bg-slate-100 px-2.5 py-0.5 text-xs font-semibold text-slate-600">
+                  주인 찾음
+                </span>
+              ) : (
+                <span className="rounded-full bg-brand-700 px-2.5 py-0.5 text-xs font-semibold text-white">
+                  보관 중
+                </span>
+              )}
+            </div>
+
+            {item.description && (
+              <p className="mt-3 whitespace-pre-wrap text-[15px] leading-relaxed text-slate-700">
+                {item.description}
+              </p>
             )}
+
+            <dl className="mt-4 flex flex-col gap-2 rounded-xl bg-slate-50 px-4 py-3 text-sm">
+              <div className="flex items-start gap-2">
+                <MapPinIcon className="mt-0.5 size-4 shrink-0 text-slate-500" />
+                <dt className="w-16 shrink-0 text-slate-500">주운 곳</dt>
+                <dd className="text-slate-800">{item.location}</dd>
+              </div>
+              <div className="flex items-start gap-2">
+                <BoxIcon className="mt-0.5 size-4 shrink-0 text-slate-500" />
+                <dt className="w-16 shrink-0 text-slate-500">보관 장소</dt>
+                <dd className="font-semibold text-brand-700">{item.storage_location}</dd>
+              </div>
+              <div className="flex items-start gap-2">
+                <CalendarIcon className="mt-0.5 size-4 shrink-0 text-slate-500" />
+                <dt className="w-16 shrink-0 text-slate-500">등록일</dt>
+                <dd className="text-slate-800">
+                  <time dateTime={item.created_at}>{formatDate(item.created_at)}</time>
+                </dd>
+              </div>
+              {!item.is_resolved && (
+                <div className="flex items-start gap-2">
+                  <ClockIcon className="mt-0.5 size-4 shrink-0 text-slate-500" />
+                  <dt className="w-16 shrink-0 text-slate-500">보관 기한</dt>
+                  <dd className="font-medium text-slate-800">
+                    {retentionDeadline(item.created_at).label}까지
+                  </dd>
+                </div>
+              )}
+            </dl>
           </div>
-
-          {item.description && (
-            <p className="mt-3 whitespace-pre-wrap text-[15px] leading-relaxed text-slate-700">
-              {item.description}
-            </p>
-          )}
-
-          <dl className="mt-5 flex flex-col gap-1.5 text-sm">
-            <div className="flex gap-2">
-              <dt className="w-16 shrink-0 text-slate-500">주운 곳</dt>
-              <dd className="text-slate-700">{item.location}</dd>
-            </div>
-            <div className="flex gap-2">
-              <dt className="w-16 shrink-0 text-slate-500">보관 장소</dt>
-              <dd className="font-semibold text-brand-700">{item.storage_location}</dd>
-            </div>
-            <div className="flex gap-2">
-              <dt className="w-16 shrink-0 text-slate-500">등록일</dt>
-              <dd className="text-slate-700">
-                <time dateTime={item.created_at}>{formatDate(item.created_at)}</time>
-                {!item.is_resolved &&
-                  ` · ${retentionDeadline(item.created_at).label}까지 보관`}
-              </dd>
-            </div>
-          </dl>
         </article>
+        </div>
       </div>
     </>
   );

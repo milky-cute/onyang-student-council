@@ -62,9 +62,9 @@ export default async function ArchivePage() {
         description="지난 학생자치회 활동 사진을 앨범별로 모아두었습니다."
         backHref="/"
       />
-      <div className="mx-auto w-full max-w-6xl px-4 py-12 sm:py-16">
+      <div className="mx-auto w-full max-w-6xl px-4 pt-4 pb-10 lg:pt-6 lg:pb-14">
         {albums.length === 0 ? (
-          <div className="rounded-lg border border-dashed border-slate-300 bg-slate-50 px-6 py-16 text-center">
+          <div className="rounded-2xl border border-dashed border-slate-300 bg-white px-6 py-16 text-center">
             <p className="text-lg font-semibold text-slate-900">
               아직 등록된 앨범이 없습니다
             </p>
@@ -78,7 +78,7 @@ export default async function ArchivePage() {
               <Link
                 key={album.name}
                 href={`/archive/${encodeURIComponent(album.name)}`}
-                className="group overflow-hidden rounded-lg border border-slate-200 transition-shadow hover:shadow-md"
+                className="card group overflow-hidden transition-shadow hover:shadow-md"
               >
                 <div className="relative aspect-square w-full overflow-hidden bg-slate-100">
                   <Image

@@ -52,7 +52,7 @@ export default async function BoardPage({
         backHref="/"
       />
 
-      <div className="mx-auto w-full max-w-6xl px-4 py-10 sm:py-14">
+      <div className="mx-auto w-full max-w-6xl px-4 pt-4 pb-10 lg:pt-6 lg:pb-14">
         {/* 종류 필터 */}
         <nav aria-label="게시글 종류 필터" className="flex flex-wrap gap-2">
           {FILTERS.map((filter) => {
@@ -62,7 +62,7 @@ export default async function BoardPage({
                 key={filter.value}
                 href={filter.value === "all" ? "/board" : `/board?type=${filter.value}`}
                 aria-current={isActive ? "true" : undefined}
-                className={`rounded-full px-4 py-2 text-sm font-medium transition-colors ${
+                className={`inline-flex min-h-11 items-center rounded-full px-4 text-sm font-medium transition-colors ${
                   isActive
                     ? "bg-brand-700 text-white"
                     : "border border-slate-300 text-slate-600 hover:border-brand-300 hover:text-brand-700"
@@ -84,7 +84,7 @@ export default async function BoardPage({
         )}
 
         {!error && posts && posts.length === 0 && (
-          <div className="mt-8 rounded-lg border border-dashed border-slate-300 bg-slate-50 px-6 py-16 text-center">
+          <div className="mt-8 rounded-2xl border border-dashed border-slate-300 bg-white px-6 py-16 text-center">
             <p className="text-sm text-slate-600">
               {activeFilter === "all"
                 ? "아직 등록된 글이 없습니다."
@@ -99,7 +99,7 @@ export default async function BoardPage({
               <li key={post.id}>
                 <Link
                   href={`/board/${post.id}`}
-                  className="group flex h-full flex-col overflow-hidden rounded-lg border border-slate-200 bg-white transition-colors hover:border-brand-300"
+                  className="card group flex h-full flex-col overflow-hidden transition-colors hover:border-brand-200"
                 >
                   {post.image_url && (
                     <div className="relative aspect-[4/3] w-full bg-slate-100">

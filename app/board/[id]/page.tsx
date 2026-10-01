@@ -31,12 +31,12 @@ export default async function BoardPostPage({ params }: Params) {
   }
 
   return (
-    <article className="mx-auto w-full max-w-3xl px-4 py-10 sm:py-14">
+    <article className="mx-auto w-full max-w-3xl px-4 pt-3 pb-10 lg:pt-10 lg:pb-14">
       {/* 목록에서 보던 종류 필터를 유지한 채 돌아간다. */}
       <Link
         href={post.type === "notice" ? "/board?type=notice" : "/board?type=poster"}
         aria-label="게시판으로 돌아가기"
-        className="flex size-9 items-center justify-center rounded-md border border-slate-300 text-slate-600 hover:bg-slate-50"
+        className="-ml-2.5 flex size-11 items-center justify-center rounded-full text-slate-700 hover:bg-slate-200/60 focus-visible:outline-2 focus-visible:outline-brand-700"
       >
         <svg
           aria-hidden
@@ -92,7 +92,7 @@ export default async function BoardPostPage({ params }: Params) {
           width={1200}
           height={900}
           sizes="(min-width: 768px) 768px, 100vw"
-          className="mt-8 h-auto w-full rounded-lg border border-slate-200"
+          className="mt-8 h-auto w-full rounded-2xl border border-slate-100"
         />
       )}
 
