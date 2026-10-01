@@ -9,6 +9,9 @@ export const SITE = {
   schoolName: "온양고등학교",
   councilName: "학생자치회",
   fullName: "온양고등학교 학생자치회",
+  /** 홈 맨 위 제목처럼 짧게 부를 때 */
+  shortName: "온양고 학생자치회",
+  tagline: "학생의 목소리가 학교를 바꿉니다",
   description:
     "온양고등학교 학생자치회의 공지사항, 부서별 활동, 활동 사진, 학생 요구사항을 한곳에서 확인할 수 있는 공식 웹사이트입니다.",
 } as const;

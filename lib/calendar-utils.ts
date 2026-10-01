@@ -123,6 +123,25 @@ export function seoulToday() {
   };
 }
 
+/** 'YYYY-MM-DD' → '10월 1일 (목)'. 서버 시간대와 상관없이 날짜 문자열만으로 계산한다. */
+export function dateLabel(dateKey: string) {
+  const [year, month, day] = dateKey.split("-").map(Number);
+  const weekday = new Date(Date.UTC(year, month - 1, day)).getUTCDay();
+  return `${month}월 ${day}일 (${WEEKDAYS[weekday]})`;
+}
+
+/**
+ * dateKey 가 속한 주(월~일)의 월~금 'YYYY-MM-DD' 다섯 개.
+ * 일요일은 바로 앞 월요일부터의 주로 본다.
+ */
+export function weekdayKeys(dateKey: string) {
+  const [year, month, day] = dateKey.split("-").map(Number);
+  const offset = (new Date(Date.UTC(year, month - 1, day)).getUTCDay() + 6) % 7; // 월=0 … 일=6
+  return Array.from({ length: 5 }, (_, i) =>
+    new Date(Date.UTC(year, month - 1, day - offset + i)).toISOString().slice(0, 10),
+  );
+}
+
 /** 'YYYY-MM-DD' 두 날짜 사이의 일수 차이 (a - b). D-day 계산에 쓴다. */
 export function diffDays(a: string, b: string) {
   const toUTC = (key: string) => {
