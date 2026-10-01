@@ -9,7 +9,7 @@ import { NAV_ITEMS, SITE } from "@/lib/site-config";
  */
 export function SiteFooter() {
   return (
-    <footer className="border-t border-slate-200 bg-slate-50">
+    <footer className="border-t border-slate-100 bg-white">
       <div className="mx-auto w-full max-w-6xl px-4 py-10">
         <div className="flex flex-col gap-8 md:flex-row md:justify-between">
           <div>
@@ -22,12 +22,12 @@ export function SiteFooter() {
           </div>
 
           <nav aria-label="푸터 메뉴">
-            <ul className="grid grid-cols-2 gap-x-8 gap-y-2 md:grid-cols-1">
+            <ul className="grid grid-cols-2 gap-x-8 md:grid-cols-1">
               {NAV_ITEMS.map((item) => (
                 <li key={item.href}>
                   <Link
                     href={item.href}
-                    className="text-sm text-slate-600 hover:text-brand-700"
+                    className="inline-flex min-h-11 items-center text-sm text-slate-600 hover:text-brand-700"
                   >
                     {item.label}
                   </Link>
@@ -46,7 +46,7 @@ export function SiteFooter() {
               href="https://www.instagram.com/onyang_high_official/"
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center gap-1.5 text-slate-500 hover:text-brand-700"
+              className="flex min-h-11 items-center gap-1.5 text-slate-500 hover:text-brand-700"
             >
               <svg
                 aria-hidden
@@ -64,7 +64,7 @@ export function SiteFooter() {
               </svg>
               학생자치회 인스타
             </a>
-            <Link href="/admin" className="hover:text-brand-700">
+            <Link href="/admin" className="inline-flex min-h-11 items-center hover:text-brand-700">
               임원 로그인
             </Link>
           </div>

@@ -1,10 +1,13 @@
 @import "tailwindcss";
 
 /**
- * 디자인 토큰 — 화이트 배경 + 블루 포인트(#1D4ED8 계열).
- * `bg-brand-700`, `text-brand-700`, `border-brand-200` 처럼 사용한다.
+ * 디자인 토큰 — 라운드 13 리디자인(Google Stitch 모바일 시안 기준).
  *
- * ⚠️ 2단계 이후 feature 브랜치에서는 이 파일을 수정하지 않는다.
+ * - 주색: brand-700 = #1D4ED8. `bg-brand-700`, `text-brand-700` 처럼 쓴다.
+ * - 페이지 배경: --color-page = #F5F7FA (`bg-page`). body 에 기본으로 깔린다.
+ * - 카드: `card` 유틸리티 = 흰 바탕 + 둥근 모서리 16px + 옅은 테두리 + 아주 옅은 그림자.
+ * - 강조색: Tailwind 기본 amber 팔레트 (D-day 카드, kcal 알약, 안내 띠).
+ * - 글꼴: Pretendard Variable (app/layout.tsx 에서 CDN 으로 불러옴, 실패 시 시스템 글꼴).
  */
 @theme {
   --color-brand-50: #eff6ff;
@@ -16,6 +19,27 @@
   --color-brand-700: #1d4ed8; /* 메인 포인트 컬러 */
   --color-brand-800: #1e40af;
   --color-brand-900: #1e3a8a;
+
+  --color-page: #f5f7fa;
+}
+
+/** 공통 카드. 홈 · 분실물 · 나머지 페이지가 같은 모양을 쓰도록 여기 한 곳에서 정의한다. */
+@utility card {
+  background-color: #ffffff;
+  border: 1px solid var(--color-slate-100);
+  border-radius: var(--radius-2xl);
+  box-shadow:
+    0 1px 2px rgb(15 23 42 / 0.04),
+    0 2px 8px rgb(15 23 42 / 0.03);
+}
+
+@layer base {
+  /* 페이지 배경이 회색이라 입력칸은 흰 바탕을 기본으로 둔다(유틸리티 클래스로 덮어쓸 수 있음). */
+  input:not([type="checkbox"], [type="radio"], [type="color"], [type="file"]),
+  textarea,
+  select {
+    background-color: #ffffff;
+  }
 }
 
 html {
@@ -23,7 +47,7 @@ html {
 }
 
 body {
-  background-color: #ffffff;
+  background-color: var(--color-page);
   color: #0f172a;
   font-family:
     "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont,
