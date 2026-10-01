@@ -3,7 +3,7 @@ import Link from "next/link";
 import { HomeCalendarWidget } from "@/components/home-calendar-widget";
 import { HomeLostFoundCard } from "@/components/home-lost-found-card";
 import { TodayMealCard } from "@/components/today-meal-card";
-import { diffDays, seoulToday } from "@/lib/calendar-utils";
+import { diffDays, monthRange, seoulToday } from "@/lib/calendar-utils";
 import { getMeal } from "@/lib/meal";
 import { NAV_ITEMS, SITE } from "@/lib/site-config";
 import { createClient } from "@/lib/supabase/server";
@@ -11,12 +11,10 @@ import { createClient } from "@/lib/supabase/server";
 export default async function HomePage() {
   const supabase = await createClient();
 
-  const now = new Date();
-  const monthStart = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}-01`;
-  const monthEndDate = new Date(now.getFullYear(), now.getMonth() + 1, 0);
-  const monthEnd = `${monthEndDate.getFullYear()}-${String(monthEndDate.getMonth() + 1).padStart(2, "0")}-${String(monthEndDate.getDate()).padStart(2, "0")}`;
-
+  // 한국 시간 기준 오늘. 달력 위젯과 위젯용 일정 조회 범위가 모두 이 값을 쓴다
+  // (서버가 UTC 라 new Date() 를 쓰면 한국 시간 매달 1일 0~9시에 지난달이 된다).
   const today = seoulToday();
+  const { start: monthStart, end: monthEnd } = monthRange(today.year, today.month);
 
   // 서로 의존하지 않는 조회라 한 번에 보낸다 (직렬로 기다리면 왕복이 여러 번).
   // 급식 조회는 실패해도 예외 없이 status: "error" 를 돌려주므로 여기서 같이 기다려도 안전하다.
@@ -117,7 +115,7 @@ export default async function HomePage() {
           <div className="lg:order-last">
             <h2 className="text-xl font-bold text-slate-900">이번 달 일정</h2>
             <div className="mt-6">
-              <HomeCalendarWidget events={events ?? []} />
+              <HomeCalendarWidget events={events ?? []} today={today} />
             </div>
           </div>
 

@@ -152,6 +152,17 @@ export type LostFoundPrivate = {
   claimed_at: string | null;
 };
 
+/** 분실물 "찾으러 오는 법" 설정. 행은 id = 1 하나뿐 (0012_lost_found_settings.sql) */
+export type LostFoundSettings = {
+  /** 항상 1 */
+  id: number;
+  /** 보관 장소 */
+  pickup_place: string;
+  /** 찾으러 올 수 있는 시간 */
+  pickup_hours: string;
+  updated_at: string;
+};
+
 type Table<Row, Insert, Update> = {
   Row: Row;
   Insert: Insert;
@@ -205,6 +216,11 @@ export type Database = {
         LostFoundPrivate,
         Generated<LostFoundPrivate, "private_note" | "claimed_by" | "claimed_at">,
         Partial<LostFoundPrivate>
+      >;
+      lost_found_settings: Table<
+        LostFoundSettings,
+        Generated<LostFoundSettings, "id" | "updated_at">,
+        Partial<LostFoundSettings>
       >;
     };
     Views: Record<never, never>;

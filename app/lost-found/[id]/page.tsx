@@ -7,6 +7,7 @@ import { LostFoundPickupGuide } from "@/components/lost-found-pickup-guide";
 import { PageHeader } from "@/components/page-header";
 import { formatDate } from "@/lib/format-date";
 import { retentionDeadline } from "@/lib/lost-found";
+import { getPickupSettings } from "@/lib/lost-found-settings";
 import { SITE } from "@/lib/site-config";
 import { SITE_URL } from "@/lib/site-url";
 import { createClient } from "@/lib/supabase/server";
@@ -51,7 +52,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export default async function LostFoundItemPage({ params }: Props) {
-  const item = await getItem((await params).id);
+  const [item, pickup] = await Promise.all([getItem((await params).id), getPickupSettings()]);
   if (!item) notFound();
 
   return (
@@ -67,7 +68,7 @@ export default async function LostFoundItemPage({ params }: Props) {
       />
 
       <div className="mx-auto flex w-full max-w-3xl flex-col gap-8 px-4 py-10 sm:py-14">
-        {!item.is_resolved && <LostFoundPickupGuide />}
+        {!item.is_resolved && <LostFoundPickupGuide place={pickup.place} hours={pickup.hours} />}
 
         <article className={item.is_resolved ? "opacity-60" : ""}>
           {item.image_url && (

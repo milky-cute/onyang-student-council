@@ -22,10 +22,18 @@ function toDateKey(year: number, month: number, day: number) {
   return `${year}-${pad(month + 1)}-${pad(day)}`;
 }
 
-export function HomeCalendarWidget({ events }: { events: HomeCalendarEvent[] }) {
-  const today = new Date();
-  const year = today.getFullYear();
-  const month = today.getMonth();
+export function HomeCalendarWidget({
+  events,
+  today,
+}: {
+  events: HomeCalendarEvent[];
+  /**
+   * 한국 시간 기준 오늘 (seoulToday() 값, month 는 0-based).
+   * 서버(Vercel)는 UTC 라 여기서 new Date() 를 쓰면 한국 시간 0~9시에 날짜가 하루 밀린다.
+   */
+  today: { year: number; month: number; day: number };
+}) {
+  const { year, month } = today;
 
   const eventsByDate = new Map<string, HomeCalendarEvent[]>();
   for (const event of events) {
@@ -36,7 +44,7 @@ export function HomeCalendarWidget({ events }: { events: HomeCalendarEvent[] }) 
 
   const firstWeekday = new Date(year, month, 1).getDay();
   const daysInMonth = new Date(year, month + 1, 0).getDate();
-  const todayKey = toDateKey(year, month, today.getDate());
+  const todayKey = toDateKey(year, month, today.day);
 
   const days = Array.from({ length: daysInMonth }, (_, i) => {
     const day = i + 1;
