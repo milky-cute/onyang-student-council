@@ -35,9 +35,13 @@ export async function POST(request: Request) {
     );
   }
 
-  const { error: photoError } = await supabase
-    .from("project_photos")
-    .insert(photos.map((image_url, sort_order) => ({ project_id: project.id, image_url, sort_order })));
+  // 사진은 선택이라 0장이면 insert 를 건너뛴다.
+  const { error: photoError } =
+    photos.length > 0
+      ? await supabase
+          .from("project_photos")
+          .insert(photos.map((image_url, sort_order) => ({ project_id: project.id, image_url, sort_order })))
+      : { error: null };
 
   const { error: linkError } =
     !photoError && links.length > 0

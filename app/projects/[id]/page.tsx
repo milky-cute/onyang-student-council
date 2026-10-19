@@ -5,7 +5,6 @@ import { cache } from "react";
 
 import {
   CalendarIcon,
-  CameraIcon,
   ChatIcon,
   CheckCircleIcon,
   ClockIcon,
@@ -147,12 +146,9 @@ export default async function ProjectDetailPage({ params }: Props) {
           )}
 
           <article className="card overflow-hidden">
-            {project.photos.length > 0 ? (
+            {/* 사진은 선택 — 없으면 사진 영역을 그리지 않는다. */}
+            {project.photos.length > 0 && (
               <ProjectPhotoSlider photos={project.photos} title={project.title} ended={ended} />
-            ) : (
-              <div className="flex aspect-[4/3] max-h-80 w-full items-center justify-center bg-slate-100 text-slate-400">
-                <CameraIcon className="size-10" />
-              </div>
             )}
 
             <div className="flex flex-col gap-4 p-5">

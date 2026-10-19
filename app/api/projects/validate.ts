@@ -86,9 +86,8 @@ export function parseProjectInput(
     return { error: "신청 마감일은 신청 시작일과 같거나 뒤여야 합니다." };
   }
 
-  // 사진: 1장 이상, 최대 MAX_PHOTOS 장, 이 버킷에 올린 파일만.
+  // 사진: 선택(0장 가능), 최대 MAX_PHOTOS 장, 이 버킷에 올린 파일만.
   const photos = Array.isArray(raw.photos) ? raw.photos : [];
-  if (photos.length === 0) return { error: "사진을 1장 이상 올려주세요." };
   if (photos.length > MAX_PHOTOS) return { error: `사진은 최대 ${MAX_PHOTOS}장까지 올릴 수 있습니다.` };
   if (
     photos.some(

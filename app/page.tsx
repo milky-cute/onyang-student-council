@@ -8,7 +8,7 @@ import { TodayMealCard } from "@/components/today-meal-card";
 import { dateLabel, homeWeekKeys, seoulToday } from "@/lib/calendar-utils";
 import { getPickupSettings } from "@/lib/lost-found-settings";
 import { getMeal } from "@/lib/meal";
-import { applyStatus, projectStatus } from "@/lib/projects";
+import { sortForHome } from "@/lib/projects";
 import { NAV_ITEMS, SITE } from "@/lib/site-config";
 import { createClient } from "@/lib/supabase/server";
 
@@ -76,26 +76,18 @@ export default async function HomePage() {
       .order("created_at", { ascending: false })
       .limit(3),
     getPickupSettings(),
-    // 고정 먼저, 그다음 최신순. 상태는 날짜로 계산하므로 여기서 거른다.
+    // 최신순으로 받아 두고, 고르기 · 정렬은 날짜로 계산하는 sortForHome 이 한다.
     supabase
       .from("projects")
-      .select("id, title, is_always, start_date, end_date, apply_start, apply_end")
-      .order("is_pinned", { ascending: false })
+      .select(
+        "id, title, summary, description, is_always, start_date, end_date, apply_start, apply_end, is_pinned, created_at",
+      )
       .order("created_at", { ascending: false }),
   ]);
 
-  // 진행중이거나 신청 중인 사업 최대 3개, 없으면 상시 사업. 조회에 실패하면 빈 목록.
-  const projects = allProjects ?? [];
-  const active = projects.filter(
-    (p) =>
-      projectStatus(p, today.dateKey) === "ongoing" ||
-      applyStatus(p, today.dateKey)?.kind === "open",
-  );
-  const picked = (
-    active.length > 0
-      ? active
-      : projects.filter((p) => projectStatus(p, today.dateKey) === "always")
-  ).slice(0, 3);
+  // 고정 → 신청 중(마감 가까운 순) → 진행중(종료 가까운 순) 최대 3개, 없으면 상시 사업.
+  // 조회에 실패하면 빈 목록.
+  const picked = sortForHome(allProjects ?? [], today.dateKey);
 
   // 고른 사업의 대표 사진(sort_order 가 가장 작은 것)만 따로 가져온다.
   const { data: photos } = picked.length

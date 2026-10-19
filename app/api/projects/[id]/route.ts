@@ -63,9 +63,13 @@ export async function PATCH(request: Request, { params }: Params) {
     return NextResponse.json({ error: "사업을 찾을 수 없습니다." }, { status: 404 });
   }
 
-  const { error: photoError } = await supabase
-    .from("project_photos")
-    .insert(photos.map((image_url, sort_order) => ({ project_id: id, image_url, sort_order })));
+  // 사진을 전부 뺐으면 insert 없이 아래에서 옛 행 삭제 · Storage 정리만 한다.
+  const { error: photoError } =
+    photos.length > 0
+      ? await supabase
+          .from("project_photos")
+          .insert(photos.map((image_url, sort_order) => ({ project_id: id, image_url, sort_order })))
+      : { error: null };
   if (!photoError && oldPhotos && oldPhotos.length > 0) {
     await supabase
       .from("project_photos")
