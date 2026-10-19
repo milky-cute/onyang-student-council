@@ -67,7 +67,7 @@ export async function POST(request: Request) {
     }
     if (file.size > MAX_IMAGE_SIZE) {
       return NextResponse.json(
-        { error: "사진 크기는 5MB 이하여야 합니다." },
+        { error: "사진 크기는 4MB 이하여야 합니다." },
         { status: 400 },
       );
     }

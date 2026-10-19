@@ -10,8 +10,8 @@ export const STORAGE_BUCKET_LOST_FOUND = "lost-found";
 /** 업로드 가능한 이미지 형식. Storage 버킷(0010)에도 같은 목록이 걸려 있다. */
 export const ALLOWED_IMAGE_TYPES = ["image/jpeg", "image/png", "image/webp"];
 
-/** 이미지 최대 크기 5MB. Storage 버킷 file_size_limit 와 같은 값. */
-export const MAX_IMAGE_SIZE = 5 * 1024 * 1024;
+/** 이미지 최대 크기 4MB. 배포(Vercel) 요청 본문 한도 4.5MB 안에 들도록 버킷 한도(5MB)보다 작게 둔다. */
+export const MAX_IMAGE_SIZE = 4 * 1024 * 1024;
 
 /** 입력값 최대 길이. 초과하면 400 으로 돌려보낸다. */
 export const FIELD_LIMITS = {

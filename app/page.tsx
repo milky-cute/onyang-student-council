@@ -1,17 +1,20 @@
 import Link from "next/link";
 
 import { HomeLostFoundCard } from "@/components/home-lost-found-card";
+import { HomeProjectsCard, type HomeProject } from "@/components/home-projects-card";
 import { HomeDdayCard, HomeWeekCard } from "@/components/home-schedule-cards";
 import { InstagramIcon, MapPinIcon, ClockIcon, NAV_ICONS } from "@/components/icons";
 import { TodayMealCard } from "@/components/today-meal-card";
-import { dateLabel, seoulToday, weekdayKeys } from "@/lib/calendar-utils";
+import { dateLabel, homeWeekKeys, seoulToday } from "@/lib/calendar-utils";
 import { getPickupSettings } from "@/lib/lost-found-settings";
 import { getMeal } from "@/lib/meal";
+import { applyStatus, projectStatus } from "@/lib/projects";
 import { NAV_ITEMS, SITE } from "@/lib/site-config";
 import { createClient } from "@/lib/supabase/server";
 
 /** "학생자치회 서비스" 타일의 파스텔 아이콘 배경 */
 const TILE_COLORS: Record<string, string> = {
+  "/projects": "bg-violet-50 text-violet-700",
   "/lost-found": "bg-blue-50 text-blue-700",
   "/board": "bg-indigo-50 text-indigo-700",
   "/monthly": "bg-amber-50 text-amber-700",
@@ -23,10 +26,11 @@ const TILE_COLORS: Record<string, string> = {
 export default async function HomePage() {
   const supabase = await createClient();
 
-  // 한국 시간 기준 오늘. 날짜 칩 · 급식 · D-day · 이번 주 일정이 모두 이 값을 쓴다
+  // 한국 시간 기준 오늘. 날짜 칩 · 급식 · 사업 · D-day · 이번 주 일정이 모두 이 값을 쓴다
   // (서버가 UTC 라 new Date() 를 쓰면 한국 시간 0~9시에 하루 밀린다).
   const today = seoulToday();
-  const weekKeys = weekdayKeys(today.dateKey);
+  // 주말에는 다음 주 월~금
+  const { keys: weekKeys, isNextWeek } = homeWeekKeys(today.dateKey);
 
   // 서로 의존하지 않는 조회라 한 번에 보낸다 (직렬로 기다리면 왕복이 여러 번).
   // 급식 조회와 Supabase 조회는 실패해도 throw 대신 결과로 알려주므로 홈 전체가 깨지지 않는다.
@@ -38,6 +42,7 @@ export default async function HomePage() {
     { count: lostFoundCount, error: lostFoundError },
     { data: recentLostItems },
     pickup,
+    { data: allProjects },
   ] = await Promise.all([
     supabase
       .from("calendar_events")
@@ -71,7 +76,42 @@ export default async function HomePage() {
       .order("created_at", { ascending: false })
       .limit(3),
     getPickupSettings(),
+    // 고정 먼저, 그다음 최신순. 상태는 날짜로 계산하므로 여기서 거른다.
+    supabase
+      .from("projects")
+      .select("id, title, is_always, start_date, end_date, apply_start, apply_end")
+      .order("is_pinned", { ascending: false })
+      .order("created_at", { ascending: false }),
   ]);
+
+  // 진행중이거나 신청 중인 사업 최대 3개, 없으면 상시 사업. 조회에 실패하면 빈 목록.
+  const projects = allProjects ?? [];
+  const active = projects.filter(
+    (p) =>
+      projectStatus(p, today.dateKey) === "ongoing" ||
+      applyStatus(p, today.dateKey)?.kind === "open",
+  );
+  const picked = (
+    active.length > 0
+      ? active
+      : projects.filter((p) => projectStatus(p, today.dateKey) === "always")
+  ).slice(0, 3);
+
+  // 고른 사업의 대표 사진(sort_order 가 가장 작은 것)만 따로 가져온다.
+  const { data: photos } = picked.length
+    ? await supabase
+        .from("project_photos")
+        .select("project_id, image_url")
+        .in(
+          "project_id",
+          picked.map((p) => p.id),
+        )
+        .order("sort_order", { ascending: true })
+    : { data: [] };
+  const homeProjects: HomeProject[] = picked.map((p) => ({
+    ...p,
+    image_url: photos?.find((photo) => photo.project_id === p.id)?.image_url ?? null,
+  }));
 
   return (
     <div className="mx-auto flex w-full max-w-6xl flex-col gap-4 px-4 pt-5 pb-8 lg:gap-6 lg:pt-10 lg:pb-14">
@@ -86,13 +126,16 @@ export default async function HomePage() {
         </p>
       </section>
 
-      {/* 1행: 매일 들어오는 이유인 급식, 주력 기능인 분실물센터 */}
+      {/* 중요도 순: 급식 → 학생회 사업 → 분실물센터. 컴퓨터에서는 급식 | 사업, 그 아래 분실물 가로 전체 */}
       <div className="grid grid-cols-1 gap-4 lg:grid-cols-2 lg:gap-6">
         <TodayMealCard dateKey={today.dateKey} meal={meal} />
-        <HomeLostFoundCard
-          count={lostFoundError ? null : (lostFoundCount ?? 0)}
-          items={recentLostItems ?? []}
-        />
+        <HomeProjectsCard projects={homeProjects} todayKey={today.dateKey} />
+        <div className="lg:col-span-2">
+          <HomeLostFoundCard
+            count={lostFoundError ? null : (lostFoundCount ?? 0)}
+            items={recentLostItems ?? []}
+          />
+        </div>
       </div>
 
       {/* 2행: D-day + 이번 주 일정. D-day 가 없으면 이번 주 일정이 가로 전체를 쓴다. */}
@@ -101,6 +144,7 @@ export default async function HomePage() {
         <div className={ddayEvent ? "" : "col-span-2"}>
           <HomeWeekCard
             weekKeys={weekKeys}
+            isNextWeek={isNextWeek}
             todayKey={today.dateKey}
             weekEvents={weekEvents ?? []}
             upcoming={upcoming ?? []}

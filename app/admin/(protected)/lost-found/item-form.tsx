@@ -45,7 +45,7 @@ export function ItemForm() {
         return;
       }
       if (file.size > MAX_IMAGE_SIZE) {
-        setError("사진 크기는 5MB 이하여야 합니다.");
+        setError("사진 크기는 4MB 이하여야 합니다.");
         return;
       }
     }
@@ -173,7 +173,7 @@ export function ItemForm() {
           accept={ALLOWED_IMAGE_TYPES.join(",")}
           className="text-sm text-slate-700 file:mr-3 file:rounded-md file:border-0 file:bg-brand-50 file:px-3 file:py-2 file:text-sm file:font-medium file:text-brand-700 hover:file:bg-brand-100"
         />
-        <p className="text-xs text-slate-500">JPG · PNG · WebP, 5MB 이하</p>
+        <p className="text-xs text-slate-500">JPG · PNG · WebP, 4MB 이하</p>
       </div>
 
       {error && (

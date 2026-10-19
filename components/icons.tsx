@@ -180,6 +180,15 @@ export function MessageIcon(p: IconProps) {
   );
 }
 
+export function FlagIcon(p: IconProps) {
+  return (
+    <Svg {...p}>
+      <path d="M5 21V4" />
+      <path d="M5 4h11l-2 4 2 4H5" />
+    </Svg>
+  );
+}
+
 export function InstagramIcon(p: IconProps) {
   return (
     <Svg {...p}>
@@ -192,6 +201,7 @@ export function InstagramIcon(p: IconProps) {
 
 /** NAV_ITEMS 의 경로별 아이콘. 홈 서비스 타일 · 더보기 시트가 같이 쓴다. */
 export const NAV_ICONS: Record<string, (p: IconProps) => React.JSX.Element> = {
+  "/projects": FlagIcon,
   "/lost-found": BoxIcon,
   "/board": MegaphoneIcon,
   "/monthly": SparklesIcon,

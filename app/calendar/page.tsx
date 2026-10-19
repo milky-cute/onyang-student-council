@@ -25,8 +25,8 @@ export default async function CalendarPage() {
         description="학생자치회가 등록한 학사일정 · 행사를 달력에서 확인하세요."
         backHref="/"
       />
-      <div className="mx-auto w-full max-w-4xl px-4 pt-4 pb-10 lg:pt-6 lg:pb-14">
-        <div className="card p-4 sm:p-6">
+      <div className="mx-auto w-full max-w-6xl px-4 pt-4 pb-10 lg:pt-6 lg:pb-14">
+        <div className="card max-w-4xl p-4 sm:p-6">
           <CalendarView events={events ?? []} />
         </div>
       </div>

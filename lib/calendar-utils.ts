@@ -142,6 +142,18 @@ export function weekdayKeys(dateKey: string) {
   );
 }
 
+/**
+ * 홈 일정 카드가 보여줄 월~금. 평일은 이번 주, 주말(토·일)은 다음 주.
+ * weekdayKeys 는 일요일에 지난 월요일을 돌려주므로 토요일은 +2일, 일요일은 +1일 한 날짜로 계산한다.
+ */
+export function homeWeekKeys(dateKey: string) {
+  const [year, month, day] = dateKey.split("-").map(Number);
+  const weekday = new Date(Date.UTC(year, month - 1, day)).getUTCDay();
+  const shift = weekday === 6 ? 2 : weekday === 0 ? 1 : 0;
+  const base = new Date(Date.UTC(year, month - 1, day + shift)).toISOString().slice(0, 10);
+  return { keys: weekdayKeys(base), isNextWeek: shift > 0 };
+}
+
 /** 'YYYY-MM-DD' 두 날짜 사이의 일수 차이 (a - b). D-day 계산에 쓴다. */
 export function diffDays(a: string, b: string) {
   const toUTC = (key: string) => {

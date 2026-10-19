@@ -38,15 +38,19 @@ export function HomeDdayCard({
 /**
  * 홈 "이번 주 일정" 카드. 이번 주 월~금 날짜 줄(오늘 강조, 일정 있는 날 색 점)과
  * 오늘 이후 가장 가까운 일정 최대 2개. 날짜는 전부 seoulToday() 기준 dateKey 로 계산한다.
+ * 주말에는 다음 주 월~금을 받아 제목을 "다음 주 일정"으로 바꾼다.
  */
 export function HomeWeekCard({
   weekKeys,
+  isNextWeek,
   todayKey,
   weekEvents,
   upcoming,
 }: {
-  /** 이번 주 월~금 'YYYY-MM-DD' */
+  /** 보여줄 주의 월~금 'YYYY-MM-DD' (homeWeekKeys) */
   weekKeys: string[];
+  /** 주말이라 다음 주를 보여주는지 */
+  isNextWeek: boolean;
   todayKey: string;
   weekEvents: { event_date: string; color: string }[];
   upcoming: { id: string; title: string; event_date: string }[];
@@ -57,7 +61,7 @@ export function HomeWeekCard({
     <section aria-labelledby="home-week-heading" className="card flex h-full flex-col p-4 sm:p-5">
       <div className="flex items-center justify-between gap-2">
         <h2 id="home-week-heading" className="text-sm font-bold text-slate-900">
-          이번 주 일정
+          {isNextWeek ? "다음 주 일정" : "이번 주 일정"}
         </h2>
         <Link
           href="/calendar"

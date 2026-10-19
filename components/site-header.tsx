@@ -8,7 +8,7 @@ import { NAV_ITEMS, SITE } from "@/lib/site-config";
 
 /**
  * 전역 헤더.
- * - 모바일(lg 미만): 학교 · 학생자치회 이름만 있는 얇은 앱 바. 메뉴는 하단 탭바(BottomTabBar)가 맡는다.
+ * - 모바일(lg 미만): 로고와 학교 · 학생자치회 이름만 있는 얇은 앱 바. 메뉴는 하단 탭바(BottomTabBar)가 맡는다.
  * - 컴퓨터(lg 이상): 왼쪽 로고와 이름, 오른쪽에 NAV_ITEMS 전체가 있는 메뉴바.
  */
 export function SiteHeader() {
@@ -29,7 +29,7 @@ export function SiteHeader() {
             alt={`${SITE.schoolName} ${SITE.councilName} 로고`}
             width={36}
             height={36}
-            className="hidden size-9 shrink-0 rounded-full lg:block"
+            className="size-8 shrink-0 rounded-full lg:size-9"
           />
           <span className="flex flex-col leading-tight">
             <span className="text-[11px] font-medium text-slate-500 lg:text-xs">

@@ -6,9 +6,9 @@ import { useEffect, useRef, useState } from "react";
 
 import {
   CalendarIcon,
-  ChatIcon,
   ChevronRightIcon,
   CloseIcon,
+  FlagIcon,
   HomeIcon,
   MenuIcon,
   NAV_ICONS,
@@ -18,14 +18,14 @@ import { NAV_ITEMS } from "@/lib/site-config";
 
 const TABS = [
   { href: "/", label: "홈", Icon: HomeIcon },
+  { href: "/projects", label: "사업", Icon: FlagIcon },
   { href: "/lost-found", label: "분실물", Icon: SearchIcon },
   { href: "/calendar", label: "일정", Icon: CalendarIcon },
-  { href: "/board", label: "게시판", Icon: ChatIcon },
 ];
 
-/** 더보기 시트에 넣는 메뉴. 이름 · 설명은 NAV_ITEMS 를 그대로 쓴다. */
-const MORE_HREFS = ["/monthly", "/archive", "/requests"];
-const MORE_ITEMS = NAV_ITEMS.filter((item) => MORE_HREFS.includes(item.href));
+/** 더보기 시트에 넣는 메뉴(이 순서대로). 이름 · 설명은 NAV_ITEMS 를 그대로 쓴다. */
+const MORE_HREFS = ["/board", "/monthly", "/archive", "/requests"];
+const MORE_ITEMS = MORE_HREFS.flatMap((href) => NAV_ITEMS.filter((item) => item.href === href));
 
 function isActivePath(pathname: string, href: string) {
   if (href === "/") return pathname === "/";
