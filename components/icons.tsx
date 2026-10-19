@@ -49,6 +49,15 @@ export function CalendarIcon(p: IconProps) {
   );
 }
 
+export function ChatIcon(p: IconProps) {
+  return (
+    <Svg {...p}>
+      <path d="M4 5h16v11H9l-5 4z" />
+      <path d="M8 9.5h8M8 12.5h5" />
+    </Svg>
+  );
+}
+
 export function MenuIcon(p: IconProps) {
   return (
     <Svg {...p}>

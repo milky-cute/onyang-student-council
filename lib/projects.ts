@@ -6,9 +6,14 @@
  * 날짜는 전부 'YYYY-MM-DD' 문자열이라 문자열 비교로 앞뒤를 판단한다.
  */
 import { diffDays } from "@/lib/calendar-utils";
-import type { Project, ProjectLink, ProjectPhoto } from "@/lib/supabase/database.types";
+import type {
+  Project,
+  ProjectLink,
+  ProjectLinkKind,
+  ProjectPhoto,
+} from "@/lib/supabase/database.types";
 
-export type { Project, ProjectLink, ProjectPhoto };
+export type { Project, ProjectLink, ProjectLinkKind, ProjectPhoto };
 
 /** 사업 사진 전용 버킷 (0013) */
 export const STORAGE_BUCKET_PROJECTS = "projects";
