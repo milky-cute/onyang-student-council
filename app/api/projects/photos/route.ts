@@ -36,7 +36,7 @@ export async function POST(request: Request) {
     );
   }
   if (image.size > MAX_IMAGE_SIZE) {
-    return NextResponse.json({ error: "사진 크기는 5MB 이하여야 합니다." }, { status: 400 });
+    return NextResponse.json({ error: "사진 크기는 4MB 이하여야 합니다." }, { status: 400 });
   }
 
   const ext = image.type === "image/png" ? "png" : image.type === "image/webp" ? "webp" : "jpg";

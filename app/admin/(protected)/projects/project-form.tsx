@@ -109,7 +109,7 @@ export function ProjectForm({ project }: { project?: ProjectWithMedia }) {
         return;
       }
       if (file.size > MAX_IMAGE_SIZE) {
-        setError(`${file.name}: 사진 크기는 5MB 이하여야 합니다.`);
+        setError(`${file.name}: 사진 크기는 4MB 이하여야 합니다.`);
         return;
       }
     }
@@ -295,7 +295,7 @@ export function ProjectForm({ project }: { project?: ProjectWithMedia }) {
           />
         )}
         <p className="text-xs text-slate-500">
-          {uploading ? "사진 올리는 중…" : "JPG · PNG · WebP, 장당 5MB 이하. 여러 장을 한 번에 고를 수 있어요."}
+          {uploading ? "사진 올리는 중…" : "JPG · PNG · WebP, 장당 4MB 이하. 여러 장을 한 번에 고를 수 있어요."}
         </p>
       </fieldset>
 
