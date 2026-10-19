@@ -163,6 +163,106 @@ export type LostFoundSettings = {
   updated_at: string;
 };
 
+/** 학생회 사업. 상태는 날짜로 계산한다(lib/projects.ts). 조회는 누구나, 쓰기는 임원 (0013) */
+export type Project = {
+  id: string;
+  title: string;
+  /** 한 줄 소개 */
+  summary: string | null;
+  description: string;
+  /** 상시 사업 */
+  is_always: boolean;
+  /** 'YYYY-MM-DD'. 상시가 아니면 필수 */
+  start_date: string | null;
+  /** 'YYYY-MM-DD'. 비우면 시작일 하루 */
+  end_date: string | null;
+  /** 신청 시작일 'YYYY-MM-DD' */
+  apply_start: string | null;
+  /** 신청 마감일 'YYYY-MM-DD' */
+  apply_end: string | null;
+  target: string | null;
+  place: string | null;
+  contact: string | null;
+  /** 입장권 사용 여부 */
+  has_pass: boolean;
+  /** 입장권 이름. 비우면 '{제목} 입장권' */
+  pass_label: string | null;
+  is_pinned: boolean;
+  created_at: string;
+  updated_at: string;
+};
+
+/** 사업 사진. sort_order 가 가장 작은 것이 대표 사진 (0013) */
+export type ProjectPhoto = {
+  id: string;
+  project_id: string;
+  image_url: string;
+  sort_order: number;
+  created_at: string;
+};
+
+/** project_links.kind — 'apply'(신청 기간 규칙을 따름) | 'other' */
+export type ProjectLinkKind = "apply" | "other";
+
+/** 사업 링크 (신청 구글폼, 오픈채팅 등) (0013) */
+export type ProjectLink = {
+  id: string;
+  project_id: string;
+  /** 버튼 이름 */
+  label: string;
+  /** https:// 로 시작 */
+  url: string;
+  kind: ProjectLinkKind;
+  /** 상세 페이지에서 QR 로도 보여주기 */
+  show_qr: boolean;
+  sort_order: number;
+  created_at: string;
+};
+
+/** 사업별 입장권 명단. 임원만 접근 (0013) */
+export type PassHolder = {
+  id: string;
+  project_id: string;
+  student_number: string;
+  student_name: string;
+  is_suspended: boolean;
+  created_at: string;
+};
+
+/** 학번별 입장권 PIN (모든 사업 공통). 임원은 조회·삭제만 (0013) */
+export type PassCredential = {
+  student_number: string;
+  student_name: string;
+  /** bcrypt 해시. 클라이언트로 절대 내려가지 않는다. */
+  pin_hash: string;
+  failed_attempts: number;
+  locked_until: string | null;
+  created_at: string;
+};
+
+/** 입장권 로그인 세션. 토큰의 sha256 해시만 저장. 임원은 조회·삭제만 (0013) */
+export type PassSession = {
+  token_hash: string;
+  student_number: string;
+  created_at: string;
+  expires_at: string;
+};
+
+/** pass_login() 이 돌려주는 행. 명단에 없거나 PIN 이 틀리면 token 이 null */
+export type PassLoginRow = {
+  token: string | null;
+  is_new_pin: boolean | null;
+};
+
+/** pass_status() 가 돌려주는 행. 세션이 없거나 만료되면 행이 없다. */
+export type PassStatusRow = {
+  student_name: string;
+  student_number: string;
+  /** 이 사업 명단에 있는지 */
+  is_listed: boolean;
+  is_suspended: boolean;
+};
+
 type Table<Row, Insert, Update> = {
   Row: Row;
   Insert: Insert;
@@ -222,6 +322,39 @@ export type Database = {
         Generated<LostFoundSettings, "id" | "updated_at">,
         Partial<LostFoundSettings>
       >;
+      projects: Table<
+        Project,
+        Generated<
+          Project,
+          "id" | "created_at" | "updated_at" | "is_always" | "has_pass" | "is_pinned"
+        >,
+        Partial<Project>
+      >;
+      project_photos: Table<
+        ProjectPhoto,
+        Generated<ProjectPhoto, "id" | "created_at" | "sort_order">,
+        Partial<ProjectPhoto>
+      >;
+      project_links: Table<
+        ProjectLink,
+        Generated<ProjectLink, "id" | "created_at" | "sort_order" | "kind" | "show_qr">,
+        Partial<ProjectLink>
+      >;
+      pass_holders: Table<
+        PassHolder,
+        Generated<PassHolder, "id" | "created_at" | "is_suspended">,
+        Partial<PassHolder>
+      >;
+      pass_credentials: Table<
+        PassCredential,
+        Generated<PassCredential, "created_at" | "failed_attempts" | "locked_until">,
+        Partial<PassCredential>
+      >;
+      pass_sessions: Table<
+        PassSession,
+        Generated<PassSession, "created_at">,
+        Partial<PassSession>
+      >;
     };
     Views: Record<never, never>;
     Functions: {
@@ -251,6 +384,27 @@ export type Database = {
       get_public_requests: {
         Args: Record<string, never>;
         Returns: PublicRequest[];
+      };
+      pass_login: {
+        Args: {
+          p_name: string;
+          p_number: string;
+          p_pin: string;
+        };
+        Returns: PassLoginRow[];
+      };
+      pass_status: {
+        Args: {
+          p_token: string;
+          p_project_id: string;
+        };
+        Returns: PassStatusRow[];
+      };
+      pass_logout: {
+        Args: {
+          p_token: string;
+        };
+        Returns: undefined;
       };
     };
     Enums: Record<never, never>;
