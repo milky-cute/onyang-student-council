@@ -7,6 +7,11 @@ export const metadata: Metadata = {
 
 const SECTIONS = [
   {
+    href: "/admin/projects",
+    label: "학생회 사업 관리",
+    description: "사업을 등록·수정하고 QR 코드와 입장권 명단을 관리합니다.",
+  },
+  {
     href: "/admin/board",
     label: "학생자치회 게시판 관리",
     description: "공지사항과 활동 포스터를 작성·수정·삭제합니다.",

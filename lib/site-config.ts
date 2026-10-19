@@ -30,6 +30,12 @@ export type NavItem = {
 /** 헤더 · 모바일 메뉴 · 홈 카드가 공유하는 메뉴 정의 */
 export const NAV_ITEMS: NavItem[] = [
   {
+    href: "/projects",
+    label: "학생회 사업",
+    description: "학생자치회가 진행하는 사업을 확인하고 신청하세요.",
+    shortDescription: "진행 사업·신청",
+  },
+  {
     href: "/lost-found",
     label: "분실물센터",
     description: "학생자치회가 보관 중인 분실물을 확인하고 찾아가세요.",

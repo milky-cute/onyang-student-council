@@ -23,45 +23,47 @@ export default async function RequestsPage() {
         description="학교에 바라는 점을 남기고, 답변을 확인할 수 있습니다."
         backHref="/"
       />
-      <div className="mx-auto w-full max-w-2xl px-4 pt-4 pb-10 lg:pt-6 lg:pb-14">
-        <div className="flex flex-wrap items-center justify-between gap-3">
-          <p className="text-sm text-slate-600">
-            제출한 요구사항은 이름 · 학번 · PIN으로 조회할 수 있어요.
-          </p>
-          <Link
-            href="/requests/check"
-            className="inline-flex min-h-11 shrink-0 items-center rounded-lg border border-brand-700 bg-white px-3 text-sm font-semibold text-brand-700 transition-colors hover:bg-brand-700 hover:text-white"
-          >
-            내 요구사항 조회
-          </Link>
-        </div>
+      <div className="mx-auto w-full max-w-6xl px-4 pt-4 pb-10 lg:pt-6 lg:pb-14">
+        <div className="max-w-2xl">
+          <div className="flex flex-wrap items-center justify-between gap-3">
+            <p className="text-sm text-slate-600">
+              제출한 요구사항은 이름 · 학번 · PIN으로 조회할 수 있어요.
+            </p>
+            <Link
+              href="/requests/check"
+              className="inline-flex min-h-11 shrink-0 items-center rounded-lg border border-brand-700 bg-white px-3 text-sm font-semibold text-brand-700 transition-colors hover:bg-brand-700 hover:text-white"
+            >
+              내 요구사항 조회
+            </Link>
+          </div>
 
-        <RequestForm />
+          <RequestForm />
 
-        <div className="mt-16 flex flex-col gap-4 border-t border-slate-200 pt-10">
-          <h2 className="text-lg font-bold text-slate-900">답변된 요구사항</h2>
-          {!publicRequests || publicRequests.length === 0 ? (
-            <p className="text-sm text-slate-600">아직 공개된 답변이 없습니다.</p>
-          ) : (
-            publicRequests.map((r) => (
-              <div key={r.id} className="card px-4 py-4">
-                <div className="flex flex-wrap items-center justify-between gap-2">
-                  <p className="font-semibold text-slate-900">{r.title}</p>
-                  <span className="rounded-full bg-brand-50 px-2.5 py-1 text-xs font-semibold text-brand-700">
-                    {r.answered_department ?? "학생자치회"}
-                  </span>
-                </div>
-                {r.category && <p className="mt-1 text-xs text-slate-500">{r.category}</p>}
-                <p className="mt-3 whitespace-pre-wrap text-sm text-slate-700">{r.content}</p>
-                {r.answer && (
-                  <div className="mt-3 rounded-md bg-brand-50 px-3 py-3">
-                    <p className="text-xs font-semibold text-brand-700">답변</p>
-                    <p className="mt-1 whitespace-pre-wrap text-sm text-slate-700">{r.answer}</p>
+          <div className="mt-16 flex flex-col gap-4 border-t border-slate-200 pt-10">
+            <h2 className="text-lg font-bold text-slate-900">답변된 요구사항</h2>
+            {!publicRequests || publicRequests.length === 0 ? (
+              <p className="text-sm text-slate-600">아직 공개된 답변이 없습니다.</p>
+            ) : (
+              publicRequests.map((r) => (
+                <div key={r.id} className="card px-4 py-4">
+                  <div className="flex flex-wrap items-center justify-between gap-2">
+                    <p className="font-semibold text-slate-900">{r.title}</p>
+                    <span className="rounded-full bg-brand-50 px-2.5 py-1 text-xs font-semibold text-brand-700">
+                      {r.answered_department ?? "학생자치회"}
+                    </span>
                   </div>
-                )}
-              </div>
-            ))
-          )}
+                  {r.category && <p className="mt-1 text-xs text-slate-500">{r.category}</p>}
+                  <p className="mt-3 whitespace-pre-wrap text-sm text-slate-700">{r.content}</p>
+                  {r.answer && (
+                    <div className="mt-3 rounded-md bg-brand-50 px-3 py-3">
+                      <p className="text-xs font-semibold text-brand-700">답변</p>
+                      <p className="mt-1 whitespace-pre-wrap text-sm text-slate-700">{r.answer}</p>
+                    </div>
+                  )}
+                </div>
+              ))
+            )}
+          </div>
         </div>
       </div>
     </>

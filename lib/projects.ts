@@ -135,6 +135,22 @@ export function isLinkEnabled(
   return apply === null || apply.kind === "open";
 }
 
+const STORAGE_HOST = process.env.NEXT_PUBLIC_SUPABASE_URL
+  ? new URL(process.env.NEXT_PUBLIC_SUPABASE_URL).hostname
+  : null;
+
+/**
+ * next/image 는 next.config.ts 에 등록된 Supabase Storage 호스트만 최적화할 수 있다.
+ * 시드 사업의 대표 사진(사이트 로고 절대 URL)처럼 다른 주소면 true → <Image unoptimized> 로 그대로 띄운다.
+ */
+export function needsUnoptimized(imageUrl: string) {
+  try {
+    return new URL(imageUrl).hostname !== STORAGE_HOST;
+  } catch {
+    return true;
+  }
+}
+
 /** 입장권 이름. 비어 있으면 '{제목} 입장권' */
 export function passLabel(project: Pick<Project, "title" | "pass_label">) {
   return project.pass_label?.trim() || `${project.title} 입장권`;
