@@ -150,11 +150,6 @@ export function ProjectForm({ project }: { project?: ProjectWithMedia }) {
     event.preventDefault();
     setError(null);
 
-    if (photos.length === 0) {
-      setError("사진을 1장 이상 올려주세요.");
-      return;
-    }
-
     setPending(true);
     try {
       const res = await fetch(project ? `/api/projects/${project.id}` : "/api/projects", {
@@ -231,7 +226,7 @@ export function ProjectForm({ project }: { project?: ProjectWithMedia }) {
       {/* 사진 */}
       <fieldset className="flex flex-col gap-2">
         <legend className={labelClass}>
-          사진 (필수, 최대 {MAX_PHOTOS}장 · 첫 장이 대표 사진)
+          사진 (선택, 최대 {MAX_PHOTOS}장 · 첫 장이 대표 사진)
         </legend>
         {photos.length > 0 && (
           <ol className="grid grid-cols-2 gap-3 sm:grid-cols-4">

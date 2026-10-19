@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 
-import { CameraIcon } from "@/components/icons";
+import { FlagIcon } from "@/components/icons";
 import { ProjectBadges } from "@/components/project-badges";
 import { needsUnoptimized, projectStatus, type Project } from "@/lib/projects";
 
@@ -34,8 +34,9 @@ export function ProjectCard({
             className={`object-cover ${ended ? "opacity-70 grayscale" : ""}`}
           />
         ) : (
-          <div className="flex h-full items-center justify-center text-slate-400">
-            <CameraIcon className="size-8" />
+          // 사진이 없어도 격자 높이를 맞추려고 자리는 남긴다.
+          <div className="flex h-full items-center justify-center bg-violet-50 text-violet-700">
+            <FlagIcon className="size-8" />
           </div>
         )}
       </div>
