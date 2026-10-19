@@ -140,6 +140,49 @@ export function isLinkEnabled(
   return apply === null || apply.kind === "open";
 }
 
+/** 홈 사업 카드에 보여줄 최대 개수 */
+export const HOME_PROJECT_LIMIT = 3;
+
+/**
+ * 홈 사업 카드에 보여줄 사업을 고르고 정렬한다(최대 HOME_PROJECT_LIMIT 개).
+ * 1. 신청 중이거나 진행중인 사업만 고른다. 그 안에서 고정 사업이 맨 앞.
+ * 2. 신청 중(applyStatus open) → 신청 마감일 가까운 순, 마감일 없으면 뒤.
+ * 3. 진행중(2에 들지 않은 것) → 종료일(없으면 시작일) 가까운 순.
+ * 4. 1~3이 하나도 없으면 상시 사업(고정 먼저, 그다음 최신순).
+ * 같은 순위끼리는 받은 순서를 유지한다(Array.prototype.sort 는 안정 정렬).
+ */
+export function sortForHome<
+  T extends DateFields & Pick<Project, "is_pinned" | "created_at">,
+>(projects: T[], todayKey: string): T[] {
+  const pinnedFirst = (a: T, b: T) => Number(b.is_pinned) - Number(a.is_pinned);
+
+  const ranked = projects.flatMap((project) => {
+    if (applyStatus(project, todayKey)?.kind === "open") {
+      // 마감일이 없으면 마감일이 있는 사업들 뒤로
+      return [{ project, group: 0, key: project.apply_end ?? "9999-12-31" }];
+    }
+    if (projectStatus(project, todayKey) === "ongoing") {
+      return [{ project, group: 1, key: project.end_date ?? project.start_date ?? "" }];
+    }
+    return [];
+  });
+
+  if (ranked.length > 0) {
+    return ranked
+      .sort(
+        (a, b) =>
+          pinnedFirst(a.project, b.project) || a.group - b.group || a.key.localeCompare(b.key),
+      )
+      .slice(0, HOME_PROJECT_LIMIT)
+      .map((item) => item.project);
+  }
+
+  return projects
+    .filter((project) => projectStatus(project, todayKey) === "always")
+    .sort((a, b) => pinnedFirst(a, b) || b.created_at.localeCompare(a.created_at))
+    .slice(0, HOME_PROJECT_LIMIT);
+}
+
 const STORAGE_HOST = process.env.NEXT_PUBLIC_SUPABASE_URL
   ? new URL(process.env.NEXT_PUBLIC_SUPABASE_URL).hostname
   : null;
