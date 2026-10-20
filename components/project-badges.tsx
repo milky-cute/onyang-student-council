@@ -6,10 +6,13 @@ import {
   type Project,
 } from "@/lib/projects";
 
-/** 색은 상태 뜻으로만: 진행 중 brand, 상시 brand 연하게, 예정 · 종료 slate (globals.css 의 badge-*) */
+/**
+ * 색은 상태 뜻으로만 (globals.css 의 badge-*). 한 줄에 진한 파란 배지가 둘 이상 나오지 않도록
+ * 진한 brand(badge-active)는 "신청 중" 하나에만 쓰고, 진행중 · 상시는 연한 brand, 예정 · 종료 · 입장권은 slate.
+ */
 const STATUS_CLASS = {
   always: "badge-info",
-  ongoing: "badge-active",
+  ongoing: "badge-info",
   upcoming: "badge-muted",
   ended: "badge-muted",
 } as const;
@@ -46,7 +49,7 @@ export function ProjectBadges({
         {status === "ended" ? "종료" : PROJECT_STATUS_LABEL[status]}
       </span>
       {apply && <span className={`badge ${applyClass(apply)}`}>{apply.label}</span>}
-      {project.has_pass && <span className="badge badge-info">입장권</span>}
+      {project.has_pass && <span className="badge badge-muted">입장권</span>}
     </span>
   );
 }

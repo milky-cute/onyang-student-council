@@ -62,8 +62,8 @@ export function CheckForm() {
     <div className="flex flex-col gap-8">
       <form onSubmit={handleSubmit} className="flex flex-col gap-4">
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
-          <div className="flex flex-col gap-1.5">
-            <label htmlFor="studentName" className="text-sm font-medium text-slate-700">
+          <div className="flex flex-col gap-2">
+            <label htmlFor="studentName" className="text-body-sm font-semibold text-slate-700">
               이름
             </label>
             <input
@@ -71,11 +71,11 @@ export function CheckForm() {
               value={form.studentName}
               onChange={(e) => setForm((p) => ({ ...p, studentName: e.target.value }))}
               required
-              className="rounded-md border border-slate-300 px-3 py-2.5 text-sm outline-none focus:border-brand-700 focus:ring-1 focus:ring-brand-700"
+              className="rounded-chip border border-slate-300 px-3 py-3 text-body outline-none focus:border-brand-700 focus:ring-1 focus:ring-brand-700"
             />
           </div>
-          <div className="flex flex-col gap-1.5">
-            <label htmlFor="studentNumber" className="text-sm font-medium text-slate-700">
+          <div className="flex flex-col gap-2">
+            <label htmlFor="studentNumber" className="text-body-sm font-semibold text-slate-700">
               학번
             </label>
             <input
@@ -84,11 +84,11 @@ export function CheckForm() {
               onChange={(e) => setForm((p) => ({ ...p, studentNumber: e.target.value }))}
               required
               inputMode="numeric"
-              className="rounded-md border border-slate-300 px-3 py-2.5 text-sm outline-none focus:border-brand-700 focus:ring-1 focus:ring-brand-700"
+              className="rounded-chip border border-slate-300 px-3 py-3 text-body outline-none focus:border-brand-700 focus:ring-1 focus:ring-brand-700"
             />
           </div>
-          <div className="flex flex-col gap-1.5">
-            <label htmlFor="pin" className="text-sm font-medium text-slate-700">
+          <div className="flex flex-col gap-2">
+            <label htmlFor="pin" className="text-body-sm font-semibold text-slate-700">
               PIN
             </label>
             <input
@@ -100,13 +100,13 @@ export function CheckForm() {
               required
               inputMode="numeric"
               maxLength={4}
-              className="rounded-md border border-slate-300 px-3 py-2.5 text-sm tracking-widest outline-none focus:border-brand-700 focus:ring-1 focus:ring-brand-700"
+              className="rounded-chip border border-slate-300 px-3 py-3 text-body tracking-widest outline-none focus:border-brand-700 focus:ring-1 focus:ring-brand-700"
             />
           </div>
         </div>
 
         {error && (
-          <p role="alert" className="text-sm text-red-600">
+          <p role="alert" className="text-body-sm text-red-600">
             {error}
           </p>
         )}
@@ -114,7 +114,7 @@ export function CheckForm() {
         <button
           type="submit"
           disabled={pending}
-          className="min-h-11 self-start rounded-lg bg-brand-700 px-4 text-sm font-semibold text-white transition-colors hover:bg-brand-800 disabled:opacity-60"
+          className="btn btn-primary self-start"
         >
           {pending ? "조회 중…" : "조회하기"}
         </button>
@@ -123,32 +123,32 @@ export function CheckForm() {
       {results && (
         <div className="flex flex-col gap-3">
           {results.length === 0 ? (
-            <p className="text-sm text-slate-600">
+            <p className="text-body-sm text-slate-600">
               입력하신 정보와 일치하는 요구사항이 없습니다.
             </p>
           ) : (
             results.map((r) => (
-              <div key={r.id} className="card px-4 py-4">
+              <div key={r.id} className="card animate-enter p-5">
                 <div className="flex flex-wrap items-center justify-between gap-2">
                   <p className="font-semibold text-slate-900">{r.title}</p>
                   <span
-                    className={`rounded-full px-2.5 py-1 text-xs font-semibold ${
+                    className={`badge ${
                       r.status === "답변완료"
-                        ? "bg-brand-700 text-white"
-                        : "bg-slate-100 text-slate-600"
+                        ? "badge-active"
+                        : "badge-muted"
                     }`}
                   >
                     {r.status}
                   </span>
                 </div>
-                {r.category && <p className="mt-1 text-xs text-slate-500">{r.category}</p>}
-                <p className="mt-3 whitespace-pre-wrap text-sm text-slate-700">{r.content}</p>
+                {r.category && <p className="mt-1 text-caption text-slate-600">{r.category}</p>}
+                <p className="mt-3 whitespace-pre-wrap text-body-sm text-slate-700">{r.content}</p>
                 {r.answer && (
-                  <div className="mt-3 rounded-md bg-brand-50 px-3 py-3">
-                    <p className="text-xs font-semibold text-brand-700">
+                  <div className="mt-3 rounded-control bg-brand-50 px-4 py-3">
+                    <p className="text-caption font-semibold text-brand-700">
                       {r.answered_department ?? "학생자치회"} 답변
                     </p>
-                    <p className="mt-1 whitespace-pre-wrap text-sm text-slate-700">{r.answer}</p>
+                    <p className="mt-1 whitespace-pre-wrap text-body-sm text-slate-700">{r.answer}</p>
                   </div>
                 )}
               </div>

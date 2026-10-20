@@ -28,8 +28,8 @@ export default async function AdminRequestsPage() {
       <AdminBackLink />
       <div className="flex flex-col gap-6">
         <div>
-          <h1 className="text-2xl font-bold text-slate-900">요구사항 관리</h1>
-          <p className="mt-2 text-sm text-slate-600">
+          <h1 className="text-title font-bold text-slate-900">요구사항 관리</h1>
+          <p className="mt-2 text-body-sm text-slate-600">
             학생이 제출한 요구사항을 확인하고 답변을 남기세요. 답변을 저장하면 학생의 조회
             페이지에 바로 표시됩니다. 답변완료 항목은 공개 스위치로 /requests 공개 목록
             노출 여부를 정할 수 있습니다.
@@ -37,15 +37,15 @@ export default async function AdminRequestsPage() {
         </div>
 
         {!requests || requests.length === 0 ? (
-          <p className="text-sm text-slate-600">아직 제출된 요구사항이 없습니다.</p>
+          <p className="text-body-sm text-slate-600">아직 제출된 요구사항이 없습니다.</p>
         ) : (
           <div className="flex flex-col gap-4">
             {requests.map((r) => (
-              <div key={r.id} className="rounded-lg border border-slate-200 px-5 py-5">
+              <div key={r.id} className="rounded-control border border-slate-200 px-5 py-5">
                 <div className="flex flex-wrap items-center justify-between gap-2">
                   <div>
                     <p className="font-semibold text-slate-900">{r.title}</p>
-                    <p className="mt-0.5 text-xs text-slate-500">
+                    <p className="mt-0.5 text-caption text-slate-600">
                       {r.student_name} · {r.student_number}
                       {r.category ? ` · ${r.category}` : ""}
                     </p>
@@ -55,10 +55,10 @@ export default async function AdminRequestsPage() {
                       <VisibilityToggle requestId={r.id} isPublic={r.is_public} />
                     )}
                     <span
-                      className={`rounded-full px-2.5 py-1 text-xs font-semibold ${
+                      className={`badge ${
                         r.status === "답변완료"
-                          ? "bg-brand-700 text-white"
-                          : "bg-slate-100 text-slate-600"
+                          ? "badge-active"
+                          : "badge-muted"
                       }`}
                     >
                       {r.status}
@@ -66,7 +66,7 @@ export default async function AdminRequestsPage() {
                   </div>
                 </div>
 
-                <p className="mt-3 whitespace-pre-wrap text-sm text-slate-700">{r.content}</p>
+                <p className="mt-3 whitespace-pre-wrap text-body-sm text-slate-700">{r.content}</p>
 
                 <div className="mt-4">
                   <AnswerForm

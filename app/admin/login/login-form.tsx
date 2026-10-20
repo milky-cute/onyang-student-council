@@ -39,8 +39,8 @@ export function LoginForm() {
 
   return (
     <form onSubmit={handleSubmit} className="mt-8 flex flex-col gap-4">
-      <div className="flex flex-col gap-1.5">
-        <label htmlFor="email" className="text-sm font-medium text-slate-700">
+      <div className="flex flex-col gap-2">
+        <label htmlFor="email" className="text-body-sm font-semibold text-slate-700">
           이메일
         </label>
         <input
@@ -50,12 +50,12 @@ export function LoginForm() {
           onChange={(e) => setEmail(e.target.value)}
           required
           autoComplete="email"
-          className="rounded-md border border-slate-300 px-3 py-2.5 text-sm outline-none focus:border-brand-700 focus:ring-1 focus:ring-brand-700"
+          className="rounded-chip border border-slate-300 px-3 py-3 text-body-sm outline-none focus:border-brand-700 focus:ring-1 focus:ring-brand-700"
         />
       </div>
 
-      <div className="flex flex-col gap-1.5">
-        <label htmlFor="password" className="text-sm font-medium text-slate-700">
+      <div className="flex flex-col gap-2">
+        <label htmlFor="password" className="text-body-sm font-semibold text-slate-700">
           비밀번호
         </label>
         <input
@@ -65,12 +65,12 @@ export function LoginForm() {
           onChange={(e) => setPassword(e.target.value)}
           required
           autoComplete="current-password"
-          className="rounded-md border border-slate-300 px-3 py-2.5 text-sm outline-none focus:border-brand-700 focus:ring-1 focus:ring-brand-700"
+          className="rounded-chip border border-slate-300 px-3 py-3 text-body-sm outline-none focus:border-brand-700 focus:ring-1 focus:ring-brand-700"
         />
       </div>
 
       {error && (
-        <p role="alert" className="text-sm text-red-600">
+        <p role="alert" className="text-body-sm text-red-600">
           {error}
         </p>
       )}
@@ -78,7 +78,7 @@ export function LoginForm() {
       <button
         type="submit"
         disabled={pending}
-        className="mt-2 rounded-md bg-brand-700 px-4 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-brand-800 disabled:opacity-60"
+        className="mt-2 rounded-control bg-brand-700 px-4 py-3 text-body-sm font-semibold text-white transition-colors hover:bg-brand-600 disabled:opacity-60"
       >
         {pending ? "로그인 중…" : "로그인"}
       </button>

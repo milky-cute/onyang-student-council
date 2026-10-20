@@ -139,7 +139,7 @@ export default async function ProjectDetailPage({ params }: Props) {
           {ended && (
             <p
               role="status"
-              className="rounded-xl border border-slate-200 bg-slate-100 px-4 py-3 text-sm font-semibold text-slate-700"
+              className="rounded-control border border-slate-200 bg-slate-100 px-4 py-3 text-body-sm font-semibold text-slate-700"
             >
               끝난 사업이에요. 기록으로 남겨두고 있어요.
             </p>
@@ -152,24 +152,22 @@ export default async function ProjectDetailPage({ params }: Props) {
             )}
 
             <div className="flex flex-col gap-4 p-5">
-              <div className="flex flex-col gap-2">
-                <ProjectBadges project={project} todayKey={todayKey} />
-                <h2 className="text-xl font-bold text-slate-900">{project.title}</h2>
-              </div>
+              {/* 제목은 바로 위 PageHeader(h1)에 있으니 카드에는 배지만 둔다. */}
+              <ProjectBadges project={project} todayKey={todayKey} />
 
               {info.length > 0 && (
-                <dl className="flex flex-col gap-2 rounded-xl bg-slate-50 px-4 py-3 text-sm">
+                <dl className="flex flex-col gap-2 rounded-control bg-slate-50 px-4 py-3 text-body-sm">
                   {info.map((row) => (
                     <div key={row.label} className="flex items-start gap-2">
-                      <span className="mt-0.5 shrink-0 text-slate-500">{row.icon}</span>
-                      <dt className="w-16 shrink-0 text-slate-500">{row.label}</dt>
-                      <dd className="min-w-0 font-medium text-slate-800">{row.value}</dd>
+                      <span className="mt-0.5 shrink-0 text-slate-600">{row.icon}</span>
+                      <dt className="w-16 shrink-0 text-slate-600">{row.label}</dt>
+                      <dd className="min-w-0 font-semibold text-slate-800">{row.value}</dd>
                     </div>
                   ))}
                 </dl>
               )}
 
-              <p className="whitespace-pre-line text-[15px] leading-relaxed text-slate-700">
+              <p className="whitespace-pre-line text-body leading-relaxed text-slate-700">
                 {project.description}
               </p>
 
@@ -179,7 +177,7 @@ export default async function ProjectDetailPage({ params }: Props) {
                   {project.has_pass && (
                     <Link
                       href={`/projects/${project.id}/pass`}
-                      className="flex min-h-14 w-full items-center justify-center rounded-xl border border-amber-300 bg-amber-50 px-5 text-base font-bold text-amber-800 hover:bg-amber-100 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-700"
+                      className="press flex min-h-14 w-full items-center justify-center rounded-control border border-brand-700 bg-white px-5 text-body font-bold text-brand-700 hover:bg-brand-50"
                     >
                       내 입장권 보기
                     </Link>

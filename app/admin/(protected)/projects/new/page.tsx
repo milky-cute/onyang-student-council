@@ -12,7 +12,7 @@ export default function NewProjectPage() {
   return (
     <>
       <AdminBackLink href="/admin/projects" />
-      <h1 className="text-2xl font-bold text-slate-900">사업 등록</h1>
+      <h1 className="text-title font-bold text-slate-900">사업 등록</h1>
       <div className="mt-8">
         <ProjectForm />
       </div>

@@ -37,7 +37,10 @@ function useNowSeconds() {
   );
 }
 
-/** 계속 흘러가는 사선 줄무늬 띠. 캡처한 화면은 멈춰 있어서 진짜 화면과 구별된다. */
+/**
+ * 계속 흘러가는 사선 줄무늬 띠. 캡처한 화면은 멈춰 있어서 진짜 화면과 구별된다.
+ * ⚠️ 위조 방지 기능이라 동작 줄이기(prefers-reduced-motion) 설정에서도 멈추지 않는다 — 일부러 그 설정을 확인하지 않는다.
+ */
 function MovingStripe() {
   const ref = useRef<HTMLDivElement>(null);
 
@@ -94,31 +97,32 @@ export function PassCard({
               className="size-12 shrink-0 rounded-full bg-white"
             />
             <div className="min-w-0">
-              <p className="text-xs font-medium text-brand-100">{SITE.fullName}</p>
-              <p className="text-lg leading-snug font-bold">{passName}</p>
+              <p className="text-caption font-semibold text-brand-100">{SITE.fullName}</p>
+              <p className="text-card-title font-bold">{passName}</p>
             </div>
           </div>
           <MovingStripe />
         </div>
 
         <div className="px-5 pt-4 pb-5">
-          <p className="text-sm text-slate-500">{projectTitle}</p>
-          <p className="mt-3 text-3xl font-bold text-slate-900">{studentName}</p>
-          <dl className="mt-4 grid grid-cols-2 gap-3 rounded-xl bg-slate-50 px-4 py-3 text-sm">
+          <p className="text-body-sm text-slate-600">{projectTitle}</p>
+          <p className="mt-3 text-display font-bold text-slate-900">{studentName}</p>
+          <dl className="mt-4 grid grid-cols-2 gap-3 rounded-control bg-slate-50 px-4 py-3 text-body-sm">
             <div>
-              <dt className="text-xs text-slate-500">학번</dt>
-              <dd className="mt-0.5 text-base font-semibold text-slate-900 tabular-nums">
+              <dt className="text-caption text-slate-600">학번</dt>
+              <dd className="mt-0.5 text-body font-semibold text-slate-900 tabular-nums">
                 {studentNumber}
               </dd>
             </div>
             <div>
-              <dt className="text-xs text-slate-500">유효 기간</dt>
-              <dd className="mt-0.5 text-base font-semibold text-slate-900">{validLabel}</dd>
+              <dt className="text-caption text-slate-600">유효 기간</dt>
+              <dd className="mt-0.5 text-body font-semibold text-slate-900">{validLabel}</dd>
             </div>
           </dl>
 
           <div className="mt-4 text-center" aria-live="off">
-            <p className="text-sm text-slate-500">{now ? SEOUL_DATE.format(now) : " "}</p>
+            <p className="text-body-sm text-slate-600">{now ? SEOUL_DATE.format(now) : " "}</p>
+            {/* 시계는 검사하는 사람이 멀리서도 초가 넘어가는 걸 보도록 토큰(28px)보다 크게 36px 로 둔다. */}
             <p className="mt-0.5 text-4xl font-bold text-brand-700 tabular-nums">
               {now ? SEOUL_TIME.format(now) : "--:--:--"}
             </p>
@@ -126,7 +130,7 @@ export function PassCard({
         </div>
       </section>
 
-      <p className="rounded-xl bg-amber-50 px-4 py-3 text-center text-sm font-medium text-amber-900">
+      <p className="rounded-control bg-slate-100 px-4 py-3 text-center text-body-sm font-semibold text-slate-700">
         캡처한 화면은 사용할 수 없어요 · 화면 밝기를 높여 주세요
       </p>
     </div>

@@ -25,10 +25,10 @@ type LinkDraft = {
 };
 
 const inputClass =
-  "rounded-md border border-slate-300 px-3 py-2.5 text-sm outline-none focus:border-brand-700 focus:ring-1 focus:ring-brand-700";
-const labelClass = "text-sm font-medium text-slate-700";
+  "rounded-chip border border-slate-300 px-3 py-3 text-body-sm outline-none focus:border-brand-700 focus:ring-1 focus:ring-brand-700";
+const labelClass = "text-body-sm font-semibold text-slate-700";
 const smallButton =
-  "rounded-md border border-slate-300 bg-white px-2.5 py-1.5 text-xs font-medium text-slate-700 transition-colors hover:bg-slate-100 disabled:opacity-40";
+  "rounded-chip border border-slate-300 bg-white px-3 py-2 text-caption font-semibold text-slate-700 transition-colors hover:bg-slate-100 disabled:opacity-40";
 
 /** 배열에서 index 의 항목을 한 칸 위(-1)/아래(+1)로 옮긴다. */
 function move<T>(list: T[], index: number, offset: -1 | 1) {
@@ -186,7 +186,7 @@ export function ProjectForm({ project }: { project?: ProjectWithMedia }) {
     limit: number,
     placeholder: string,
   ) => (
-    <div className="flex flex-col gap-1.5">
+    <div className="flex flex-col gap-2">
       <label htmlFor={key} className={labelClass}>
         {label}
       </label>
@@ -202,7 +202,7 @@ export function ProjectForm({ project }: { project?: ProjectWithMedia }) {
   );
 
   const dateField = (key: keyof typeof form, label: string, min?: string) => (
-    <div className="flex flex-col gap-1.5">
+    <div className="flex flex-col gap-2">
       <label htmlFor={key} className={labelClass}>
         {label}
       </label>
@@ -221,7 +221,7 @@ export function ProjectForm({ project }: { project?: ProjectWithMedia }) {
   return (
     <form
       onSubmit={handleSubmit}
-      className="flex max-w-3xl flex-col gap-6 rounded-lg border border-slate-200 bg-white px-5 py-6"
+      className="flex max-w-3xl flex-col gap-6 rounded-control border border-slate-200 bg-white px-5 py-6"
     >
       {/* 사진 */}
       <fieldset className="flex flex-col gap-2">
@@ -231,8 +231,8 @@ export function ProjectForm({ project }: { project?: ProjectWithMedia }) {
         {photos.length > 0 && (
           <ol className="grid grid-cols-2 gap-3 sm:grid-cols-4">
             {photos.map((url, index) => (
-              <li key={url} className="flex flex-col gap-1.5">
-                <div className="relative aspect-[4/3] overflow-hidden rounded-md border border-slate-200 bg-slate-100">
+              <li key={url} className="flex flex-col gap-2">
+                <div className="relative aspect-[4/3] overflow-hidden rounded-control border border-slate-200 bg-slate-100">
                   <Image
                     src={url}
                     unoptimized={needsUnoptimized(url)}
@@ -242,7 +242,7 @@ export function ProjectForm({ project }: { project?: ProjectWithMedia }) {
                     className="object-cover"
                   />
                   {index === 0 && (
-                    <span className="absolute left-1.5 top-1.5 rounded bg-brand-700 px-1.5 py-0.5 text-[11px] font-semibold text-white">
+                    <span className="absolute left-1.5 top-1.5 rounded-chip bg-brand-700 px-2 py-0.5 text-caption font-semibold text-white">
                       대표
                     </span>
                   )}
@@ -286,10 +286,10 @@ export function ProjectForm({ project }: { project?: ProjectWithMedia }) {
             onChange={handleFiles}
             disabled={uploading}
             aria-label="사진 추가"
-            className="text-sm text-slate-700 file:mr-3 file:rounded-md file:border-0 file:bg-brand-50 file:px-3 file:py-2 file:text-sm file:font-medium file:text-brand-700 hover:file:bg-brand-100"
+            className="text-body-sm text-slate-700 file:mr-3 file:rounded-chip file:border-0 file:bg-brand-50 file:px-3 file:py-2 file:text-body-sm file:font-semibold file:text-brand-700 hover:file:bg-brand-100"
           />
         )}
-        <p className="text-xs text-slate-500">
+        <p className="text-caption text-slate-600">
           {uploading ? "사진 올리는 중…" : "JPG · PNG · WebP, 장당 4MB 이하. 여러 장을 한 번에 고를 수 있어요."}
         </p>
       </fieldset>
@@ -297,7 +297,7 @@ export function ProjectForm({ project }: { project?: ProjectWithMedia }) {
       {textField("title", "제목 (필수)", FIELD_LIMITS.title, "예: 시험 기간 스터디룸 개방")}
       {textField("summary", "한 줄 소개 (선택)", FIELD_LIMITS.summary, "목록 카드에 보이는 짧은 소개")}
 
-      <div className="flex flex-col gap-1.5">
+      <div className="flex flex-col gap-2">
         <label htmlFor="description" className={labelClass}>
           설명 (필수)
         </label>
@@ -315,7 +315,7 @@ export function ProjectForm({ project }: { project?: ProjectWithMedia }) {
       {/* 기간 */}
       <fieldset className="flex flex-col gap-3">
         <legend className={labelClass}>행사 기간</legend>
-        <label className="flex items-center gap-2 text-sm text-slate-700">
+        <label className="flex items-center gap-2 text-body-sm text-slate-700">
           <input
             type="checkbox"
             checked={isAlways}
@@ -338,7 +338,7 @@ export function ProjectForm({ project }: { project?: ProjectWithMedia }) {
           {dateField("applyStart", "신청 시작일")}
           {dateField("applyEnd", "신청 마감일", form.applyStart)}
         </div>
-        <p className="text-xs text-slate-500">
+        <p className="text-caption text-slate-600">
           비우면 &lsquo;신청&rsquo; 링크는 사업이 끝나기 전까지 항상 열려 있어요.
         </p>
       </fieldset>
@@ -353,9 +353,9 @@ export function ProjectForm({ project }: { project?: ProjectWithMedia }) {
       <fieldset className="flex flex-col gap-3">
         <legend className={labelClass}>링크 (선택, 최대 {MAX_LINKS}개)</legend>
         {links.map((link, index) => (
-          <div key={link.key} className="flex flex-col gap-3 rounded-md border border-slate-200 px-4 py-3">
+          <div key={link.key} className="flex flex-col gap-3 rounded-control border border-slate-200 px-4 py-3">
             <div className="flex items-center gap-1">
-              <span className="text-xs font-semibold text-slate-500">{index + 1}번째 링크</span>
+              <span className="text-caption font-semibold text-slate-600">{index + 1}번째 링크</span>
               <button
                 type="button"
                 onClick={() => setLinks((prev) => move(prev, index, -1))}
@@ -404,7 +404,7 @@ export function ProjectForm({ project }: { project?: ProjectWithMedia }) {
                 className={inputClass}
               />
             </div>
-            <div className="flex flex-wrap items-center gap-x-5 gap-y-2 text-sm text-slate-700">
+            <div className="flex flex-wrap items-center gap-x-5 gap-y-2 text-body-sm text-slate-700">
               <label className="flex items-center gap-2">
                 <input
                   type="radio"
@@ -453,7 +453,7 @@ export function ProjectForm({ project }: { project?: ProjectWithMedia }) {
                 },
               ])
             }
-            className="self-start rounded-md border border-dashed border-slate-400 px-4 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50"
+            className="self-start rounded-chip border border-dashed border-slate-400 px-4 py-2 text-body-sm font-semibold text-slate-700 hover:bg-slate-50"
           >
             + 링크 추가
           </button>
@@ -463,7 +463,7 @@ export function ProjectForm({ project }: { project?: ProjectWithMedia }) {
       {/* 입장권 · 고정 */}
       <fieldset className="flex flex-col gap-3">
         <legend className={labelClass}>입장권 · 표시</legend>
-        <label className="flex items-center gap-2 text-sm text-slate-700">
+        <label className="flex items-center gap-2 text-body-sm text-slate-700">
           <input
             type="checkbox"
             checked={hasPass}
@@ -473,7 +473,7 @@ export function ProjectForm({ project }: { project?: ProjectWithMedia }) {
           입장권 사용 (승인한 학생에게 휴대폰 입장권을 보여줍니다)
         </label>
         {hasPass && (
-          <div className="flex flex-col gap-1.5">
+          <div className="flex flex-col gap-2">
             <label htmlFor="passLabel" className={labelClass}>
               입장권 이름 (선택)
             </label>
@@ -487,7 +487,7 @@ export function ProjectForm({ project }: { project?: ProjectWithMedia }) {
             />
           </div>
         )}
-        <label className="flex items-center gap-2 text-sm text-slate-700">
+        <label className="flex items-center gap-2 text-body-sm text-slate-700">
           <input
             type="checkbox"
             checked={isPinned}
@@ -499,7 +499,7 @@ export function ProjectForm({ project }: { project?: ProjectWithMedia }) {
       </fieldset>
 
       {error && (
-        <p role="alert" className="text-sm text-red-600">
+        <p role="alert" className="text-body-sm text-red-600">
           {error}
         </p>
       )}
@@ -507,7 +507,7 @@ export function ProjectForm({ project }: { project?: ProjectWithMedia }) {
       <button
         type="submit"
         disabled={pending || uploading}
-        className="self-start rounded-md bg-brand-700 px-4 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-brand-800 disabled:opacity-60"
+        className="self-start rounded-control bg-brand-700 px-4 py-3 text-body-sm font-semibold text-white transition-colors hover:bg-brand-600 disabled:opacity-60"
       >
         {pending ? "저장 중…" : project ? "수정 내용 저장" : "사업 등록"}
       </button>

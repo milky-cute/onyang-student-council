@@ -9,7 +9,7 @@ import type { MonthlyActivity } from "@/lib/supabase/database.types";
 import { saveMonthlyActivity, type MonthlyFormState } from "./actions";
 
 const FIELD_CLASS =
-  "rounded-md border border-slate-300 px-3 py-2.5 text-sm outline-none focus:border-brand-700 focus:ring-1 focus:ring-brand-700";
+  "rounded-chip border border-slate-300 px-3 py-3 text-body-sm outline-none focus:border-brand-700 focus:ring-1 focus:ring-brand-700";
 
 /** 학생회 부서 목록. 새 부서가 생기면 여기만 고치면 된다. */
 const DEPARTMENTS = [
@@ -37,10 +37,10 @@ export function MonthlyForm({ activity }: { activity?: MonthlyActivity }) {
     <form action={formAction} className="flex max-w-2xl flex-col gap-6">
       {activity && <input type="hidden" name="id" value={activity.id} />}
 
-      <div className="flex flex-col gap-1.5">
+      <div className="flex flex-col gap-2">
         <label
           htmlFor="year_month"
-          className="text-sm font-medium text-slate-700"
+          className="text-body-sm font-semibold text-slate-700"
         >
           연월
         </label>
@@ -54,10 +54,10 @@ export function MonthlyForm({ activity }: { activity?: MonthlyActivity }) {
         />
       </div>
 
-      <div className="flex flex-col gap-1.5">
+      <div className="flex flex-col gap-2">
         <label
           htmlFor="department"
-          className="text-sm font-medium text-slate-700"
+          className="text-body-sm font-semibold text-slate-700"
         >
           부서
         </label>
@@ -79,8 +79,8 @@ export function MonthlyForm({ activity }: { activity?: MonthlyActivity }) {
         </select>
       </div>
 
-      <div className="flex flex-col gap-1.5">
-        <label htmlFor="title" className="text-sm font-medium text-slate-700">
+      <div className="flex flex-col gap-2">
+        <label htmlFor="title" className="text-body-sm font-semibold text-slate-700">
           활동명
         </label>
         <input
@@ -92,10 +92,10 @@ export function MonthlyForm({ activity }: { activity?: MonthlyActivity }) {
         />
       </div>
 
-      <div className="flex flex-col gap-1.5">
+      <div className="flex flex-col gap-2">
         <label
           htmlFor="description"
-          className="text-sm font-medium text-slate-700"
+          className="text-body-sm font-semibold text-slate-700"
         >
           활동 내용
         </label>
@@ -117,7 +117,7 @@ export function MonthlyForm({ activity }: { activity?: MonthlyActivity }) {
       {state?.error && (
         <p
           role="alert"
-          className="rounded-md border border-red-300 bg-red-50 px-4 py-3 text-sm text-red-800"
+          className="rounded-chip border border-red-300 bg-red-50 px-4 py-3 text-body-sm text-red-800"
         >
           {state.error}
         </p>
@@ -127,13 +127,13 @@ export function MonthlyForm({ activity }: { activity?: MonthlyActivity }) {
         <button
           type="submit"
           disabled={pending}
-          className="rounded-md bg-brand-700 px-5 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-brand-800 disabled:opacity-60"
+          className="rounded-control bg-brand-700 px-5 py-3 text-body-sm font-semibold text-white transition-colors hover:bg-brand-600 disabled:opacity-60"
         >
           {pending ? "저장 중…" : "저장"}
         </button>
         <Link
           href="/admin/monthly"
-          className="rounded-md border border-slate-300 px-5 py-2.5 text-sm font-medium text-slate-700 transition-colors hover:bg-slate-50"
+          className="rounded-chip border border-slate-300 px-5 py-3 text-body-sm font-semibold text-slate-700 transition-colors hover:bg-slate-50"
         >
           취소
         </Link>

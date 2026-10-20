@@ -56,9 +56,9 @@ export function UploadForm({ existingAlbums }: { existingAlbums: string[] }) {
   }
 
   return (
-    <div className="flex flex-col gap-4 rounded-lg border border-slate-200 px-5 py-6">
-      <div className="flex flex-col gap-1.5">
-        <label htmlFor="album" className="text-sm font-medium text-slate-700">
+    <div className="flex flex-col gap-4 rounded-control border border-slate-200 px-5 py-6">
+      <div className="flex flex-col gap-2">
+        <label htmlFor="album" className="text-body-sm font-semibold text-slate-700">
           앨범 이름
         </label>
         <input
@@ -67,7 +67,7 @@ export function UploadForm({ existingAlbums }: { existingAlbums: string[] }) {
           value={album}
           onChange={(e) => setAlbum(e.target.value)}
           placeholder="예: 2026 체육대회"
-          className="rounded-md border border-slate-300 px-3 py-2.5 text-sm outline-none focus:border-brand-700 focus:ring-1 focus:ring-brand-700"
+          className="rounded-chip border border-slate-300 px-3 py-3 text-body-sm outline-none focus:border-brand-700 focus:ring-1 focus:ring-brand-700"
         />
         <datalist id="existing-albums">
           {existingAlbums.map((name) => (
@@ -76,20 +76,20 @@ export function UploadForm({ existingAlbums }: { existingAlbums: string[] }) {
         </datalist>
       </div>
 
-      <div className="flex flex-col gap-1.5">
-        <label htmlFor="title" className="text-sm font-medium text-slate-700">
+      <div className="flex flex-col gap-2">
+        <label htmlFor="title" className="text-body-sm font-semibold text-slate-700">
           사진 제목 (비워두면 앨범 이름으로 자동 설정)
         </label>
         <input
           id="title"
           value={title}
           onChange={(e) => setTitle(e.target.value)}
-          className="rounded-md border border-slate-300 px-3 py-2.5 text-sm outline-none focus:border-brand-700 focus:ring-1 focus:ring-brand-700"
+          className="rounded-chip border border-slate-300 px-3 py-3 text-body-sm outline-none focus:border-brand-700 focus:ring-1 focus:ring-brand-700"
         />
       </div>
 
-      <div className="flex flex-col gap-1.5">
-        <label htmlFor="description" className="text-sm font-medium text-slate-700">
+      <div className="flex flex-col gap-2">
+        <label htmlFor="description" className="text-body-sm font-semibold text-slate-700">
           설명 (선택)
         </label>
         <textarea
@@ -97,12 +97,12 @@ export function UploadForm({ existingAlbums }: { existingAlbums: string[] }) {
           value={description}
           onChange={(e) => setDescription(e.target.value)}
           rows={3}
-          className="rounded-md border border-slate-300 px-3 py-2.5 text-sm outline-none focus:border-brand-700 focus:ring-1 focus:ring-brand-700"
+          className="rounded-chip border border-slate-300 px-3 py-3 text-body-sm outline-none focus:border-brand-700 focus:ring-1 focus:ring-brand-700"
         />
       </div>
 
-      <div className="flex flex-col gap-1.5">
-        <label htmlFor="files" className="text-sm font-medium text-slate-700">
+      <div className="flex flex-col gap-2">
+        <label htmlFor="files" className="text-body-sm font-semibold text-slate-700">
           사진 선택 — 고르는 즉시 업로드됩니다. 여러 장을 한 번에 골라도 되고, 한 장씩 여러
           번 골라도 같은 앨범에 계속 추가됩니다 (장당 5MB 이하)
         </label>
@@ -113,17 +113,17 @@ export function UploadForm({ existingAlbums }: { existingAlbums: string[] }) {
           multiple
           disabled={pending}
           onChange={handleFilesSelected}
-          className="text-sm text-slate-700 file:mr-3 file:rounded-md file:border-0 file:bg-brand-50 file:px-3 file:py-2 file:text-sm file:font-medium file:text-brand-700 hover:file:bg-brand-100 disabled:opacity-60"
+          className="text-body-sm text-slate-700 file:mr-3 file:rounded-chip file:border-0 file:bg-brand-50 file:px-3 file:py-2 file:text-body-sm file:font-semibold file:text-brand-700 hover:file:bg-brand-100 disabled:opacity-60"
         />
-        {pending && <p className="text-xs text-slate-500">업로드 중…</p>}
+        {pending && <p className="text-caption text-slate-600">업로드 중…</p>}
       </div>
 
       {error && (
-        <p role="alert" className="text-sm text-red-600">
+        <p role="alert" className="text-body-sm text-red-600">
           {error}
         </p>
       )}
-      {success && <p className="text-sm text-brand-700">{success}</p>}
+      {success && <p className="text-body-sm text-brand-700">{success}</p>}
     </div>
   );
 }

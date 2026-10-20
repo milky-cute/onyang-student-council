@@ -10,7 +10,7 @@ export function AdminBackLink({ href = "/admin" }: { href?: string }) {
     <Link
       href={href}
       aria-label="대시보드로 돌아가기"
-      className="mb-4 flex size-9 items-center justify-center rounded-md border border-slate-300 text-slate-600 hover:bg-slate-50"
+      className="mb-4 flex size-9 items-center justify-center rounded-chip border border-slate-300 text-slate-600 hover:bg-slate-50"
     >
       <svg
         aria-hidden

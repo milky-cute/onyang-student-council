@@ -46,20 +46,20 @@ export function ProjectQr({
 
   return (
     <div className="flex flex-col items-center gap-3">
-      <div className="flex size-48 items-center justify-center overflow-hidden rounded-xl border border-slate-200 bg-white">
+      <div className="flex size-48 items-center justify-center overflow-hidden rounded-control border border-slate-200 bg-white">
         {dataUrl ? (
           // data: URL 이라 next/image 최적화가 필요 없다.
           // eslint-disable-next-line @next/next/no-img-element
           <img src={dataUrl} alt={alt} width={192} height={192} className="size-full" />
         ) : (
-          <span className="text-xs text-slate-500">QR 만드는 중…</span>
+          <span className="text-caption text-slate-600">QR 만드는 중…</span>
         )}
       </div>
       {dataUrl && (
         <a
           href={dataUrl}
           download={safeFileName(fileName)}
-          className="flex min-h-11 items-center justify-center rounded-xl border border-slate-300 bg-white px-4 text-sm font-semibold text-slate-700 hover:bg-slate-50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-700"
+          className="btn border border-slate-300 bg-white px-4 text-body-sm text-slate-700 hover:bg-slate-50"
         >
           QR 이미지 저장
         </a>

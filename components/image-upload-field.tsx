@@ -57,12 +57,12 @@ export function ImageUploadField({
 
   return (
     <div className="flex flex-col gap-2">
-      <span className="text-sm font-medium text-slate-700">이미지</span>
+      <span className="text-body-sm font-semibold text-slate-700">이미지</span>
 
       <input type="hidden" name={name} value={url} />
 
       {url && (
-        <div className="relative aspect-[4/3] w-full max-w-xs overflow-hidden rounded-md border border-slate-200 bg-slate-100">
+        <div className="relative aspect-[4/3] w-full max-w-xs overflow-hidden rounded-chip border border-slate-200 bg-slate-100">
           <Image
             src={url}
             alt="업로드한 이미지 미리보기"
@@ -79,26 +79,26 @@ export function ImageUploadField({
           accept="image/jpeg,image/png,image/webp,image/gif"
           onChange={handleFileChange}
           disabled={uploading}
-          className="text-sm text-slate-600 file:mr-3 file:rounded-md file:border-0 file:bg-brand-50 file:px-3 file:py-2 file:text-sm file:font-medium file:text-brand-700 hover:file:bg-brand-100"
+          className="text-body-sm text-slate-600 file:mr-3 file:rounded-chip file:border-0 file:bg-brand-50 file:px-3 file:py-2 file:text-body-sm file:font-semibold file:text-brand-700 hover:file:bg-brand-100"
         />
         {url && !uploading && (
           <button
             type="button"
             onClick={() => setUrl("")}
-            className="text-sm text-slate-500 hover:text-red-600"
+            className="text-body-sm text-slate-600 hover:text-red-600"
           >
             이미지 제거
           </button>
         )}
       </div>
 
-      {uploading && <p className="text-sm text-slate-500">업로드 중…</p>}
+      {uploading && <p className="text-body-sm text-slate-600">업로드 중…</p>}
       {error && (
-        <p role="alert" className="text-sm text-red-600">
+        <p role="alert" className="text-body-sm text-red-600">
           {error}
         </p>
       )}
-      <p className="text-xs text-slate-500">
+      <p className="text-caption text-slate-600">
         JPG · PNG · WebP · GIF, 파일당 5MB 까지
       </p>
     </div>

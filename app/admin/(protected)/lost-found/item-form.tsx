@@ -14,7 +14,7 @@ const initialForm = {
 };
 
 const inputClass =
-  "rounded-md border border-slate-300 px-3 py-2.5 text-sm outline-none focus:border-brand-700 focus:ring-1 focus:ring-brand-700";
+  "rounded-chip border border-slate-300 px-3 py-3 text-body-sm outline-none focus:border-brand-700 focus:ring-1 focus:ring-brand-700";
 
 export function ItemForm() {
   const router = useRouter();
@@ -82,10 +82,10 @@ export function ItemForm() {
   return (
     <form
       onSubmit={handleSubmit}
-      className="flex flex-col gap-4 rounded-lg border border-slate-200 px-5 py-6"
+      className="flex flex-col gap-4 rounded-control border border-slate-200 px-5 py-6"
     >
-      <div className="flex flex-col gap-1.5">
-        <label htmlFor="title" className="text-sm font-medium text-slate-700">
+      <div className="flex flex-col gap-2">
+        <label htmlFor="title" className="text-body-sm font-semibold text-slate-700">
           물품 이름
         </label>
         <input
@@ -99,8 +99,8 @@ export function ItemForm() {
         />
       </div>
 
-      <div className="flex flex-col gap-1.5">
-        <label htmlFor="description" className="text-sm font-medium text-slate-700">
+      <div className="flex flex-col gap-2">
+        <label htmlFor="description" className="text-body-sm font-semibold text-slate-700">
           물품 설명 (선택)
         </label>
         <textarea
@@ -115,8 +115,8 @@ export function ItemForm() {
       </div>
 
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-        <div className="flex flex-col gap-1.5">
-          <label htmlFor="location" className="text-sm font-medium text-slate-700">
+        <div className="flex flex-col gap-2">
+          <label htmlFor="location" className="text-body-sm font-semibold text-slate-700">
             습득 장소
           </label>
           <input
@@ -129,8 +129,8 @@ export function ItemForm() {
             className={inputClass}
           />
         </div>
-        <div className="flex flex-col gap-1.5">
-          <label htmlFor="storageLocation" className="text-sm font-medium text-slate-700">
+        <div className="flex flex-col gap-2">
+          <label htmlFor="storageLocation" className="text-body-sm font-semibold text-slate-700">
             보관 장소
           </label>
           <input
@@ -145,8 +145,8 @@ export function ItemForm() {
         </div>
       </div>
 
-      <div className="flex flex-col gap-1.5">
-        <label htmlFor="privateNote" className="text-sm font-medium text-slate-700">
+      <div className="flex flex-col gap-2">
+        <label htmlFor="privateNote" className="text-body-sm font-semibold text-slate-700">
           확인용 특징 (관리자만 보임, 선택)
         </label>
         <input
@@ -157,13 +157,13 @@ export function ItemForm() {
           placeholder="예: 케이스 뒷면 고양이 스티커, 왼쪽 모서리 흠집"
           className={inputClass}
         />
-        <p className="text-xs text-slate-500">
+        <p className="text-caption text-slate-600">
           공개 목록에는 나오지 않아요. 찾으러 온 학생에게 물어봐서 본인 물건인지 확인할 때 쓰세요.
         </p>
       </div>
 
-      <div className="flex flex-col gap-1.5">
-        <label htmlFor="image" className="text-sm font-medium text-slate-700">
+      <div className="flex flex-col gap-2">
+        <label htmlFor="image" className="text-body-sm font-semibold text-slate-700">
           사진 (선택)
         </label>
         <input
@@ -171,22 +171,22 @@ export function ItemForm() {
           ref={fileInputRef}
           type="file"
           accept={ALLOWED_IMAGE_TYPES.join(",")}
-          className="text-sm text-slate-700 file:mr-3 file:rounded-md file:border-0 file:bg-brand-50 file:px-3 file:py-2 file:text-sm file:font-medium file:text-brand-700 hover:file:bg-brand-100"
+          className="text-body-sm text-slate-700 file:mr-3 file:rounded-chip file:border-0 file:bg-brand-50 file:px-3 file:py-2 file:text-body-sm file:font-semibold file:text-brand-700 hover:file:bg-brand-100"
         />
-        <p className="text-xs text-slate-500">JPG · PNG · WebP, 4MB 이하</p>
+        <p className="text-caption text-slate-600">JPG · PNG · WebP, 4MB 이하</p>
       </div>
 
       {error && (
-        <p role="alert" className="text-sm text-red-600">
+        <p role="alert" className="text-body-sm text-red-600">
           {error}
         </p>
       )}
-      {success && <p className="text-sm text-brand-700">{success}</p>}
+      {success && <p className="text-body-sm text-brand-700">{success}</p>}
 
       <button
         type="submit"
         disabled={pending}
-        className="self-start rounded-md bg-brand-700 px-4 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-brand-800 disabled:opacity-60"
+        className="self-start rounded-control bg-brand-700 px-4 py-3 text-body-sm font-semibold text-white transition-colors hover:bg-brand-600 disabled:opacity-60"
       >
         {pending ? "등록 중…" : "습득물 등록"}
       </button>

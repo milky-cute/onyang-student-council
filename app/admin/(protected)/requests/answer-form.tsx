@@ -54,20 +54,20 @@ export function AnswerForm({
 
   if (!editing) {
     return (
-      <div className="rounded-md bg-brand-50 px-3 py-3">
+      <div className="rounded-control bg-brand-50 px-3 py-3">
         <div className="flex items-center justify-between gap-2">
-          <p className="text-xs font-semibold text-brand-700">
+          <p className="text-caption font-semibold text-brand-700">
             {answeredDepartment ?? "학생자치회"} 답변
           </p>
           <button
             type="button"
             onClick={() => setEditing(true)}
-            className="text-xs font-medium text-slate-500 underline hover:text-slate-700"
+            className="text-caption font-semibold text-slate-600 underline hover:text-slate-700"
           >
             답변 수정
           </button>
         </div>
-        <p className="mt-1 whitespace-pre-wrap text-sm text-slate-700">{initialAnswer}</p>
+        <p className="mt-1 whitespace-pre-wrap text-body-sm text-slate-700">{initialAnswer}</p>
       </div>
     );
   }
@@ -79,10 +79,10 @@ export function AnswerForm({
         onChange={(e) => setAnswer(e.target.value)}
         rows={3}
         placeholder="답변을 입력하세요"
-        className="rounded-md border border-slate-300 px-3 py-2.5 text-sm outline-none focus:border-brand-700 focus:ring-1 focus:ring-brand-700"
+        className="rounded-chip border border-slate-300 px-3 py-3 text-body-sm outline-none focus:border-brand-700 focus:ring-1 focus:ring-brand-700"
       />
       {error && (
-        <p role="alert" className="text-sm text-red-600">
+        <p role="alert" className="text-body-sm text-red-600">
           {error}
         </p>
       )}
@@ -90,7 +90,7 @@ export function AnswerForm({
         <button
           type="submit"
           disabled={pending}
-          className="rounded-md bg-brand-700 px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-brand-800 disabled:opacity-60"
+          className="rounded-control bg-brand-700 px-4 py-2 text-body-sm font-semibold text-white transition-colors hover:bg-brand-600 disabled:opacity-60"
         >
           {pending ? "저장 중…" : "답변 저장"}
         </button>
@@ -101,7 +101,7 @@ export function AnswerForm({
               setAnswer(initialAnswer ?? "");
               setEditing(false);
             }}
-            className="rounded-md border border-slate-300 px-4 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50"
+            className="rounded-chip border border-slate-300 px-4 py-2 text-body-sm font-semibold text-slate-700 hover:bg-slate-50"
           >
             취소
           </button>
