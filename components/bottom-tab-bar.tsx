@@ -134,7 +134,7 @@ export function BottomTabBar() {
                 type="button"
                 onClick={closeSheet}
                 aria-label="닫기"
-                className="flex size-11 items-center justify-center rounded-full text-slate-500 hover:bg-slate-100 focus-visible:outline-2 focus-visible:outline-brand-700"
+                className="flex size-11 items-center justify-center rounded-full text-slate-600 hover:bg-slate-100 focus-visible:outline-2 focus-visible:outline-brand-700"
               >
                 <CloseIcon />
               </button>

@@ -16,7 +16,7 @@ export function SiteFooter() {
             <p className="text-body font-bold text-slate-900">
               {SITE.fullName}
             </p>
-            <p className="mt-2 max-w-md text-sm leading-relaxed text-slate-600">
+            <p className="mt-2 max-w-md text-body-sm leading-relaxed text-slate-600">
               {SITE.description}
             </p>
           </div>
@@ -27,7 +27,7 @@ export function SiteFooter() {
                 <li key={item.href}>
                   <Link
                     href={item.href}
-                    className="inline-flex min-h-11 items-center text-sm text-slate-600 hover:text-brand-700"
+                    className="inline-flex min-h-11 items-center text-body-sm text-slate-600 hover:text-brand-700"
                   >
                     {item.label}
                   </Link>
@@ -37,7 +37,7 @@ export function SiteFooter() {
           </nav>
         </div>
 
-        <div className="mt-8 flex flex-col gap-4 border-t border-slate-200 pt-6 text-xs text-slate-500 sm:flex-row sm:items-center sm:justify-between">
+        <div className="mt-8 flex flex-col gap-4 border-t border-slate-200 pt-6 text-caption text-slate-600 sm:flex-row sm:items-center sm:justify-between">
           <p>
             © {new Date().getFullYear()} {SITE.fullName}
           </p>
@@ -46,7 +46,7 @@ export function SiteFooter() {
               href="https://www.instagram.com/onyang_high_official/"
               target="_blank"
               rel="noopener noreferrer"
-              className="flex min-h-11 items-center gap-1.5 text-slate-500 hover:text-brand-700"
+              className="flex min-h-11 items-center gap-2 text-slate-600 hover:text-brand-700"
             >
               <svg
                 aria-hidden
