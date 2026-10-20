@@ -78,8 +78,8 @@ export default async function ProjectsPage() {
       <div className="mx-auto flex w-full max-w-6xl flex-col gap-8 px-4 pt-3 pb-10 lg:pt-6 lg:pb-14">
         {sections.length === 0 ? (
           <div className="card px-6 py-14 text-center">
-            <p className="text-lg font-semibold text-slate-900">아직 등록된 사업이 없어요</p>
-            <p className="mt-2 text-sm text-slate-600">
+            <p className="text-card-title font-semibold text-slate-900">아직 등록된 사업이 없어요</p>
+            <p className="mt-2 text-body-sm text-slate-600">
               학생자치회가 사업을 올리면 이곳에서 확인하고 신청할 수 있어요.
             </p>
           </div>
@@ -92,10 +92,10 @@ export default async function ProjectsPage() {
             >
               <h2
                 id={`projects-${section.status}`}
-                className="flex items-center gap-2 text-lg font-bold text-slate-900"
+                className="flex items-center gap-2 text-card-title font-bold text-slate-900"
               >
                 {section.title}
-                <span className="text-sm font-semibold text-slate-500">{section.items.length}</span>
+                <span className="text-body-sm font-semibold text-slate-600">{section.items.length}</span>
               </h2>
 
               {section.status === "ended" ? (

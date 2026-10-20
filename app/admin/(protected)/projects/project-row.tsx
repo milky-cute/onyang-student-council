@@ -10,7 +10,7 @@ import { ProjectQr } from "@/components/project-qr";
 import { needsUnoptimized, type Project } from "@/lib/projects";
 
 const outlineButton =
-  "rounded-md border border-slate-300 px-3 py-2 text-sm font-medium text-slate-700 transition-colors hover:bg-slate-100 disabled:opacity-60";
+  "rounded-chip border border-slate-300 px-3 py-2 text-body-sm font-semibold text-slate-700 transition-colors hover:bg-slate-100 disabled:opacity-60";
 
 export function ProjectRow({
   project,
@@ -95,11 +95,11 @@ export function ProjectRow({
       : project.start_date;
 
   return (
-    <div className="flex flex-col gap-3 rounded-lg border border-slate-200 bg-white px-4 py-4">
+    <div className="flex flex-col gap-3 rounded-chip border border-slate-200 bg-white px-4 py-4">
       <div className="flex flex-wrap items-start justify-between gap-4">
         <div className="flex min-w-0 flex-1 gap-4">
           {coverUrl && (
-            <div className="relative size-20 shrink-0 overflow-hidden rounded-md bg-slate-100">
+            <div className="relative size-20 shrink-0 overflow-hidden rounded-chip bg-slate-100">
               <Image
                 src={coverUrl}
                 unoptimized={needsUnoptimized(coverUrl)}
@@ -111,18 +111,18 @@ export function ProjectRow({
             </div>
           )}
           <div className="flex min-w-0 flex-col gap-1">
-            <p className="flex flex-wrap items-center gap-2 text-sm font-semibold text-slate-900">
+            <p className="flex flex-wrap items-center gap-2 text-body-sm font-semibold text-slate-900">
               {project.is_pinned && (
-                <span className="rounded-full bg-brand-50 px-2 py-0.5 text-xs font-semibold text-brand-700">
+                <span className="rounded-full bg-brand-50 px-2 py-0.5 text-caption font-semibold text-brand-700">
                   고정
                 </span>
               )}
               {project.title}
             </p>
             <ProjectBadges project={project} todayKey={todayKey} />
-            <p className="text-xs text-slate-500">기간 {period}</p>
+            <p className="text-caption text-slate-600">기간 {period}</p>
             {error && (
-              <p role="alert" className="text-sm text-red-600">
+              <p role="alert" className="text-body-sm text-red-600">
                 {error}
               </p>
             )}
@@ -148,7 +148,7 @@ export function ProjectRow({
           )}
           <Link
             href={`/admin/projects/${project.id}/edit`}
-            className="rounded-md bg-brand-700 px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-brand-800"
+            className="rounded-control bg-brand-700 px-4 py-2 text-body-sm font-semibold text-white transition-colors hover:bg-brand-600"
           >
             수정
           </Link>
@@ -156,7 +156,7 @@ export function ProjectRow({
             type="button"
             onClick={handleDelete}
             disabled={pending}
-            className="rounded-md border border-red-300 px-3 py-2 text-sm font-medium text-red-600 transition-colors hover:bg-red-50 disabled:opacity-60"
+            className="rounded-chip border border-red-300 px-3 py-2 text-body-sm font-semibold text-red-600 transition-colors hover:bg-red-50 disabled:opacity-60"
           >
             삭제
           </button>
@@ -164,17 +164,17 @@ export function ProjectRow({
       </div>
 
       {qrOpen && (
-        <div className="flex flex-col items-center gap-4 rounded-md bg-slate-50 px-4 py-4 sm:flex-row sm:items-start">
+        <div className="flex flex-col items-center gap-4 rounded-chip bg-slate-50 px-4 py-4 sm:flex-row sm:items-start">
           <ProjectQr
             value={pageUrl}
             fileName={`${project.title}-QR.png`}
             alt={`${project.title} 사업 페이지 QR 코드`}
           />
-          <div className="flex min-w-0 flex-col gap-2 text-sm">
+          <div className="flex min-w-0 flex-col gap-2 text-body-sm">
             <p className="text-slate-600">
               포스터용 QR 이미지(1024px, 여백 포함)입니다. 아래 주소로 연결됩니다.
             </p>
-            <p className="break-all rounded-md border border-slate-200 bg-white px-3 py-2 font-mono text-xs text-slate-800">
+            <p className="break-all rounded-chip border border-slate-200 bg-white px-3 py-2 font-mono text-caption text-slate-800">
               {pageUrl}
             </p>
             <button type="button" onClick={handleCopy} className={`${outlineButton} self-start bg-white`}>

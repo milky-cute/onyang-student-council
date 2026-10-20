@@ -25,8 +25,8 @@ export default async function AdminCalendarPage() {
       <AdminBackLink />
       <div className="flex flex-col gap-8">
         <div>
-          <h1 className="text-2xl font-bold text-slate-900">일정 관리</h1>
-          <p className="mt-2 text-sm text-slate-600">
+          <h1 className="text-title font-bold text-slate-900">일정 관리</h1>
+          <p className="mt-2 text-body-sm text-slate-600">
             학사일정 · 행사를 등록하면 로그인 없이 누구나 /calendar 에서 볼 수 있습니다.
           </p>
         </div>
@@ -34,9 +34,9 @@ export default async function AdminCalendarPage() {
         <EventForm />
 
         <div className="flex flex-col gap-3">
-          <h2 className="text-lg font-semibold text-slate-900">등록된 일정</h2>
+          <h2 className="text-card-title font-semibold text-slate-900">등록된 일정</h2>
           {!events || events.length === 0 ? (
-            <p className="text-sm text-slate-600">아직 등록된 일정이 없습니다.</p>
+            <p className="text-body-sm text-slate-600">아직 등록된 일정이 없습니다.</p>
           ) : (
             events.map((event) => <EventRow key={event.id} event={event} />)
           )}

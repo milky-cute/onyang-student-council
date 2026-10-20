@@ -6,7 +6,7 @@ import { useState } from "react";
 const initialForm = { studentName: "", studentNumber: "", pin: "" };
 
 const inputClass =
-  "min-h-11 rounded-md border border-slate-300 px-3 py-2.5 text-base outline-none focus:border-brand-700 focus:ring-1 focus:ring-brand-700";
+  "min-h-11 rounded-chip border border-slate-300 px-3 py-3 text-body outline-none focus:border-brand-700 focus:ring-1 focus:ring-brand-700";
 
 /** 입장권 로그인 폼. 성공하면 쿠키가 생기고, 화면을 새로 그려 입장권을 보여준다. */
 export function PassLoginForm() {
@@ -53,14 +53,14 @@ export function PassLoginForm() {
   return (
     <form onSubmit={handleSubmit} className="card flex flex-col gap-4 p-5">
       <div>
-        <h2 className="text-lg font-bold text-slate-900">본인 확인</h2>
-        <p className="mt-1 text-sm text-slate-600">
+        <h2 className="text-card-title font-bold text-slate-900">본인 확인</h2>
+        <p className="mt-1 text-body-sm text-slate-600">
           처음이라면 지금 입력한 4자리가 내 PIN이 돼요. 다음부터는 같은 PIN을 입력해 주세요.
         </p>
       </div>
 
-      <div className="flex flex-col gap-1.5">
-        <label htmlFor="passStudentName" className="text-sm font-medium text-slate-700">
+      <div className="flex flex-col gap-2">
+        <label htmlFor="passStudentName" className="text-body-sm font-semibold text-slate-700">
           이름
         </label>
         <input
@@ -72,8 +72,8 @@ export function PassLoginForm() {
           className={inputClass}
         />
       </div>
-      <div className="flex flex-col gap-1.5">
-        <label htmlFor="passStudentNumber" className="text-sm font-medium text-slate-700">
+      <div className="flex flex-col gap-2">
+        <label htmlFor="passStudentNumber" className="text-body-sm font-semibold text-slate-700">
           학번
         </label>
         <input
@@ -86,8 +86,8 @@ export function PassLoginForm() {
           className={inputClass}
         />
       </div>
-      <div className="flex flex-col gap-1.5">
-        <label htmlFor="passPin" className="text-sm font-medium text-slate-700">
+      <div className="flex flex-col gap-2">
+        <label htmlFor="passPin" className="text-body-sm font-semibold text-slate-700">
           PIN (숫자 4자리)
         </label>
         <input
@@ -106,7 +106,7 @@ export function PassLoginForm() {
       </div>
 
       {error && (
-        <p role="alert" className="text-sm text-red-600">
+        <p role="alert" className="text-body-sm text-red-600">
           {error}
         </p>
       )}
@@ -114,7 +114,7 @@ export function PassLoginForm() {
       <button
         type="submit"
         disabled={pending}
-        className="min-h-12 rounded-xl bg-brand-700 px-4 text-base font-semibold text-white transition-colors hover:bg-brand-800 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-700 disabled:opacity-60"
+        className="min-h-12 rounded-control bg-brand-700 px-4 text-body font-semibold text-white transition-colors hover:bg-brand-600 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-700 disabled:opacity-60"
       >
         {pending ? "확인 중…" : "입장권 열기"}
       </button>

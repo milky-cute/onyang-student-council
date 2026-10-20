@@ -122,13 +122,13 @@ export function ItemRow({
 
   return (
     <div
-      className={`flex flex-wrap items-start justify-between gap-4 rounded-lg border border-slate-200 px-4 py-4 ${
+      className={`flex flex-wrap items-start justify-between gap-4 rounded-control border border-slate-200 px-4 py-4 ${
         item.is_resolved ? "bg-slate-50" : ""
       }`}
     >
       <div className="flex min-w-0 flex-1 gap-4">
         {item.image_url && (
-          <div className="relative size-20 shrink-0 overflow-hidden rounded-md bg-slate-100">
+          <div className="relative size-20 shrink-0 overflow-hidden rounded-chip bg-slate-100">
             <Image
               src={item.image_url}
               alt={item.title}
@@ -140,35 +140,35 @@ export function ItemRow({
         )}
 
         <div className="min-w-0">
-          <p className="flex flex-wrap items-center gap-2 text-sm font-semibold text-slate-900">
+          <p className="flex flex-wrap items-center gap-2 text-body-sm font-semibold text-slate-900">
             {item.title}
             {item.is_resolved && (
-              <span className="rounded-full bg-slate-200 px-2 py-0.5 text-xs font-semibold text-slate-600">
+              <span className="rounded-full bg-slate-200 px-2 py-0.5 text-caption font-semibold text-slate-600">
                 찾아감
               </span>
             )}
             {isExpired && (
-              <span className="rounded-full bg-red-100 px-2 py-0.5 text-xs font-semibold text-red-700">
+              <span className="rounded-full bg-red-100 px-2 py-0.5 text-caption font-semibold text-red-700">
                 기한 지남
               </span>
             )}
           </p>
 
           {item.description && (
-            <p className="mt-1 text-sm text-slate-600">{item.description}</p>
+            <p className="mt-1 text-body-sm text-slate-600">{item.description}</p>
           )}
 
-          <p className="mt-1 text-xs text-slate-500">
+          <p className="mt-1 text-caption text-slate-600">
             주운 곳 {item.location} · 보관 {item.storage_location}
           </p>
-          <p className="mt-0.5 text-xs text-slate-500">
+          <p className="mt-0.5 text-caption text-slate-600">
             {formatDate(item.created_at)} 등록
             {!item.is_resolved && ` · ${deadlineLabel}까지 보관`}
           </p>
 
           {/* 임원 전용 정보 — lost_found_private */}
           {(privateInfo?.private_note || privateInfo?.claimed_by) && (
-            <dl className="mt-2 flex flex-col gap-0.5 rounded-md bg-amber-50 px-3 py-2 text-xs text-amber-900">
+            <dl className="mt-2 flex flex-col gap-0.5 rounded-chip bg-amber-50 px-3 py-2 text-caption text-amber-900">
               {privateInfo.private_note && (
                 <div className="flex gap-2">
                   <dt className="shrink-0 font-semibold">확인용 특징</dt>
@@ -188,7 +188,7 @@ export function ItemRow({
           )}
 
           {error && (
-            <p role="alert" className="mt-1 text-sm text-red-600">
+            <p role="alert" className="mt-1 text-body-sm text-red-600">
               {error}
             </p>
           )}
@@ -203,7 +203,7 @@ export function ItemRow({
             maxLength={FIELD_LIMITS.claimedBy}
             placeholder="받아간 사람 (이름·학번, 선택)"
             aria-label="받아간 사람 (선택)"
-            className="w-56 rounded-md border border-slate-300 px-3 py-1.5 text-sm outline-none focus:border-brand-700 focus:ring-1 focus:ring-brand-700"
+            className="w-56 rounded-chip border border-slate-300 px-3 py-2 text-body-sm outline-none focus:border-brand-700 focus:ring-1 focus:ring-brand-700"
           />
         )}
         <div className="flex items-center gap-2">
@@ -214,8 +214,8 @@ export function ItemRow({
             disabled={pending}
             className={
               item.is_resolved
-                ? "rounded-md border border-slate-300 px-3 py-2 text-sm font-medium text-slate-700 transition-colors hover:bg-slate-100 disabled:opacity-60"
-                : "rounded-md bg-brand-700 px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-brand-800 disabled:opacity-60"
+                ? "rounded-chip border border-slate-300 px-3 py-2 text-body-sm font-semibold text-slate-700 transition-colors hover:bg-slate-100 disabled:opacity-60"
+                : "rounded-control bg-brand-700 px-4 py-2 text-body-sm font-semibold text-white transition-colors hover:bg-brand-600 disabled:opacity-60"
             }
           >
             {item.is_resolved ? "완료 취소" : "완료 표시"}
@@ -223,7 +223,7 @@ export function ItemRow({
           <button
             type="button"
             onClick={handleCopyLink}
-            className="rounded-md border border-slate-300 px-3 py-2 text-sm font-medium text-slate-700 transition-colors hover:bg-slate-100"
+            className="rounded-chip border border-slate-300 px-3 py-2 text-body-sm font-semibold text-slate-700 transition-colors hover:bg-slate-100"
           >
             {copied ? "복사됨" : "링크 복사"}
           </button>
@@ -231,7 +231,7 @@ export function ItemRow({
             type="button"
             onClick={handleDelete}
             disabled={pending}
-            className="rounded-md border border-red-300 px-3 py-2 text-sm font-medium text-red-600 transition-colors hover:bg-red-50 disabled:opacity-60"
+            className="rounded-chip border border-red-300 px-3 py-2 text-body-sm font-semibold text-red-600 transition-colors hover:bg-red-50 disabled:opacity-60"
           >
             삭제
           </button>

@@ -13,8 +13,8 @@ export function ColorPicker({
   const current = value.toLowerCase();
 
   return (
-    <div className="flex flex-col gap-1.5">
-      <span className="text-sm font-medium text-slate-700">색상</span>
+    <div className="flex flex-col gap-2">
+      <span className="text-body-sm font-semibold text-slate-700">색상</span>
       <div className="flex flex-wrap items-center gap-2">
         {COLOR_PRESETS.map((preset) => {
           const selected = current === preset.value;

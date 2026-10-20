@@ -39,8 +39,8 @@ export default async function AdminPassPage({ params }: Props) {
       <AdminBackLink href="/admin/projects" />
       <div className="flex flex-col gap-8">
         <div>
-          <h1 className="text-2xl font-bold text-slate-900">입장권 명단 — {passLabel(project)}</h1>
-          <p className="mt-2 text-sm text-slate-600">
+          <h1 className="text-title font-bold text-slate-900">입장권 명단 — {passLabel(project)}</h1>
+          <p className="mt-2 text-body-sm text-slate-600">
             {project.title} · 구글폼 응답을 보고 승인한 학생의 &ldquo;학번 이름&rdquo;을 붙여넣으면
             그 학생만 /projects/{project.id}/pass 에서 입장권을 열 수 있습니다. 학생은 처음 열 때
             정한 PIN 4자리로 본인 확인을 합니다.
@@ -50,7 +50,7 @@ export default async function AdminPassPage({ params }: Props) {
         {!project.has_pass && (
           <p
             role="alert"
-            className="rounded-md border border-amber-300 bg-amber-50 px-4 py-3 text-sm text-amber-900"
+            className="rounded-chip border border-amber-300 bg-amber-50 px-4 py-3 text-body-sm text-amber-900"
           >
             이 사업은 지금 입장권을 사용하지 않도록 되어 있어 학생에게 입장권 화면이 열리지
             않습니다. 사업 수정에서 &ldquo;입장권 사용&rdquo;을 켜 주세요.

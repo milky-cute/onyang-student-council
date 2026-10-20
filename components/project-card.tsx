@@ -20,7 +20,7 @@ export function ProjectCard({
   return (
     <Link
       href={`/projects/${project.id}`}
-      className="card flex h-full flex-col overflow-hidden transition-colors hover:border-brand-200 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-700"
+      className="card flex h-full flex-col overflow-hidden transition-colors hover:border-brand-100 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-700"
     >
       <div className="relative aspect-[4/3] w-full bg-slate-100">
         {coverUrl ? (
@@ -43,8 +43,8 @@ export function ProjectCard({
 
       <div className="flex flex-1 flex-col gap-2 p-4">
         <ProjectBadges project={project} todayKey={todayKey} />
-        <h3 className="text-base font-bold text-slate-900">{project.title}</h3>
-        <p className="line-clamp-2 text-sm leading-relaxed text-slate-600">
+        <h3 className="text-body font-bold text-slate-900">{project.title}</h3>
+        <p className="line-clamp-2 text-body-sm leading-relaxed text-slate-600">
           {project.summary || project.description}
         </p>
       </div>

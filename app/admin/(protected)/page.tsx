@@ -47,8 +47,8 @@ const SECTIONS = [
 export default function AdminDashboardPage() {
   return (
     <>
-      <h1 className="text-2xl font-bold text-slate-900">임원 대시보드</h1>
-      <p className="mt-2 text-sm text-slate-600">
+      <h1 className="text-title font-bold text-slate-900">임원 대시보드</h1>
+      <p className="mt-2 text-body-sm text-slate-600">
         아래에서 학생회 사업·분실물센터와 나머지 메뉴를 관리할 수 있습니다.
       </p>
 
@@ -57,12 +57,12 @@ export default function AdminDashboardPage() {
           <Link
             key={section.href}
             href={section.href}
-            className="group rounded-lg border border-slate-200 px-5 py-5 transition-colors hover:border-brand-700 hover:bg-brand-50"
+            className="group rounded-control border border-slate-200 px-5 py-5 transition-colors hover:border-brand-700 hover:bg-brand-50"
           >
             <p className="font-semibold text-slate-900 group-hover:text-brand-700">
               {section.label}
             </p>
-            <p className="mt-1.5 text-sm text-slate-600">
+            <p className="mt-2 text-body-sm text-slate-600">
               {section.description}
             </p>
           </Link>

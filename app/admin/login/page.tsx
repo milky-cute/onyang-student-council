@@ -10,8 +10,8 @@ export const metadata: Metadata = {
 export default function AdminLoginPage() {
   return (
     <div className="mx-auto flex w-full max-w-md flex-col justify-center px-4 py-20">
-      <h1 className="text-2xl font-bold text-slate-900">임원 로그인</h1>
-      <p className="mt-2 text-sm text-slate-600">
+      <h1 className="text-title font-bold text-slate-900">임원 로그인</h1>
+      <p className="mt-2 text-body-sm text-slate-600">
         학생자치회 임원에게 발급된 계정으로 로그인하세요.
       </p>
 

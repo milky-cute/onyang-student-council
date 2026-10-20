@@ -57,7 +57,7 @@ export function AlbumGallery({ photos }: { photos: Photo[] }) {
             key={photo.id}
             type="button"
             onClick={() => setOpenIndex(index)}
-            className="group relative aspect-square overflow-hidden rounded-lg bg-slate-100"
+            className="group relative aspect-square overflow-hidden rounded-chip bg-slate-100"
           >
             <Image
               src={photo.image_url}
@@ -177,12 +177,12 @@ export function AlbumGallery({ photos }: { photos: Photo[] }) {
             <img
               src={activePhoto.image_url}
               alt={activePhoto.title}
-              className="max-h-[75vh] w-full rounded-md object-contain"
+              className="max-h-[75vh] w-full rounded-chip object-contain"
             />
             <div className="text-center text-white">
-              <p className="text-sm font-semibold">{activePhoto.title}</p>
+              <p className="text-body-sm font-semibold">{activePhoto.title}</p>
               {activePhoto.description && (
-                <p className="mt-1 text-xs text-white/70">{activePhoto.description}</p>
+                <p className="mt-1 text-caption text-white/70">{activePhoto.description}</p>
               )}
             </div>
           </div>

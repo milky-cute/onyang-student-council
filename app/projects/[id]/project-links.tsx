@@ -18,7 +18,7 @@ export type LinkButton = {
 };
 
 const buttonBase =
-  "flex min-h-14 w-full items-center justify-center rounded-xl px-5 text-base font-bold focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-700";
+  "flex min-h-14 w-full items-center justify-center rounded-control px-5 text-body font-bold focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-700";
 
 /**
  * 사업 링크 버튼 목록. '신청' 링크는 주색 버튼, '기타' 링크는 흰 바탕 테두리 버튼.
@@ -40,14 +40,14 @@ export function ProjectLinks({ links }: { links: LinkButton[] }) {
                 rel="noopener noreferrer"
                 className={`${buttonBase} ${
                   link.kind === "apply"
-                    ? "bg-brand-700 text-white hover:bg-brand-800"
+                    ? "bg-brand-700 text-white hover:bg-brand-600"
                     : "border border-slate-300 bg-white text-slate-800 hover:bg-slate-50"
                 }`}
               >
                 {link.label}
               </a>
             ) : (
-              <span aria-disabled className={`${buttonBase} cursor-not-allowed bg-slate-100 text-slate-500`}>
+              <span aria-disabled className={`${buttonBase} cursor-not-allowed bg-slate-100 text-slate-600`}>
                 {link.disabledLabel}
               </span>
             )}
@@ -58,12 +58,12 @@ export function ProjectLinks({ links }: { links: LinkButton[] }) {
                   type="button"
                   onClick={() => setOpenQr(qrOpen ? null : link.id)}
                   aria-expanded={qrOpen}
-                  className="flex min-h-11 items-center justify-center self-center rounded-lg px-3 text-sm font-medium text-brand-700 hover:bg-brand-50 focus-visible:outline-2 focus-visible:outline-brand-700"
+                  className="flex min-h-11 items-center justify-center self-center rounded-chip px-3 text-body-sm font-semibold text-brand-700 hover:bg-brand-50 focus-visible:outline-2 focus-visible:outline-brand-700"
                 >
                   {qrOpen ? "QR 닫기" : "QR 보기"}
                 </button>
                 {qrOpen && (
-                  <div className="rounded-xl bg-slate-50 px-4 py-4">
+                  <div className="rounded-control bg-slate-50 px-4 py-4">
                     <ProjectQr
                       value={link.url}
                       fileName={`${link.label}-QR.png`}

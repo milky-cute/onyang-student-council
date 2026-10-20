@@ -29,7 +29,7 @@ export function ProjectShowMore({
         <button
           type="button"
           onClick={() => setExpanded(true)}
-          className="flex min-h-11 items-center justify-center self-center rounded-xl border border-slate-300 bg-white px-5 text-sm font-semibold text-slate-700 hover:bg-slate-50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-700"
+          className="flex min-h-11 items-center justify-center self-center rounded-control border border-slate-300 bg-white px-5 text-body-sm font-semibold text-slate-700 hover:bg-slate-50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-700"
         >
           {label} ({items.length - initial})
         </button>

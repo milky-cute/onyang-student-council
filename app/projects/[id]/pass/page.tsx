@@ -76,7 +76,7 @@ export default async function PassPage({ params }: Props) {
                 href={link.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex min-h-12 items-center justify-center rounded-xl bg-brand-700 px-4 text-base font-semibold text-white transition-colors hover:bg-brand-800 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-700"
+                className="flex min-h-12 items-center justify-center rounded-control bg-brand-700 px-4 text-body font-semibold text-white transition-colors hover:bg-brand-600 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-700"
               >
                 {link.label}
               </a>
@@ -120,7 +120,7 @@ export default async function PassPage({ params }: Props) {
           {content}
 
           {student && (
-            <div className="flex flex-wrap items-center justify-between gap-2 text-sm text-slate-600">
+            <div className="flex flex-wrap items-center justify-between gap-2 text-body-sm text-slate-600">
               <span>
                 {student.student_name}({student.student_number})으로 로그인됨
               </span>
@@ -144,8 +144,8 @@ function Notice({
 }) {
   return (
     <div className="card p-5">
-      <p className="text-lg font-bold text-slate-900">{title}</p>
-      {message && <p className="mt-1 text-[15px] leading-relaxed text-slate-600">{message}</p>}
+      <p className="text-card-title font-bold text-slate-900">{title}</p>
+      {message && <p className="mt-1 text-body leading-relaxed text-slate-600">{message}</p>}
       {children}
     </div>
   );

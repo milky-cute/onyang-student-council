@@ -57,10 +57,10 @@ export function VisibilityToggle({
           }`}
         />
       </button>
-      <span className="text-xs font-medium text-slate-600">
+      <span className="text-caption font-semibold text-slate-600">
         {isPublic ? "공개" : "비공개"}
       </span>
-      {error && <span className="text-xs text-red-600">{error}</span>}
+      {error && <span className="text-caption text-red-600">{error}</span>}
     </div>
   );
 }

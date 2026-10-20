@@ -24,25 +24,25 @@ export function HolderList({ holders }: { holders: Holder[] }) {
   return (
     <div className="flex flex-col gap-3">
       <div className="flex flex-wrap items-end justify-between gap-3">
-        <h2 className="text-lg font-semibold text-slate-900">명단 {holders.length}명</h2>
+        <h2 className="text-card-title font-semibold text-slate-900">명단 {holders.length}명</h2>
         <input
           type="search"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           placeholder="학번 또는 이름 검색"
           aria-label="학번 또는 이름 검색"
-          className="w-56 rounded-md border border-slate-300 px-3 py-2 text-sm outline-none focus:border-brand-700 focus:ring-1 focus:ring-brand-700"
+          className="w-56 rounded-chip border border-slate-300 px-3 py-2 text-body-sm outline-none focus:border-brand-700 focus:ring-1 focus:ring-brand-700"
         />
       </div>
-      <p className="text-xs text-slate-500">
+      <p className="text-caption text-slate-600">
         PIN은 학번 기준으로 모든 사업에서 공통입니다. PIN 초기화는 이 사업뿐 아니라 그 학생의 모든
         사업 입장권에 적용되며, 학생은 다음에 입장권을 열 때 새 PIN을 정합니다.
       </p>
 
       {holders.length === 0 ? (
-        <p className="text-sm text-slate-600">아직 명단에 학생이 없습니다.</p>
+        <p className="text-body-sm text-slate-600">아직 명단에 학생이 없습니다.</p>
       ) : filtered.length === 0 ? (
-        <p className="text-sm text-slate-600">검색 결과가 없습니다.</p>
+        <p className="text-body-sm text-slate-600">검색 결과가 없습니다.</p>
       ) : (
         <ul className="flex flex-col gap-2">
           {filtered.map((holder) => (
@@ -129,26 +129,26 @@ function HolderRow({ holder }: { holder: Holder }) {
 
   return (
     <li
-      className={`flex flex-wrap items-center justify-between gap-3 rounded-lg border border-slate-200 px-4 py-3 ${
+      className={`flex flex-wrap items-center justify-between gap-3 rounded-control border border-slate-200 px-4 py-3 ${
         holder.is_suspended ? "bg-slate-50" : "bg-white"
       }`}
     >
       <div className="min-w-0">
-        <p className="flex flex-wrap items-center gap-2 text-sm font-semibold text-slate-900">
+        <p className="flex flex-wrap items-center gap-2 text-body-sm font-semibold text-slate-900">
           <span className="tabular-nums">{holder.student_number}</span>
           {holder.student_name}
           {holder.is_suspended && (
-            <span className="rounded-full bg-red-100 px-2 py-0.5 text-xs font-semibold text-red-700">
+            <span className="rounded-full bg-red-100 px-2 py-0.5 text-caption font-semibold text-red-700">
               정지됨
             </span>
           )}
         </p>
         {error && (
-          <p role="alert" className="mt-1 text-sm text-red-600">
+          <p role="alert" className="mt-1 text-body-sm text-red-600">
             {error}
           </p>
         )}
-        {message && <p className="mt-1 text-sm text-brand-700">{message}</p>}
+        {message && <p className="mt-1 text-body-sm text-brand-700">{message}</p>}
       </div>
 
       <div className="flex flex-wrap items-center gap-2">
@@ -156,7 +156,7 @@ function HolderRow({ holder }: { holder: Holder }) {
           type="button"
           onClick={handleToggleSuspend}
           disabled={pending}
-          className="rounded-md border border-slate-300 px-3 py-2 text-sm font-medium text-slate-700 transition-colors hover:bg-slate-100 disabled:opacity-60"
+          className="rounded-chip border border-slate-300 px-3 py-2 text-body-sm font-semibold text-slate-700 transition-colors hover:bg-slate-100 disabled:opacity-60"
         >
           {holder.is_suspended ? "정지 해제" : "정지"}
         </button>
@@ -164,7 +164,7 @@ function HolderRow({ holder }: { holder: Holder }) {
           type="button"
           onClick={handleResetPin}
           disabled={pending}
-          className="rounded-md border border-slate-300 px-3 py-2 text-sm font-medium text-slate-700 transition-colors hover:bg-slate-100 disabled:opacity-60"
+          className="rounded-chip border border-slate-300 px-3 py-2 text-body-sm font-semibold text-slate-700 transition-colors hover:bg-slate-100 disabled:opacity-60"
         >
           PIN 초기화
         </button>
@@ -172,7 +172,7 @@ function HolderRow({ holder }: { holder: Holder }) {
           type="button"
           onClick={handleDelete}
           disabled={pending}
-          className="rounded-md border border-red-300 px-3 py-2 text-sm font-medium text-red-600 transition-colors hover:bg-red-50 disabled:opacity-60"
+          className="rounded-chip border border-red-300 px-3 py-2 text-body-sm font-semibold text-red-600 transition-colors hover:bg-red-50 disabled:opacity-60"
         >
           삭제
         </button>

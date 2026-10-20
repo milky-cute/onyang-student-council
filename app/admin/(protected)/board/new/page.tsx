@@ -9,7 +9,7 @@ export const metadata: Metadata = {
 export default function NewBoardPostPage() {
   return (
     <>
-      <h1 className="text-2xl font-bold text-slate-900">새 글 작성</h1>
+      <h1 className="text-title font-bold text-slate-900">새 글 작성</h1>
       <div className="mt-8">
         <BoardForm />
       </div>

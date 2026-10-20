@@ -64,11 +64,11 @@ export default async function ArchivePage() {
       />
       <div className="mx-auto w-full max-w-6xl px-4 pt-4 pb-10 lg:pt-6 lg:pb-14">
         {albums.length === 0 ? (
-          <div className="rounded-2xl border border-dashed border-slate-300 bg-white px-6 py-16 text-center">
-            <p className="text-lg font-semibold text-slate-900">
+          <div className="rounded-card border border-dashed border-slate-300 bg-white px-6 py-16 text-center">
+            <p className="text-card-title font-semibold text-slate-900">
               아직 등록된 앨범이 없습니다
             </p>
-            <p className="mt-2 text-sm text-slate-600">
+            <p className="mt-2 text-body-sm text-slate-600">
               학생자치회 활동 사진이 등록되면 이곳에서 볼 수 있어요.
             </p>
           </div>
@@ -89,11 +89,11 @@ export default async function ArchivePage() {
                     className="object-cover transition-transform duration-200 group-hover:scale-105"
                   />
                 </div>
-                <div className="px-3 py-2.5">
-                  <p className="truncate text-sm font-semibold text-slate-900">
+                <div className="px-3 py-3">
+                  <p className="truncate text-body-sm font-semibold text-slate-900">
                     {album.name}
                   </p>
-                  <p className="mt-0.5 text-xs text-slate-500">사진 {album.count}장</p>
+                  <p className="mt-0.5 text-caption text-slate-600">사진 {album.count}장</p>
                 </div>
               </Link>
             ))}

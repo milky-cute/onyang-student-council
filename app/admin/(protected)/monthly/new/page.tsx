@@ -9,7 +9,7 @@ export const metadata: Metadata = {
 export default function NewMonthlyActivityPage() {
   return (
     <>
-      <h1 className="text-2xl font-bold text-slate-900">활동 등록</h1>
+      <h1 className="text-title font-bold text-slate-900">활동 등록</h1>
       <div className="mt-8">
         <MonthlyForm />
       </div>

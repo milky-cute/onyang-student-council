@@ -37,8 +37,8 @@ export default async function AdminLostFoundPage() {
       <AdminBackLink />
       <div className="flex flex-col gap-8">
         <div>
-          <h1 className="text-2xl font-bold text-slate-900">분실물센터 관리</h1>
-          <p className="mt-2 text-sm text-slate-600">
+          <h1 className="text-title font-bold text-slate-900">분실물센터 관리</h1>
+          <p className="mt-2 text-body-sm text-slate-600">
             학생이 맡긴 습득물을 등록하면 로그인 없이 누구나 /lost-found 에서 볼 수 있습니다.
             주인이 찾아가면 <strong>완료 표시</strong>를 눌러주세요 — 목록에는 남지만 흐리게
             표시되어 같은 물건을 다시 문의하는 일이 줄어듭니다.
@@ -50,9 +50,9 @@ export default async function AdminLostFoundPage() {
         <ItemForm />
 
         <div className="flex flex-col gap-3">
-          <h2 className="text-lg font-semibold text-slate-900">등록된 물품</h2>
+          <h2 className="text-card-title font-semibold text-slate-900">등록된 물품</h2>
           {!items || items.length === 0 ? (
-            <p className="text-sm text-slate-600">아직 등록된 물품이 없습니다.</p>
+            <p className="text-body-sm text-slate-600">아직 등록된 물품이 없습니다.</p>
           ) : (
             items.map((item) => {
               const deadline = retentionDeadline(item.created_at);

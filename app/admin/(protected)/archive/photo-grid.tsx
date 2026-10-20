@@ -40,7 +40,7 @@ export function PhotoGrid({ photos }: { photos: Photo[] }) {
   return (
     <div className="flex flex-col gap-2">
       {error && (
-        <p role="alert" className="text-sm text-red-600">
+        <p role="alert" className="text-body-sm text-red-600">
           {error}
         </p>
       )}
@@ -48,7 +48,7 @@ export function PhotoGrid({ photos }: { photos: Photo[] }) {
         {photos.map((photo) => (
           <div
             key={photo.id}
-            className="relative aspect-square overflow-hidden rounded-md bg-slate-100"
+            className="relative aspect-square overflow-hidden rounded-chip bg-slate-100"
           >
             <Image
               src={photo.image_url}

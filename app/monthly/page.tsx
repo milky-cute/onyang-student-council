@@ -107,15 +107,15 @@ export default async function MonthlyPage({
         {error && (
           <p
             role="alert"
-            className="rounded-md border border-red-300 bg-red-50 px-4 py-3 text-sm text-red-800"
+            className="rounded-chip border border-red-300 bg-red-50 px-4 py-3 text-body-sm text-red-800"
           >
             활동 내역을 불러오지 못했습니다. 잠시 후 다시 시도해 주세요.
           </p>
         )}
 
         {!error && months.length === 0 && (
-          <div className="rounded-2xl border border-dashed border-slate-300 bg-white px-6 py-16 text-center">
-            <p className="text-sm text-slate-600">
+          <div className="rounded-card border border-dashed border-slate-300 bg-white px-6 py-16 text-center">
+            <p className="text-body-sm text-slate-600">
               아직 등록된 활동이 없습니다.
             </p>
           </div>
@@ -124,15 +124,15 @@ export default async function MonthlyPage({
         {!error && selectedMonth && (
           <>
             <div className="flex flex-wrap items-center justify-between gap-4">
-              <h2 className="text-xl font-bold text-slate-900">
+              <h2 className="text-title font-bold text-slate-900">
                 {formatYearMonth(selectedMonth)}
               </h2>
               <MonthSelect months={months} selected={selectedMonth} />
             </div>
 
             {byDepartment.size === 0 ? (
-              <div className="mt-8 rounded-2xl border border-dashed border-slate-300 bg-white px-6 py-16 text-center">
-                <p className="text-sm text-slate-600">
+              <div className="mt-8 rounded-card border border-dashed border-slate-300 bg-white px-6 py-16 text-center">
+                <p className="text-body-sm text-slate-600">
                   이 달에 등록된 활동이 없습니다.
                 </p>
               </div>
@@ -140,7 +140,7 @@ export default async function MonthlyPage({
               <div className="mt-8 flex flex-col gap-10">
                 {[...byDepartment.entries()].map(([department, list]) => (
                   <section key={department}>
-                    <h3 className="flex items-center gap-2 text-base font-semibold text-slate-900">
+                    <h3 className="flex items-center gap-2 text-body font-semibold text-slate-900">
                       <span className="inline-block h-4 w-1 rounded-full bg-brand-700" />
                       {department}
                     </h3>
@@ -163,11 +163,11 @@ export default async function MonthlyPage({
                             </div>
                           )}
                           <div className="flex flex-1 flex-col p-5">
-                            <h4 className="text-base font-semibold text-slate-900">
+                            <h4 className="text-body font-semibold text-slate-900">
                               {activity.title}
                             </h4>
                             {activity.description && (
-                              <p className="mt-2 whitespace-pre-wrap text-sm leading-relaxed text-slate-600">
+                              <p className="mt-2 whitespace-pre-wrap text-body-sm leading-relaxed text-slate-600">
                                 {activity.description}
                               </p>
                             )}

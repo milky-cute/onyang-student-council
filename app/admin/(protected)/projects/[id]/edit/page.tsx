@@ -39,7 +39,7 @@ export default async function EditProjectPage({
   return (
     <>
       <AdminBackLink href="/admin/projects" />
-      <h1 className="text-2xl font-bold text-slate-900">사업 수정</h1>
+      <h1 className="text-title font-bold text-slate-900">사업 수정</h1>
       <div className="mt-8">
         <ProjectForm project={{ ...project, photos: photos ?? [], links: links ?? [] }} />
       </div>

@@ -75,7 +75,7 @@ export function CalendarView({ events }: { events: CalendarEvent[] }) {
             <path d="M15 18l-6-6 6-6" />
           </svg>
         </button>
-        <p className="text-lg font-bold text-slate-900">
+        <p className="text-card-title font-bold text-slate-900">
           {viewYear}년 {viewMonth + 1}월
         </p>
         <button
@@ -100,11 +100,11 @@ export function CalendarView({ events }: { events: CalendarEvent[] }) {
       </div>
 
       <div>
-        <div className="grid grid-cols-7 gap-1 text-center text-xs font-medium">
+        <div className="grid grid-cols-7 gap-1 text-center text-caption font-semibold">
           {WEEKDAYS.map((weekday, index) => (
             <div
               key={weekday}
-              className={`py-1 ${weekdayTextClass(index, "text-slate-500")}`}
+              className={`py-1 ${weekdayTextClass(index, "text-slate-600")}`}
             >
               {weekday}
             </div>
@@ -129,7 +129,7 @@ export function CalendarView({ events }: { events: CalendarEvent[] }) {
                 key={dateKey}
                 type="button"
                 onClick={() => setSelectedDate(dateKey)}
-                className={`flex min-h-[3.5rem] flex-col items-center gap-1 rounded-md px-0.5 py-1.5 text-sm transition-colors ${
+                className={`flex min-h-[3.5rem] flex-col items-center gap-1 rounded-chip px-0.5 py-2 text-body-sm transition-colors ${
                   isSelected
                     ? "bg-brand-700 font-semibold"
                     : isToday
@@ -154,7 +154,7 @@ export function CalendarView({ events }: { events: CalendarEvent[] }) {
                 {firstEvent && (
                   <span className="flex w-full min-w-0 items-center gap-0.5">
                     <span
-                      className="min-w-0 flex-1 truncate rounded px-1 py-px text-[10px] leading-tight text-white"
+                      className="min-w-0 flex-1 truncate rounded-chip px-1 py-px text-caption leading-tight text-white"
                       style={{
                         backgroundColor: firstEvent.color || DEFAULT_EVENT_COLOR,
                       }}
@@ -163,8 +163,8 @@ export function CalendarView({ events }: { events: CalendarEvent[] }) {
                     </span>
                     {extraCount > 0 && (
                       <span
-                        className={`shrink-0 text-[10px] ${
-                          isSelected ? "text-white/80" : "text-slate-500"
+                        className={`shrink-0 text-caption ${
+                          isSelected ? "text-white/80" : "text-slate-600"
                         }`}
                       >
                         +{extraCount}
@@ -178,23 +178,23 @@ export function CalendarView({ events }: { events: CalendarEvent[] }) {
         </div>
       </div>
 
-      <div className="rounded-xl bg-slate-50 px-4 py-4">
-        <p className="text-sm font-semibold text-slate-900">{selectedDate.replace(/-/g, ". ")}</p>
+      <div className="rounded-control bg-slate-50 px-4 py-4">
+        <p className="text-body-sm font-semibold text-slate-900">{selectedDate.replace(/-/g, ". ")}</p>
         {selectedEvents.length === 0 ? (
-          <p className="mt-2 text-sm text-slate-600">등록된 일정이 없습니다.</p>
+          <p className="mt-2 text-body-sm text-slate-600">등록된 일정이 없습니다.</p>
         ) : (
           <ul className="mt-3 flex flex-col gap-3">
             {selectedEvents.map((event) => (
               <li key={event.id} className="flex gap-2">
                 <span
                   aria-hidden
-                  className="mt-1.5 size-2.5 shrink-0 rounded-full"
+                  className="mt-2 size-2.5 shrink-0 rounded-full"
                   style={{ backgroundColor: event.color || DEFAULT_EVENT_COLOR }}
                 />
                 <div className="min-w-0">
-                  <p className="text-sm font-semibold text-slate-900">{event.title}</p>
+                  <p className="text-body-sm font-semibold text-slate-900">{event.title}</p>
                   {event.description && (
-                    <p className="mt-1 whitespace-pre-wrap text-sm text-slate-600">
+                    <p className="mt-1 whitespace-pre-wrap text-body-sm text-slate-600">
                       {event.description}
                     </p>
                   )}

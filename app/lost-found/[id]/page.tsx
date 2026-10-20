@@ -86,58 +86,58 @@ export default async function LostFoundItemPage({ params }: Props) {
             />
           ) : (
             <div
-              className={`flex aspect-[4/3] max-h-80 w-full flex-col items-center justify-center gap-1.5 ${
-                item.is_resolved ? "bg-slate-100 text-slate-500" : "bg-brand-50 text-brand-700"
+              className={`flex aspect-[4/3] max-h-80 w-full flex-col items-center justify-center gap-2 ${
+                item.is_resolved ? "bg-slate-100 text-slate-600" : "bg-brand-50 text-brand-700"
               }`}
             >
               <CameraIcon className="size-10" />
-              <span className="text-sm font-medium">사진 없음</span>
+              <span className="text-body-sm font-semibold">사진 없음</span>
             </div>
           )}
 
           <div className="p-5">
             <div className="flex flex-wrap items-center gap-2">
-              <h2 className="text-xl font-bold text-slate-900">{item.title}</h2>
+              <h2 className="text-title font-bold text-slate-900">{item.title}</h2>
               {item.is_resolved ? (
-                <span className="rounded-full bg-slate-100 px-2.5 py-0.5 text-xs font-semibold text-slate-600">
+                <span className="rounded-full bg-slate-100 px-3 py-0.5 text-caption font-semibold text-slate-600">
                   주인 찾음
                 </span>
               ) : (
-                <span className="rounded-full bg-brand-700 px-2.5 py-0.5 text-xs font-semibold text-white">
+                <span className="rounded-full bg-brand-700 px-3 py-0.5 text-caption font-semibold text-white">
                   보관 중
                 </span>
               )}
             </div>
 
             {item.description && (
-              <p className="mt-3 whitespace-pre-wrap text-[15px] leading-relaxed text-slate-700">
+              <p className="mt-3 whitespace-pre-wrap text-body leading-relaxed text-slate-700">
                 {item.description}
               </p>
             )}
 
-            <dl className="mt-4 flex flex-col gap-2 rounded-xl bg-slate-50 px-4 py-3 text-sm">
+            <dl className="mt-4 flex flex-col gap-2 rounded-control bg-slate-50 px-4 py-3 text-body-sm">
               <div className="flex items-start gap-2">
-                <MapPinIcon className="mt-0.5 size-4 shrink-0 text-slate-500" />
-                <dt className="w-16 shrink-0 text-slate-500">주운 곳</dt>
+                <MapPinIcon className="mt-0.5 size-4 shrink-0 text-slate-600" />
+                <dt className="w-16 shrink-0 text-slate-600">주운 곳</dt>
                 <dd className="text-slate-800">{item.location}</dd>
               </div>
               <div className="flex items-start gap-2">
-                <BoxIcon className="mt-0.5 size-4 shrink-0 text-slate-500" />
-                <dt className="w-16 shrink-0 text-slate-500">보관 장소</dt>
+                <BoxIcon className="mt-0.5 size-4 shrink-0 text-slate-600" />
+                <dt className="w-16 shrink-0 text-slate-600">보관 장소</dt>
                 <dd className="font-semibold text-brand-700">{item.storage_location}</dd>
               </div>
               <div className="flex items-start gap-2">
-                <CalendarIcon className="mt-0.5 size-4 shrink-0 text-slate-500" />
-                <dt className="w-16 shrink-0 text-slate-500">등록일</dt>
+                <CalendarIcon className="mt-0.5 size-4 shrink-0 text-slate-600" />
+                <dt className="w-16 shrink-0 text-slate-600">등록일</dt>
                 <dd className="text-slate-800">
                   <time dateTime={item.created_at}>{formatDate(item.created_at)}</time>
                 </dd>
               </div>
               {!item.is_resolved && (
                 <div className="flex items-start gap-2">
-                  <ClockIcon className="mt-0.5 size-4 shrink-0 text-slate-500" />
-                  <dt className="w-16 shrink-0 text-slate-500">보관 기한</dt>
-                  <dd className="font-medium text-slate-800">
+                  <ClockIcon className="mt-0.5 size-4 shrink-0 text-slate-600" />
+                  <dt className="w-16 shrink-0 text-slate-600">보관 기한</dt>
+                  <dd className="font-semibold text-slate-800">
                     {retentionDeadline(item.created_at).label}까지
                   </dd>
                 </div>

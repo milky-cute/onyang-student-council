@@ -42,17 +42,17 @@ export default async function LostFoundPage() {
 
         {!items || items.length === 0 ? (
           <div className="card px-6 py-14 text-center">
-            <p className="text-lg font-semibold text-slate-900">보관 중인 물건이 없습니다</p>
-            <p className="mt-2 text-sm text-slate-600">분실물이 등록되면 이곳에서 확인할 수 있어요.</p>
+            <p className="text-card-title font-semibold text-slate-900">보관 중인 물건이 없습니다</p>
+            <p className="mt-2 text-body-sm text-slate-600">분실물이 등록되면 이곳에서 확인할 수 있어요.</p>
           </div>
         ) : (
           <>
-            <p className="flex flex-wrap items-center gap-2 text-sm">
-              <span className="inline-flex items-center gap-1.5 rounded-full bg-brand-50 px-3 py-1 font-semibold text-brand-700">
+            <p className="flex flex-wrap items-center gap-2 text-body-sm">
+              <span className="inline-flex items-center gap-2 rounded-full bg-brand-50 px-3 py-1 font-semibold text-brand-700">
                 <span aria-hidden className="size-1.5 rounded-full bg-brand-700" />
                 보관 중 {waiting}
               </span>
-              <span className="inline-flex items-center gap-1.5 rounded-full bg-slate-100 px-3 py-1 font-medium text-slate-600">
+              <span className="inline-flex items-center gap-2 rounded-full bg-slate-100 px-3 py-1 font-semibold text-slate-600">
                 <span aria-hidden className="size-1.5 rounded-full bg-slate-400" />
                 주인 찾음 {resolved}
               </span>
@@ -64,7 +64,7 @@ export default async function LostFoundPage() {
                 <li key={item.id}>
                   <Link
                     href={`/lost-found/${item.id}`}
-                    className="card flex h-full flex-col overflow-hidden transition-colors hover:border-brand-200 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-700"
+                    className="card flex h-full flex-col overflow-hidden transition-colors hover:border-brand-100 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-700"
                   >
                     {/* 모든 카드가 같은 크기의 정사각형 사진 자리를 갖는다. */}
                     <div
@@ -86,19 +86,19 @@ export default async function LostFoundPage() {
                         !item.is_resolved && (
                           <div className="flex h-full flex-col items-center justify-center gap-1 text-brand-700">
                             <CameraIcon className="size-7" />
-                            <span className="text-xs font-medium">사진 없음</span>
+                            <span className="text-caption font-semibold">사진 없음</span>
                           </div>
                         )
                       )}
 
                       {item.is_resolved ? (
                         <span className="absolute inset-0 flex items-center justify-center">
-                          <span className="rounded-full bg-slate-900/75 px-3 py-1 text-xs font-semibold text-white">
+                          <span className="rounded-full bg-slate-900/75 px-3 py-1 text-caption font-semibold text-white">
                             찾아감
                           </span>
                         </span>
                       ) : (
-                        <span className="absolute left-2 top-2 rounded-md bg-brand-700 px-2 py-0.5 text-[11px] font-semibold text-white">
+                        <span className="absolute left-2 top-2 rounded-chip bg-brand-700 px-2 py-0.5 text-caption font-semibold text-white">
                           보관 중
                         </span>
                       )}
@@ -106,24 +106,24 @@ export default async function LostFoundPage() {
 
                     <div className="flex flex-1 flex-col gap-1 p-3">
                       <h2
-                        className={`truncate text-sm font-semibold ${
-                          item.is_resolved ? "text-slate-500 line-through" : "text-slate-900"
+                        className={`truncate text-body-sm font-semibold ${
+                          item.is_resolved ? "text-slate-600 line-through" : "text-slate-900"
                         }`}
                       >
                         {item.title}
                       </h2>
-                      <p className="flex items-center gap-1 text-xs text-slate-500">
+                      <p className="flex items-center gap-1 text-caption text-slate-600">
                         <MapPinIcon className="size-3.5 shrink-0" />
                         <span className="truncate">{item.location}</span>
                       </p>
                       {item.is_resolved ? (
                         // 찾아간 날짜(claimed_at)는 비공개 정보라 보여주지 않는다.
-                        <p className="flex items-center gap-1 text-xs font-medium text-slate-600">
+                        <p className="flex items-center gap-1 text-caption font-semibold text-slate-600">
                           <CheckCircleIcon className="size-3.5 shrink-0" />
                           주인 찾음
                         </p>
                       ) : (
-                        <p className="flex items-center gap-1 text-xs text-slate-600">
+                        <p className="flex items-center gap-1 text-caption text-slate-600">
                           <CalendarIcon className="size-3.5 shrink-0" />
                           {retentionDeadline(item.created_at).shortLabel}까지 보관
                         </p>
