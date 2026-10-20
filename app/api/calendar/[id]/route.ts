@@ -8,6 +8,22 @@ const DATE_RE = /^\d{4}-\d{2}-\d{2}$/;
 const COLOR_RE = /^#[0-9a-fA-F]{6}$/;
 const DEFAULT_COLOR = "#2563eb";
 
+/** 학생회 사업에서 자동으로 만든 일정이면 막는다. RLS 도 막지만 알아볼 수 있는 안내를 주려고 먼저 확인한다. */
+async function rejectProjectEvent(supabase: Awaited<ReturnType<typeof createClient>>, id: string) {
+  const { data } = await supabase
+    .from("calendar_events")
+    .select("project_id")
+    .eq("id", id)
+    .maybeSingle();
+  if (data?.project_id) {
+    return NextResponse.json(
+      { error: "학생회 사업에서 자동으로 만든 일정이에요. 사업 관리에서 날짜를 고쳐 주세요." },
+      { status: 409 },
+    );
+  }
+  return null;
+}
+
 /** 일정 수정. calendar_events update 는 RLS 로 임원만 허용된다(이중 방어). */
 export async function PATCH(request: Request, { params }: Params) {
   const { id } = await params;
@@ -30,6 +46,9 @@ export async function PATCH(request: Request, { params }: Params) {
   if (!officer) {
     return NextResponse.json({ error: "임원만 일정을 수정할 수 있습니다." }, { status: 403 });
   }
+
+  const blocked = await rejectProjectEvent(supabase, id);
+  if (blocked) return blocked;
 
   let body: unknown;
   try {
@@ -107,6 +126,9 @@ export async function DELETE(_request: Request, { params }: Params) {
   if (!officer) {
     return NextResponse.json({ error: "임원만 일정을 삭제할 수 있습니다." }, { status: 403 });
   }
+
+  const blocked = await rejectProjectEvent(supabase, id);
+  if (blocked) return blocked;
 
   const { error } = await supabase.from("calendar_events").delete().eq("id", id);
 

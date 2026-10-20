@@ -17,7 +17,7 @@ export default async function AdminCalendarPage() {
   const supabase = await createClient();
   const { data: events } = await supabase
     .from("calendar_events")
-    .select("id, title, description, event_date, color, is_dday")
+    .select("id, title, description, event_date, color, is_dday, project_id")
     .order("event_date", { ascending: true });
 
   return (
@@ -28,6 +28,9 @@ export default async function AdminCalendarPage() {
           <h1 className="text-title font-bold text-slate-900">일정 관리</h1>
           <p className="mt-2 text-body-sm text-slate-600">
             학사일정 · 행사를 등록하면 로그인 없이 누구나 /calendar 에서 볼 수 있습니다.
+          </p>
+          <p className="mt-1 text-body-sm text-slate-600">
+            학생회 사업의 행사 날짜 · 신청 마감일은 자동으로 들어옵니다. 바꾸려면 사업 관리에서 고쳐 주세요.
           </p>
         </div>
 

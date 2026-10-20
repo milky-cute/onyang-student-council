@@ -118,6 +118,8 @@ export type CalendarEvent = {
   color: string;
   /** 홈 화면 D-day 표시 대상 여부 (0007_calendar_dday_and_my_requests_department.sql) */
   is_dday: boolean;
+  /** 학생회 사업에서 자동으로 만든 일정이면 그 사업 id, 직접 등록한 일정은 null (0014_project_calendar_sync.sql) */
+  project_id: string | null;
   author_id: string | null;
   created_at: string;
 };
@@ -304,7 +306,7 @@ export type Database = {
       >;
       calendar_events: Table<
         CalendarEvent,
-        Generated<CalendarEvent, "id" | "created_at" | "color" | "is_dday">,
+        Generated<CalendarEvent, "id" | "created_at" | "color" | "is_dday" | "project_id">,
         Partial<CalendarEvent>
       >;
       lost_found_items: Table<
