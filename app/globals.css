@@ -72,8 +72,8 @@
 }
 
 /**
- * 버튼. `btn btn-primary` 처럼 바탕 하나 + 모양 하나를 같이 쓴다.
- * 높이는 터치 목표 44px 이상, 글자 16px · 600.
+ * 버튼. `btn btn-primary` 처럼 공통 모양(btn) + 변형 하나를 같이 쓴다.
+ * btn 은 높이(터치 목표 44px 이상) · 모서리 · 굵기 · 포커스만, 글자 크기와 좌우 여백은 변형이 정한다.
  */
 @utility btn {
   display: inline-flex;
@@ -81,10 +81,7 @@
   justify-content: center;
   gap: 0.25rem;
   min-height: 2.75rem;
-  padding-inline: 1rem;
   border-radius: var(--radius-control);
-  font-size: var(--text-body);
-  line-height: var(--text-body--line-height);
   font-weight: 600;
   transition-property: color, background-color, border-color;
   transition-duration: 150ms;
@@ -95,6 +92,9 @@
   }
 }
 @utility btn-primary {
+  padding-inline: 1rem;
+  font-size: var(--text-body);
+  line-height: var(--text-body--line-height);
   background-color: var(--color-brand-700);
   color: #ffffff;
 
@@ -103,6 +103,9 @@
   }
 }
 @utility btn-outline {
+  padding-inline: 1rem;
+  font-size: var(--text-body);
+  line-height: var(--text-body--line-height);
   border: 1px solid var(--color-brand-700);
   color: var(--color-brand-700);
 

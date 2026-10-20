@@ -80,8 +80,8 @@ export function BottomTabBar() {
                 <Link
                   href={href}
                   aria-current={active ? "page" : undefined}
-                  className={`flex h-full min-h-11 flex-col items-center justify-center gap-1 text-[11px] font-semibold focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-brand-700 ${
-                    active ? "text-brand-700" : "text-slate-500"
+                  className={`flex h-full min-h-11 flex-col items-center justify-center gap-1 text-caption font-semibold focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-brand-700 ${
+                    active ? "text-brand-700" : "text-slate-600"
                   }`}
                 >
                   <Icon className="size-6" />
@@ -98,8 +98,8 @@ export function BottomTabBar() {
               aria-haspopup="dialog"
               aria-expanded={open}
               aria-controls="more-sheet"
-              className={`flex h-full min-h-11 w-full flex-col items-center justify-center gap-1 text-[11px] font-semibold focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-brand-700 ${
-                moreActive ? "text-brand-700" : "text-slate-500"
+              className={`flex h-full min-h-11 w-full flex-col items-center justify-center gap-1 text-caption font-semibold focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-brand-700 ${
+                moreActive ? "text-brand-700" : "text-slate-600"
               }`}
             >
               <MenuIcon className="size-6" />
@@ -124,10 +124,10 @@ export function BottomTabBar() {
             onClick={closeSheet}
             className="absolute inset-0 bg-slate-900/40"
           />
-          <div className="absolute inset-x-0 bottom-0 rounded-t-2xl bg-white px-4 pt-3 pb-[calc(1rem+env(safe-area-inset-bottom))] shadow-xl">
+          <div className="absolute inset-x-0 bottom-0 rounded-t-card bg-white px-4 pt-3 pb-[calc(1rem+env(safe-area-inset-bottom))] shadow-xl">
             <div aria-hidden className="mx-auto h-1 w-10 rounded-full bg-slate-200" />
             <div className="mt-2 flex items-center justify-between">
-              <h2 id="more-sheet-title" className="text-base font-bold text-slate-900">
+              <h2 id="more-sheet-title" className="text-card-title font-bold text-slate-900">
                 더보기
               </h2>
               <button
@@ -150,18 +150,18 @@ export function BottomTabBar() {
                       href={item.href}
                       onClick={() => setOpen(false)}
                       aria-current={active ? "page" : undefined}
-                      className="flex min-h-14 items-center gap-3 rounded-xl px-2 hover:bg-slate-50 focus-visible:outline-2 focus-visible:outline-brand-700"
+                      className="flex min-h-14 items-center gap-3 rounded-control px-2 hover:bg-slate-50 focus-visible:outline-2 focus-visible:outline-brand-700"
                     >
-                      <span className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-brand-50 text-brand-700">
+                      <span className="icon-tile">
                         {Icon && <Icon />}
                       </span>
                       <span className="flex flex-1 flex-col">
                         <span
-                          className={`text-[15px] font-semibold ${active ? "text-brand-700" : "text-slate-900"}`}
+                          className={`text-body font-semibold ${active ? "text-brand-700" : "text-slate-900"}`}
                         >
                           {item.label}
                         </span>
-                        <span className="text-xs text-slate-500">{item.shortDescription}</span>
+                        <span className="text-caption text-slate-600">{item.shortDescription}</span>
                       </span>
                       <ChevronRightIcon className="size-5 text-slate-400" />
                     </Link>

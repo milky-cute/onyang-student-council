@@ -13,7 +13,7 @@ export function SiteFooter() {
       <div className="mx-auto w-full max-w-6xl px-4 py-10">
         <div className="flex flex-col gap-8 md:flex-row md:justify-between">
           <div>
-            <p className="text-[15px] font-bold text-slate-900">
+            <p className="text-body font-bold text-slate-900">
               {SITE.fullName}
             </p>
             <p className="mt-2 max-w-md text-sm leading-relaxed text-slate-600">
