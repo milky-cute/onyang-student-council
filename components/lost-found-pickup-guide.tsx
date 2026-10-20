@@ -9,7 +9,7 @@ import { LOST_FOUND_PICKUP } from "@/lib/lost-found";
 export function LostFoundPickupGuide({ place, hours }: { place: string; hours: string }) {
   return (
     <section aria-labelledby="pickup-guide-heading" className="card p-5">
-      <h2 id="pickup-guide-heading" className="text-body font-bold text-slate-900">
+      <h2 id="pickup-guide-heading" className="text-card-title font-bold text-slate-900">
         내 물건을 찾았다면?
       </h2>
       <dl className="mt-3 flex flex-col gap-2 rounded-control bg-brand-50 px-4 py-3 text-body-sm">
@@ -25,7 +25,7 @@ export function LostFoundPickupGuide({ place, hours }: { place: string; hours: s
         </div>
       </dl>
       <p className="mt-3 text-caption text-slate-600">{LOST_FOUND_PICKUP.verifyNote}</p>
-      <p className="mt-3 rounded-control bg-amber-50 px-4 py-3 text-body-sm font-semibold text-amber-900">
+      <p className="mt-3 rounded-control bg-slate-100 px-4 py-3 text-body-sm font-semibold text-slate-700">
         물건을 주웠다면 학생회실로 가져다주세요
       </p>
     </section>

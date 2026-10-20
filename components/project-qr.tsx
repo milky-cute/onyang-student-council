@@ -59,7 +59,7 @@ export function ProjectQr({
         <a
           href={dataUrl}
           download={safeFileName(fileName)}
-          className="flex min-h-11 items-center justify-center rounded-control border border-slate-300 bg-white px-4 text-body-sm font-semibold text-slate-700 hover:bg-slate-50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-700"
+          className="btn border border-slate-300 bg-white px-4 text-body-sm text-slate-700 hover:bg-slate-50"
         >
           QR 이미지 저장
         </a>

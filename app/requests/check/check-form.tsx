@@ -71,7 +71,7 @@ export function CheckForm() {
               value={form.studentName}
               onChange={(e) => setForm((p) => ({ ...p, studentName: e.target.value }))}
               required
-              className="rounded-chip border border-slate-300 px-3 py-3 text-body-sm outline-none focus:border-brand-700 focus:ring-1 focus:ring-brand-700"
+              className="rounded-chip border border-slate-300 px-3 py-3 text-body outline-none focus:border-brand-700 focus:ring-1 focus:ring-brand-700"
             />
           </div>
           <div className="flex flex-col gap-2">
@@ -84,7 +84,7 @@ export function CheckForm() {
               onChange={(e) => setForm((p) => ({ ...p, studentNumber: e.target.value }))}
               required
               inputMode="numeric"
-              className="rounded-chip border border-slate-300 px-3 py-3 text-body-sm outline-none focus:border-brand-700 focus:ring-1 focus:ring-brand-700"
+              className="rounded-chip border border-slate-300 px-3 py-3 text-body outline-none focus:border-brand-700 focus:ring-1 focus:ring-brand-700"
             />
           </div>
           <div className="flex flex-col gap-2">
@@ -100,7 +100,7 @@ export function CheckForm() {
               required
               inputMode="numeric"
               maxLength={4}
-              className="rounded-chip border border-slate-300 px-3 py-3 text-body-sm tracking-widest outline-none focus:border-brand-700 focus:ring-1 focus:ring-brand-700"
+              className="rounded-chip border border-slate-300 px-3 py-3 text-body tracking-widest outline-none focus:border-brand-700 focus:ring-1 focus:ring-brand-700"
             />
           </div>
         </div>
@@ -114,7 +114,7 @@ export function CheckForm() {
         <button
           type="submit"
           disabled={pending}
-          className="min-h-11 self-start rounded-control bg-brand-700 px-4 text-body-sm font-semibold text-white transition-colors hover:bg-brand-600 disabled:opacity-60"
+          className="btn btn-primary self-start"
         >
           {pending ? "조회 중…" : "조회하기"}
         </button>
@@ -128,14 +128,14 @@ export function CheckForm() {
             </p>
           ) : (
             results.map((r) => (
-              <div key={r.id} className="card px-4 py-4">
+              <div key={r.id} className="card animate-enter p-5">
                 <div className="flex flex-wrap items-center justify-between gap-2">
                   <p className="font-semibold text-slate-900">{r.title}</p>
                   <span
-                    className={`rounded-full px-3 py-1 text-caption font-semibold ${
+                    className={`badge ${
                       r.status === "답변완료"
-                        ? "bg-brand-700 text-white"
-                        : "bg-slate-100 text-slate-600"
+                        ? "badge-active"
+                        : "badge-muted"
                     }`}
                   >
                     {r.status}
@@ -144,7 +144,7 @@ export function CheckForm() {
                 {r.category && <p className="mt-1 text-caption text-slate-600">{r.category}</p>}
                 <p className="mt-3 whitespace-pre-wrap text-body-sm text-slate-700">{r.content}</p>
                 {r.answer && (
-                  <div className="mt-3 rounded-chip bg-brand-50 px-3 py-3">
+                  <div className="mt-3 rounded-control bg-brand-50 px-4 py-3">
                     <p className="text-caption font-semibold text-brand-700">
                       {r.answered_department ?? "학생자치회"} 답변
                     </p>

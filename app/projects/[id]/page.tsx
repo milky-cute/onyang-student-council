@@ -179,7 +179,7 @@ export default async function ProjectDetailPage({ params }: Props) {
                   {project.has_pass && (
                     <Link
                       href={`/projects/${project.id}/pass`}
-                      className="flex min-h-14 w-full items-center justify-center rounded-control border border-amber-300 bg-amber-50 px-5 text-body font-bold text-amber-800 hover:bg-amber-100 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-700"
+                      className="press flex min-h-14 w-full items-center justify-center rounded-control border border-brand-700 bg-white px-5 text-body font-bold text-brand-700 hover:bg-brand-50"
                     >
                       내 입장권 보기
                     </Link>

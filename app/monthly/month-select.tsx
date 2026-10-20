@@ -23,7 +23,7 @@ export function MonthSelect({
         id="month"
         value={selected}
         onChange={(event) => router.push(`/monthly?ym=${event.target.value}`)}
-        className="rounded-chip border border-slate-300 bg-white px-3 py-2 text-body-sm text-slate-900 outline-none focus:border-brand-700 focus:ring-1 focus:ring-brand-700"
+        className="rounded-chip border border-slate-300 bg-white px-3 py-2 text-body text-slate-900 outline-none focus:border-brand-700 focus:ring-1 focus:ring-brand-700"
       >
         {months.map((month) => (
           <option key={month} value={month}>

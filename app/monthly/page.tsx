@@ -157,13 +157,13 @@ export default async function MonthlyPage({
                                 src={activity.image_url}
                                 alt=""
                                 fill
-                                sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
+                                sizes="(min-width: 1152px) 363px, (min-width: 1024px) calc((100vw - 64px) / 3), (min-width: 640px) calc((100vw - 48px) / 2), calc(100vw - 32px)"
                                 className="object-cover"
                               />
                             </div>
                           )}
                           <div className="flex flex-1 flex-col p-5">
-                            <h4 className="text-body font-semibold text-slate-900">
+                            <h4 className="text-card-title font-semibold text-slate-900">
                               {activity.title}
                             </h4>
                             {activity.description && (

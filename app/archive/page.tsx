@@ -78,15 +78,15 @@ export default async function ArchivePage() {
               <Link
                 key={album.name}
                 href={`/archive/${encodeURIComponent(album.name)}`}
-                className="card group overflow-hidden transition-shadow hover:shadow-md"
+                className="card press group overflow-hidden hover:border-brand-100"
               >
                 <div className="relative aspect-square w-full overflow-hidden bg-slate-100">
                   <Image
                     src={album.coverUrl}
                     alt={album.name}
                     fill
-                    sizes="(min-width: 768px) 25vw, (min-width: 640px) 33vw, 50vw"
-                    className="object-cover transition-transform duration-200 group-hover:scale-105"
+                    sizes="(min-width: 1152px) 268px, (min-width: 768px) calc((100vw - 80px) / 4), (min-width: 640px) calc((100vw - 64px) / 3), calc((100vw - 48px) / 2)"
+                    className="object-cover transition-transform duration-(--motion-enter) ease-enter motion-safe:group-hover:scale-105"
                   />
                 </div>
                 <div className="px-3 py-3">

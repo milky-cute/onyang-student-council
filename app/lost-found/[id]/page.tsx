@@ -77,10 +77,10 @@ export default async function LostFoundItemPage({ params }: Props) {
           {item.image_url ? (
             <Image
               src={item.image_url}
-              alt={item.title}
+              alt={`${item.title} 사진`}
               width={1200}
               height={900}
-              sizes="(min-width: 768px) 768px, 100vw"
+              sizes="(min-width: 800px) 768px, calc(100vw - 32px)"
               // 찾아간 물건은 목록과 같이 흑백 + 흐리게
               className={`h-auto w-full ${item.is_resolved ? "opacity-60 grayscale" : ""}`}
             />
@@ -99,11 +99,11 @@ export default async function LostFoundItemPage({ params }: Props) {
             <div className="flex flex-wrap items-center gap-2">
               <h2 className="text-title font-bold text-slate-900">{item.title}</h2>
               {item.is_resolved ? (
-                <span className="rounded-full bg-slate-100 px-3 py-0.5 text-caption font-semibold text-slate-600">
+                <span className="badge badge-muted">
                   주인 찾음
                 </span>
               ) : (
-                <span className="rounded-full bg-brand-700 px-3 py-0.5 text-caption font-semibold text-white">
+                <span className="badge badge-active">
                   보관 중
                 </span>
               )}

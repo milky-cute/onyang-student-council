@@ -62,7 +62,7 @@ export default async function BoardPage({
                 key={filter.value}
                 href={filter.value === "all" ? "/board" : `/board?type=${filter.value}`}
                 aria-current={isActive ? "true" : undefined}
-                className={`inline-flex min-h-11 items-center rounded-full px-4 text-body-sm font-semibold transition-colors ${
+                className={`press inline-flex min-h-11 items-center rounded-full px-4 text-body-sm font-semibold ${
                   isActive
                     ? "bg-brand-700 text-white"
                     : "border border-slate-300 text-slate-600 hover:border-brand-100 hover:text-brand-700"
@@ -99,7 +99,7 @@ export default async function BoardPage({
               <li key={post.id}>
                 <Link
                   href={`/board/${post.id}`}
-                  className="card group flex h-full flex-col overflow-hidden transition-colors hover:border-brand-100"
+                  className="card press group flex h-full flex-col overflow-hidden hover:border-brand-100"
                 >
                   {post.image_url && (
                     <div className="relative aspect-[4/3] w-full bg-slate-100">
@@ -107,7 +107,7 @@ export default async function BoardPage({
                         src={post.image_url}
                         alt=""
                         fill
-                        sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
+                        sizes="(min-width: 1152px) 363px, (min-width: 1024px) calc((100vw - 64px) / 3), (min-width: 640px) calc((100vw - 48px) / 2), calc(100vw - 32px)"
                         className="object-cover"
                       />
                     </div>
@@ -116,25 +116,25 @@ export default async function BoardPage({
                   <div className="flex flex-1 flex-col p-5">
                     <div className="flex flex-wrap items-center gap-2">
                       {post.is_pinned && (
-                        <span className="rounded-chip bg-brand-700 px-2 py-0.5 text-caption font-semibold text-white">
+                        <span className="badge badge-active">
                           고정
                         </span>
                       )}
                       <span
-                        className={`rounded px-2 py-0.5 text-caption font-semibold ${
+                        className={`badge ${
                           post.type === "notice"
-                            ? "bg-brand-50 text-brand-700"
-                            : "bg-slate-100 text-slate-600"
+                            ? "badge-info"
+                            : "badge-muted"
                         }`}
                       >
                         {post.type === "notice" ? "공지" : "포스터"}
                       </span>
-                      <span className="rounded-chip bg-slate-100 px-2 py-0.5 text-caption font-semibold text-slate-600">
+                      <span className="badge badge-muted">
                         {post.department ?? "학생자치회"}
                       </span>
                     </div>
 
-                    <h2 className="mt-3 text-body font-semibold text-slate-900 group-hover:text-brand-700">
+                    <h2 className="mt-3 text-card-title font-semibold text-slate-900 group-hover:text-brand-700">
                       {post.title}
                     </h2>
 

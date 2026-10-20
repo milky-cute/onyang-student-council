@@ -31,7 +31,7 @@ export default async function RequestsPage() {
             </p>
             <Link
               href="/requests/check"
-              className="inline-flex min-h-11 shrink-0 items-center rounded-control border border-brand-700 bg-white px-3 text-body-sm font-semibold text-brand-700 transition-colors hover:bg-brand-700 hover:text-white"
+              className="btn btn-outline shrink-0 bg-white"
             >
               내 요구사항 조회
             </Link>
@@ -45,17 +45,17 @@ export default async function RequestsPage() {
               <p className="text-body-sm text-slate-600">아직 공개된 답변이 없습니다.</p>
             ) : (
               publicRequests.map((r) => (
-                <div key={r.id} className="card px-4 py-4">
+                <div key={r.id} className="card p-5">
                   <div className="flex flex-wrap items-center justify-between gap-2">
                     <p className="font-semibold text-slate-900">{r.title}</p>
-                    <span className="rounded-full bg-brand-50 px-3 py-1 text-caption font-semibold text-brand-700">
+                    <span className="badge badge-info">
                       {r.answered_department ?? "학생자치회"}
                     </span>
                   </div>
                   {r.category && <p className="mt-1 text-caption text-slate-600">{r.category}</p>}
                   <p className="mt-3 whitespace-pre-wrap text-body-sm text-slate-700">{r.content}</p>
                   {r.answer && (
-                    <div className="mt-3 rounded-chip bg-brand-50 px-3 py-3">
+                    <div className="mt-3 rounded-control bg-brand-50 px-4 py-3">
                       <p className="text-caption font-semibold text-brand-700">답변</p>
                       <p className="mt-1 whitespace-pre-wrap text-body-sm text-slate-700">{r.answer}</p>
                     </div>

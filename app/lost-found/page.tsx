@@ -47,24 +47,25 @@ export default async function LostFoundPage() {
           </div>
         ) : (
           <>
-            <p className="flex flex-wrap items-center gap-2 text-body-sm">
-              <span className="inline-flex items-center gap-2 rounded-full bg-brand-50 px-3 py-1 font-semibold text-brand-700">
+            <p className="flex flex-wrap items-center gap-2">
+              <span className="badge badge-info gap-2">
                 <span aria-hidden className="size-1.5 rounded-full bg-brand-700" />
                 보관 중 {waiting}
               </span>
-              <span className="inline-flex items-center gap-2 rounded-full bg-slate-100 px-3 py-1 font-semibold text-slate-600">
+              <span className="badge badge-muted gap-2">
                 <span aria-hidden className="size-1.5 rounded-full bg-slate-400" />
                 주인 찾음 {resolved}
               </span>
             </p>
 
             {/* 사진만 훑어보고 내 물건을 찾을 수 있게 촘촘한 격자로 둔다. */}
-            <ul className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4 lg:gap-4">
+            {/* 컴퓨터(1024px~)에서는 5열 — 본문 폭 1120px 에서도 사진 칸이 240px 를 넘지 않는다. */}
+            <ul className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-5 lg:gap-4">
               {items.map((item) => (
                 <li key={item.id}>
                   <Link
                     href={`/lost-found/${item.id}`}
-                    className="card flex h-full flex-col overflow-hidden transition-colors hover:border-brand-100 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-700"
+                    className="card press flex h-full flex-col overflow-hidden hover:border-brand-100 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-700"
                   >
                     {/* 모든 카드가 같은 크기의 정사각형 사진 자리를 갖는다. */}
                     <div
@@ -75,9 +76,9 @@ export default async function LostFoundPage() {
                       {item.image_url ? (
                         <Image
                           src={item.image_url}
-                          alt={item.title}
+                          alt={`${item.title} 사진`}
                           fill
-                          sizes="(min-width: 1024px) 25vw, (min-width: 640px) 33vw, 50vw"
+                          sizes="(min-width: 1152px) 212px, (min-width: 1024px) calc((100vw - 96px) / 5), (min-width: 640px) calc((100vw - 56px) / 3), calc((100vw - 44px) / 2)"
                           // 찾아간 물건은 흑백 + 흐리게
                           className={`object-cover ${item.is_resolved ? "opacity-60 grayscale" : ""}`}
                         />
@@ -98,7 +99,7 @@ export default async function LostFoundPage() {
                           </span>
                         </span>
                       ) : (
-                        <span className="absolute left-2 top-2 rounded-chip bg-brand-700 px-2 py-0.5 text-caption font-semibold text-white">
+                        <span className="badge badge-active absolute top-2 left-2">
                           보관 중
                         </span>
                       )}

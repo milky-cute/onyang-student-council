@@ -76,7 +76,7 @@ export default async function PassPage({ params }: Props) {
                 href={link.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex min-h-12 items-center justify-center rounded-control bg-brand-700 px-4 text-body font-semibold text-white transition-colors hover:bg-brand-600 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-700"
+                className="btn btn-primary"
               >
                 {link.label}
               </a>

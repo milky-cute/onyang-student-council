@@ -57,14 +57,14 @@ export function AlbumGallery({ photos }: { photos: Photo[] }) {
             key={photo.id}
             type="button"
             onClick={() => setOpenIndex(index)}
-            className="group relative aspect-square overflow-hidden rounded-chip bg-slate-100"
+            className="press group relative aspect-square overflow-hidden rounded-chip bg-slate-100"
           >
             <Image
               src={photo.image_url}
               alt={photo.title}
               fill
-              sizes="(min-width: 768px) 25vw, (min-width: 640px) 33vw, 50vw"
-              className="object-cover transition-transform duration-200 group-hover:scale-105"
+              sizes="(min-width: 1152px) 272px, (min-width: 768px) calc((100vw - 68px) / 4), (min-width: 640px) calc((100vw - 56px) / 3), calc((100vw - 44px) / 2)"
+              className="object-cover transition-transform duration-(--motion-enter) ease-enter motion-safe:group-hover:scale-105"
             />
           </button>
         ))}
@@ -75,7 +75,7 @@ export function AlbumGallery({ photos }: { photos: Photo[] }) {
           role="dialog"
           aria-modal="true"
           aria-label={activePhoto.title}
-          className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 px-4 py-8"
+          className="fixed inset-0 z-50 flex animate-fade-in items-center justify-center bg-black/80 px-4 py-8"
           onClick={() => setOpenIndex(null)}
         >
           <button
@@ -85,7 +85,7 @@ export function AlbumGallery({ photos }: { photos: Photo[] }) {
               handleDownload(activePhoto.image_url, `${activePhoto.title || "photo"}.jpg`);
             }}
             aria-label="사진 저장"
-            className="absolute right-16 top-4 flex size-10 items-center justify-center rounded-full bg-white/10 text-white hover:bg-white/20"
+            className="absolute right-16 top-4 flex size-11 items-center justify-center rounded-full bg-white/10 text-white hover:bg-white/20"
           >
             <svg
               aria-hidden
@@ -105,7 +105,7 @@ export function AlbumGallery({ photos }: { photos: Photo[] }) {
             type="button"
             onClick={() => setOpenIndex(null)}
             aria-label="닫기"
-            className="absolute right-4 top-4 flex size-10 items-center justify-center rounded-full bg-white/10 text-white hover:bg-white/20"
+            className="absolute right-4 top-4 flex size-11 items-center justify-center rounded-full bg-white/10 text-white hover:bg-white/20"
           >
             <svg
               aria-hidden
@@ -129,7 +129,7 @@ export function AlbumGallery({ photos }: { photos: Photo[] }) {
                   setOpenIndex((i) => (i === null ? null : (i - 1 + photos.length) % photos.length));
                 }}
                 aria-label="이전 사진"
-                className="absolute left-2 top-1/2 flex size-10 -translate-y-1/2 items-center justify-center rounded-full bg-white/10 text-white hover:bg-white/20 sm:left-4"
+                className="absolute left-2 top-1/2 flex size-11 -translate-y-1/2 items-center justify-center rounded-full bg-white/10 text-white hover:bg-white/20 sm:left-4"
               >
                 <svg
                   aria-hidden
@@ -151,7 +151,7 @@ export function AlbumGallery({ photos }: { photos: Photo[] }) {
                   setOpenIndex((i) => (i === null ? null : (i + 1) % photos.length));
                 }}
                 aria-label="다음 사진"
-                className="absolute right-2 top-1/2 flex size-10 -translate-y-1/2 items-center justify-center rounded-full bg-white/10 text-white hover:bg-white/20 sm:right-4"
+                className="absolute right-2 top-1/2 flex size-11 -translate-y-1/2 items-center justify-center rounded-full bg-white/10 text-white hover:bg-white/20 sm:right-4"
               >
                 <svg
                   aria-hidden
@@ -170,7 +170,7 @@ export function AlbumGallery({ photos }: { photos: Photo[] }) {
           )}
 
           <div
-            className="flex max-h-full max-w-3xl flex-col items-center gap-3"
+            className="flex max-h-full max-w-3xl animate-enter flex-col items-center gap-3"
             onClick={(e) => e.stopPropagation()}
           >
             {/* eslint-disable-next-line @next/next/no-img-element -- 원본 비율 그대로 확대 표시하기 위해 next/image 대신 사용 */}

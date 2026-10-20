@@ -114,7 +114,7 @@ export function PassLoginForm() {
       <button
         type="submit"
         disabled={pending}
-        className="min-h-12 rounded-control bg-brand-700 px-4 text-body font-semibold text-white transition-colors hover:bg-brand-600 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-700 disabled:opacity-60"
+        className="btn btn-primary"
       >
         {pending ? "확인 중…" : "입장권 열기"}
       </button>
