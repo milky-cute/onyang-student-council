@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
@@ -14,6 +15,8 @@ type Event = {
   event_date: string;
   color: string;
   is_dday: boolean;
+  /** 학생회 사업에서 자동으로 만든 일정이면 그 사업 id. 여기서는 고칠 수 없다. */
+  project_id: string | null;
 };
 
 export function EventRow({ event }: { event: Event }) {
@@ -97,6 +100,7 @@ export function EventRow({ event }: { event: Event }) {
                 D-day
               </span>
             )}
+            {event.project_id && <span className="badge badge-info">사업에서 자동</span>}
           </p>
           <p className="mt-0.5 text-caption text-slate-600">{event.event_date}</p>
           {event.description && (
@@ -108,23 +112,32 @@ export function EventRow({ event }: { event: Event }) {
             </p>
           )}
         </div>
-        <div className="flex shrink-0 gap-2">
-          <button
-            type="button"
-            onClick={() => setEditing(true)}
-            className="rounded-chip border border-slate-300 px-3 py-2 text-caption font-semibold text-slate-700 hover:bg-slate-50"
+        {event.project_id ? (
+          <Link
+            href={`/admin/projects/${event.project_id}/edit`}
+            className="shrink-0 rounded-chip border border-slate-300 px-3 py-2 text-caption font-semibold text-slate-700 hover:bg-slate-50"
           >
-            수정
-          </button>
-          <button
-            type="button"
-            onClick={handleDelete}
-            disabled={pending}
-            className="rounded-chip border border-red-300 px-3 py-2 text-caption font-semibold text-red-600 hover:bg-red-50 disabled:opacity-60"
-          >
-            삭제
-          </button>
-        </div>
+            사업에서 고치기
+          </Link>
+        ) : (
+          <div className="flex shrink-0 gap-2">
+            <button
+              type="button"
+              onClick={() => setEditing(true)}
+              className="rounded-chip border border-slate-300 px-3 py-2 text-caption font-semibold text-slate-700 hover:bg-slate-50"
+            >
+              수정
+            </button>
+            <button
+              type="button"
+              onClick={handleDelete}
+              disabled={pending}
+              className="rounded-chip border border-red-300 px-3 py-2 text-caption font-semibold text-red-600 hover:bg-red-50 disabled:opacity-60"
+            >
+              삭제
+            </button>
+          </div>
+        )}
       </div>
     );
   }
