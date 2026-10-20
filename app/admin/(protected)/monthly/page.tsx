@@ -75,7 +75,7 @@ export default async function AdminMonthlyPage() {
                     className="flex flex-wrap items-center justify-between gap-3 py-4"
                   >
                     <div className="min-w-0">
-                      <span className="rounded-chip bg-brand-50 px-2 py-0.5 text-caption font-semibold text-brand-700">
+                      <span className="badge badge-info">
                         {activity.department}
                       </span>
                       <p className="mt-1 truncate text-body font-semibold text-slate-900">

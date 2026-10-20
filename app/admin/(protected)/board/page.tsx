@@ -61,15 +61,15 @@ export default async function AdminBoardPage() {
               <div className="min-w-0">
                 <div className="flex flex-wrap items-center gap-2">
                   {post.is_pinned && (
-                    <span className="rounded-chip bg-brand-700 px-2 py-0.5 text-caption font-semibold text-white">
+                    <span className="badge badge-active">
                       고정
                     </span>
                   )}
                   <span
-                    className={`rounded px-2 py-0.5 text-caption font-semibold ${
+                    className={`badge ${
                       post.type === "notice"
-                        ? "bg-brand-50 text-brand-700"
-                        : "bg-slate-100 text-slate-600"
+                        ? "badge-info"
+                        : "badge-muted"
                     }`}
                   >
                     {post.type === "notice" ? "공지" : "포스터"}

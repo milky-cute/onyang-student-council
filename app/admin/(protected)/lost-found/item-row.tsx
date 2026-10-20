@@ -143,12 +143,12 @@ export function ItemRow({
           <p className="flex flex-wrap items-center gap-2 text-body-sm font-semibold text-slate-900">
             {item.title}
             {item.is_resolved && (
-              <span className="rounded-full bg-slate-200 px-2 py-0.5 text-caption font-semibold text-slate-600">
+              <span className="badge badge-muted">
                 찾아감
               </span>
             )}
             {isExpired && (
-              <span className="rounded-full bg-red-100 px-2 py-0.5 text-caption font-semibold text-red-700">
+              <span className="badge badge-error">
                 기한 지남
               </span>
             )}

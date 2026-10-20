@@ -41,7 +41,7 @@ export default async function AdminRequestsPage() {
         ) : (
           <div className="flex flex-col gap-4">
             {requests.map((r) => (
-              <div key={r.id} className="rounded-chip border border-slate-200 px-5 py-5">
+              <div key={r.id} className="rounded-control border border-slate-200 px-5 py-5">
                 <div className="flex flex-wrap items-center justify-between gap-2">
                   <div>
                     <p className="font-semibold text-slate-900">{r.title}</p>
@@ -55,10 +55,10 @@ export default async function AdminRequestsPage() {
                       <VisibilityToggle requestId={r.id} isPublic={r.is_public} />
                     )}
                     <span
-                      className={`rounded-full px-3 py-1 text-caption font-semibold ${
+                      className={`badge ${
                         r.status === "답변완료"
-                          ? "bg-brand-700 text-white"
-                          : "bg-slate-100 text-slate-600"
+                          ? "badge-active"
+                          : "badge-muted"
                       }`}
                     >
                       {r.status}

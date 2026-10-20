@@ -221,7 +221,7 @@ export function ProjectForm({ project }: { project?: ProjectWithMedia }) {
   return (
     <form
       onSubmit={handleSubmit}
-      className="flex max-w-3xl flex-col gap-6 rounded-chip border border-slate-200 bg-white px-5 py-6"
+      className="flex max-w-3xl flex-col gap-6 rounded-control border border-slate-200 bg-white px-5 py-6"
     >
       {/* 사진 */}
       <fieldset className="flex flex-col gap-2">
@@ -232,7 +232,7 @@ export function ProjectForm({ project }: { project?: ProjectWithMedia }) {
           <ol className="grid grid-cols-2 gap-3 sm:grid-cols-4">
             {photos.map((url, index) => (
               <li key={url} className="flex flex-col gap-2">
-                <div className="relative aspect-[4/3] overflow-hidden rounded-chip border border-slate-200 bg-slate-100">
+                <div className="relative aspect-[4/3] overflow-hidden rounded-control border border-slate-200 bg-slate-100">
                   <Image
                     src={url}
                     unoptimized={needsUnoptimized(url)}
@@ -353,7 +353,7 @@ export function ProjectForm({ project }: { project?: ProjectWithMedia }) {
       <fieldset className="flex flex-col gap-3">
         <legend className={labelClass}>링크 (선택, 최대 {MAX_LINKS}개)</legend>
         {links.map((link, index) => (
-          <div key={link.key} className="flex flex-col gap-3 rounded-chip border border-slate-200 px-4 py-3">
+          <div key={link.key} className="flex flex-col gap-3 rounded-control border border-slate-200 px-4 py-3">
             <div className="flex items-center gap-1">
               <span className="text-caption font-semibold text-slate-600">{index + 1}번째 링크</span>
               <button

@@ -95,7 +95,7 @@ export function ProjectRow({
       : project.start_date;
 
   return (
-    <div className="flex flex-col gap-3 rounded-chip border border-slate-200 bg-white px-4 py-4">
+    <div className="flex flex-col gap-3 rounded-control border border-slate-200 bg-white px-4 py-4">
       <div className="flex flex-wrap items-start justify-between gap-4">
         <div className="flex min-w-0 flex-1 gap-4">
           {coverUrl && (
@@ -113,7 +113,7 @@ export function ProjectRow({
           <div className="flex min-w-0 flex-col gap-1">
             <p className="flex flex-wrap items-center gap-2 text-body-sm font-semibold text-slate-900">
               {project.is_pinned && (
-                <span className="rounded-full bg-brand-50 px-2 py-0.5 text-caption font-semibold text-brand-700">
+                <span className="badge badge-info">
                   고정
                 </span>
               )}
@@ -164,7 +164,7 @@ export function ProjectRow({
       </div>
 
       {qrOpen && (
-        <div className="flex flex-col items-center gap-4 rounded-chip bg-slate-50 px-4 py-4 sm:flex-row sm:items-start">
+        <div className="flex flex-col items-center gap-4 rounded-control bg-slate-50 px-4 py-4 sm:flex-row sm:items-start">
           <ProjectQr
             value={pageUrl}
             fileName={`${project.title}-QR.png`}
@@ -174,7 +174,7 @@ export function ProjectRow({
             <p className="text-slate-600">
               포스터용 QR 이미지(1024px, 여백 포함)입니다. 아래 주소로 연결됩니다.
             </p>
-            <p className="break-all rounded-chip border border-slate-200 bg-white px-3 py-2 font-mono text-caption text-slate-800">
+            <p className="break-all rounded-control border border-slate-200 bg-white px-3 py-2 font-mono text-caption text-slate-800">
               {pageUrl}
             </p>
             <button type="button" onClick={handleCopy} className={`${outlineButton} self-start bg-white`}>

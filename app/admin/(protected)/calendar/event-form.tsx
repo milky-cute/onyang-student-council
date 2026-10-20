@@ -62,7 +62,7 @@ export function EventForm() {
   return (
     <form
       onSubmit={handleSubmit}
-      className="flex flex-col gap-4 rounded-chip border border-slate-200 px-5 py-6"
+      className="flex flex-col gap-4 rounded-control border border-slate-200 px-5 py-6"
     >
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-[1fr_auto]">
         <div className="flex flex-col gap-2">

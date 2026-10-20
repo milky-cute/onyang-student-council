@@ -83,7 +83,7 @@ export function EventRow({ event }: { event: Event }) {
 
   if (!editing) {
     return (
-      <div className="flex flex-wrap items-center justify-between gap-3 rounded-chip border border-slate-200 px-4 py-3">
+      <div className="flex flex-wrap items-center justify-between gap-3 rounded-control border border-slate-200 px-4 py-3">
         <div>
           <p className="flex items-center gap-2 text-body-sm font-semibold text-slate-900">
             <span
@@ -93,7 +93,7 @@ export function EventRow({ event }: { event: Event }) {
             />
             {event.title}
             {event.is_dday && (
-              <span className="rounded-full bg-amber-100 px-2 py-0.5 text-caption font-semibold text-amber-800">
+              <span className="badge badge-soon">
                 D-day
               </span>
             )}

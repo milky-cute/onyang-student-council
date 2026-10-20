@@ -54,7 +54,7 @@ export function AnswerForm({
 
   if (!editing) {
     return (
-      <div className="rounded-chip bg-brand-50 px-3 py-3">
+      <div className="rounded-control bg-brand-50 px-3 py-3">
         <div className="flex items-center justify-between gap-2">
           <p className="text-caption font-semibold text-brand-700">
             {answeredDepartment ?? "학생자치회"} 답변

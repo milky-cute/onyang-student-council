@@ -138,7 +138,7 @@ function HolderRow({ holder }: { holder: Holder }) {
           <span className="tabular-nums">{holder.student_number}</span>
           {holder.student_name}
           {holder.is_suspended && (
-            <span className="rounded-full bg-red-100 px-2 py-0.5 text-caption font-semibold text-red-700">
+            <span className="badge badge-error">
               정지됨
             </span>
           )}

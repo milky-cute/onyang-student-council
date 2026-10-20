@@ -82,7 +82,7 @@ export function ItemForm() {
   return (
     <form
       onSubmit={handleSubmit}
-      className="flex flex-col gap-4 rounded-chip border border-slate-200 px-5 py-6"
+      className="flex flex-col gap-4 rounded-control border border-slate-200 px-5 py-6"
     >
       <div className="flex flex-col gap-2">
         <label htmlFor="title" className="text-body-sm font-semibold text-slate-700">

@@ -55,7 +55,7 @@ export default async function AdminArchivePage() {
             <p className="text-body-sm text-slate-600">아직 등록된 앨범이 없습니다.</p>
           ) : (
             albums.map((album) => (
-              <div key={album.name} className="rounded-chip border border-slate-200 px-4 py-4">
+              <div key={album.name} className="rounded-control border border-slate-200 px-4 py-4">
                 <div className="mb-3 flex items-center justify-between">
                   <p className="font-semibold text-slate-900">{album.name}</p>
                   <span className="text-caption text-slate-600">사진 {album.photos.length}장</span>

@@ -56,7 +56,7 @@ export function UploadForm({ existingAlbums }: { existingAlbums: string[] }) {
   }
 
   return (
-    <div className="flex flex-col gap-4 rounded-chip border border-slate-200 px-5 py-6">
+    <div className="flex flex-col gap-4 rounded-control border border-slate-200 px-5 py-6">
       <div className="flex flex-col gap-2">
         <label htmlFor="album" className="text-body-sm font-semibold text-slate-700">
           앨범 이름
