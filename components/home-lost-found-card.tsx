@@ -51,7 +51,7 @@ export function HomeLostFoundCard({
                   {item.image_url ? (
                     <Image
                       src={item.image_url}
-                      alt={item.title}
+                      alt={`${item.title} 사진`}
                       fill
                       sizes="(min-width: 1024px) 240px, 30vw"
                       className="object-cover transition-transform group-hover:scale-105"

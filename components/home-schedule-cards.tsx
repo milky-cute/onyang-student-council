@@ -43,7 +43,7 @@ export function HomeWeekCard({
   );
 
   return (
-    <section aria-labelledby="home-week-heading" className="card flex h-full flex-col p-5">
+    <section aria-labelledby="home-week-heading" className="card flex flex-col p-5">
       <SectionHeader
         id="home-week-heading"
         title={isNextWeek ? "다음 주 일정" : "이번 주 일정"}

@@ -107,6 +107,15 @@
     0 2px 8px rgb(15 23 42 / 0.03);
 }
 
+/** 가로 슬라이드의 스크롤바 숨김. 스크롤 · 스냅 동작은 그대로다(터치 · 트랙패드 · 키보드로 넘길 수 있음). */
+@utility scrollbar-none {
+  scrollbar-width: none;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
 /** 아이콘 타일: 40px, brand-50 바탕 + brand-700 아이콘 한 가지뿐. */
 @utility icon-tile {
   display: flex;
