@@ -55,7 +55,7 @@ export function HomeProjectsCard({
             {projects[0].image_url ? (
               <Image
                 src={projects[0].image_url}
-                alt={projects[0].title}
+                alt={`${projects[0].title} 사진`}
                 fill
                 sizes="96px"
                 unoptimized={needsUnoptimized(projects[0].image_url)}
@@ -79,7 +79,7 @@ export function HomeProjectsCard({
           <ChevronRightIcon className="size-5 shrink-0 text-slate-400" />
         </Link>
       ) : (
-        <ul className="-mx-5 mt-4 flex snap-x snap-mandatory scroll-px-5 gap-3 overflow-x-auto px-5 pb-1">
+        <ul className="-mx-5 mt-4 flex snap-x snap-mandatory scroll-px-5 gap-3 overflow-x-auto px-5 pb-1 scrollbar-none">
           {projects.map((project) => {
             return (
               <li key={project.id} className="w-[72%] shrink-0 snap-start sm:w-[46%]">
@@ -91,7 +91,7 @@ export function HomeProjectsCard({
                     {project.image_url ? (
                       <Image
                         src={project.image_url}
-                        alt={project.title}
+                        alt={`${project.title} 사진`}
                         fill
                         sizes="(min-width: 1024px) 260px, 70vw"
                         unoptimized={needsUnoptimized(project.image_url)}
