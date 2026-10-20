@@ -24,7 +24,7 @@ const TABS = [
 ];
 
 /** 더보기 시트에 넣는 메뉴(이 순서대로). 이름 · 설명은 NAV_ITEMS 를 그대로 쓴다. */
-const MORE_HREFS = ["/board", "/monthly", "/archive", "/requests"];
+const MORE_HREFS = ["/monthly", "/archive", "/requests"];
 const MORE_ITEMS = MORE_HREFS.flatMap((href) => NAV_ITEMS.filter((item) => item.href === href));
 
 function isActivePath(pathname: string, href: string) {

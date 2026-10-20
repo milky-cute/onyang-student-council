@@ -42,12 +42,6 @@ export const NAV_ITEMS: NavItem[] = [
     shortDescription: "보관 중인 분실물",
   },
   {
-    href: "/board",
-    label: "학생자치회 게시판",
-    description: "진행중인 활동 포스터와 학생자치회 공지사항을 확인하세요.",
-    shortDescription: "공지사항·활동 포스터",
-  },
-  {
     href: "/monthly",
     label: "이달의 학생자치회",
     description: "매월 각 부서가 어떤 활동을 했는지 정리해 보여드립니다.",
