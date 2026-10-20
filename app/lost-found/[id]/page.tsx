@@ -96,8 +96,8 @@ export default async function LostFoundItemPage({ params }: Props) {
           )}
 
           <div className="p-5">
+            {/* 제목은 바로 위 PageHeader(h1)에 있으니 카드에는 상태 배지만 둔다. */}
             <div className="flex flex-wrap items-center gap-2">
-              <h2 className="text-title font-bold text-slate-900">{item.title}</h2>
               {item.is_resolved ? (
                 <span className="badge badge-muted">
                   주인 찾음

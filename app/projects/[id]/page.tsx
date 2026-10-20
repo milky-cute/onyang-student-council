@@ -152,10 +152,8 @@ export default async function ProjectDetailPage({ params }: Props) {
             )}
 
             <div className="flex flex-col gap-4 p-5">
-              <div className="flex flex-col gap-2">
-                <ProjectBadges project={project} todayKey={todayKey} />
-                <h2 className="text-title font-bold text-slate-900">{project.title}</h2>
-              </div>
+              {/* 제목은 바로 위 PageHeader(h1)에 있으니 카드에는 배지만 둔다. */}
+              <ProjectBadges project={project} todayKey={todayKey} />
 
               {info.length > 0 && (
                 <dl className="flex flex-col gap-2 rounded-control bg-slate-50 px-4 py-3 text-body-sm">
