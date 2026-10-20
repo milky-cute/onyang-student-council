@@ -1,36 +1,170 @@
 @import "tailwindcss";
 
 /**
- * 디자인 토큰 — 라운드 13 리디자인(Google Stitch 모바일 시안 기준).
+ * 디자인 토큰 — 라운드 16 디자인 시스템 정리.
+ * 방향: 차분한 파랑 하나(brand) + 슬레이트 무채색. 색은 상태를 말할 때만 쓴다.
  *
- * - 주색: brand-700 = #1D4ED8. `bg-brand-700`, `text-brand-700` 처럼 쓴다.
- * - 페이지 배경: --color-page = #F5F7FA (`bg-page`). body 에 기본으로 깔린다.
- * - 카드: `card` 유틸리티 = 흰 바탕 + 둥근 모서리 16px + 옅은 테두리 + 아주 옅은 그림자.
- * - 강조색: Tailwind 기본 amber 팔레트 (D-day 카드, kcal 알약, 안내 띠).
- * - 글꼴: Pretendard Variable (app/layout.tsx 에서 CDN 으로 불러옴, 실패 시 시스템 글꼴).
+ * 글자(6단계, 12px 미만 금지, 굵기는 400 · 600 · 700 만)
+ *   text-caption 12 · text-body-sm 14 · text-body 16 · text-card-title 18 · text-title 22 · text-display 28
+ * 모서리
+ *   rounded-chip 8(칩 · 입력) · rounded-control 12(버튼 · 내부 패널) · rounded-card 20(카드) · rounded-full(배지 · 알약)
+ * 간격: Tailwind 기본 4px 단위에서 1 · 2 · 3 · 4 · 5 · 6 · 8 (= 4 · 8 · 12 · 16 · 20 · 24 · 32px) 만 쓴다.
+ * 색
+ *   - 주색: brand-700 = #1D4ED8. 연한 바탕 brand-50, 테두리 · 구분 brand-100, 눌림 · 호버 brand-600.
+ *   - 무채색: Tailwind slate. 본문 slate-900, 보조 글자 slate-600(페이지 배경 위에서도 4.5:1 이상).
+ *     slate-500 은 #F5F7FA 위에서 4.43:1 이라 글자에 쓰지 않는다.
+ *   - 상태 색: 아래 badge-* 유틸리티로만 쓴다. 장식용 색(보라 · 분홍 · 노랑 배경 등)은 쓰지 않는다.
+ * 페이지 배경: --color-page = #F5F7FA (`bg-page`). 글꼴: Pretendard Variable (app/layout.tsx 에서 CDN).
  */
 @theme {
   --color-brand-50: #eff6ff;
   --color-brand-100: #dbeafe;
+  --color-brand-600: #2563eb;
+  --color-brand-700: #1d4ed8; /* 메인 포인트 컬러 */
+  /* 아래 단계는 아직 다른 페이지가 쓰고 있어 남겨 둔다(16-2 에서 위 네 단계로 옮긴 뒤 정리). */
   --color-brand-200: #bfdbfe;
   --color-brand-300: #93c5fd;
   --color-brand-500: #3b82f6;
-  --color-brand-600: #2563eb;
-  --color-brand-700: #1d4ed8; /* 메인 포인트 컬러 */
   --color-brand-800: #1e40af;
   --color-brand-900: #1e3a8a;
 
   --color-page: #f5f7fa;
+
+  --text-caption: 0.75rem;
+  --text-caption--line-height: 1.4;
+  --text-body-sm: 0.875rem;
+  --text-body-sm--line-height: 1.5;
+  --text-body: 1rem;
+  --text-body--line-height: 1.55;
+  --text-card-title: 1.125rem;
+  --text-card-title--line-height: 1.4;
+  --text-title: 1.375rem;
+  --text-title--line-height: 1.35;
+  --text-display: 1.75rem;
+  --text-display--line-height: 1.2;
+
+  --radius-chip: 0.5rem;
+  --radius-control: 0.75rem;
+  --radius-card: 1.25rem;
 }
 
 /** 공통 카드. 홈 · 분실물 · 나머지 페이지가 같은 모양을 쓰도록 여기 한 곳에서 정의한다. */
 @utility card {
   background-color: #ffffff;
   border: 1px solid var(--color-slate-100);
-  border-radius: var(--radius-2xl);
+  border-radius: var(--radius-card);
   box-shadow:
     0 1px 2px rgb(15 23 42 / 0.04),
     0 2px 8px rgb(15 23 42 / 0.03);
+}
+
+/** 아이콘 타일: 40px, brand-50 바탕 + brand-700 아이콘 한 가지뿐. */
+@utility icon-tile {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: var(--radius-control);
+  background-color: var(--color-brand-50);
+  color: var(--color-brand-700);
+}
+
+/**
+ * 버튼. `btn btn-primary` 처럼 공통 모양(btn) + 변형 하나를 같이 쓴다.
+ * btn 은 높이(터치 목표 44px 이상) · 모서리 · 굵기 · 포커스만, 글자 크기와 좌우 여백은 변형이 정한다.
+ */
+@utility btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.25rem;
+  min-height: 2.75rem;
+  border-radius: var(--radius-control);
+  font-weight: 600;
+  transition-property: color, background-color, border-color;
+  transition-duration: 150ms;
+
+  &:focus-visible {
+    outline: 2px solid var(--color-brand-700);
+    outline-offset: 2px;
+  }
+}
+@utility btn-primary {
+  padding-inline: 1rem;
+  font-size: var(--text-body);
+  line-height: var(--text-body--line-height);
+  background-color: var(--color-brand-700);
+  color: #ffffff;
+
+  &:hover {
+    background-color: var(--color-brand-600);
+  }
+}
+@utility btn-outline {
+  padding-inline: 1rem;
+  font-size: var(--text-body);
+  line-height: var(--text-body--line-height);
+  border: 1px solid var(--color-brand-700);
+  color: var(--color-brand-700);
+
+  &:hover {
+    background-color: var(--color-brand-50);
+  }
+}
+/** 카드 머리의 "전체 보기" 같은 글자 버튼. 14px. */
+@utility btn-ghost {
+  padding-inline: 0.5rem;
+  font-size: var(--text-body-sm);
+  line-height: var(--text-body-sm--line-height);
+  color: var(--color-brand-700);
+
+  &:hover {
+    background-color: var(--color-brand-50);
+  }
+}
+
+/**
+ * 상태 배지(알약). `badge badge-active` 처럼 쓴다. 색은 상태 뜻으로만 고른다.
+ *   active  진행 · 신청 중(brand 진하게)   info   상시 등 진행 성격의 보조(brand 연하게)
+ *   soon    마감 임박(amber)              muted  예정 · 종료 · 마감(slate)
+ *   ok      성공 · 보관 중(green)          error  오류(red)
+ */
+@utility badge {
+  display: inline-flex;
+  align-items: center;
+  height: 1.5rem;
+  padding-inline: 0.5rem;
+  border-radius: calc(infinity * 1px);
+  font-size: var(--text-caption);
+  line-height: 1;
+  font-weight: 600;
+  white-space: nowrap;
+}
+@utility badge-active {
+  background-color: var(--color-brand-700);
+  color: #ffffff;
+}
+@utility badge-info {
+  background-color: var(--color-brand-50);
+  color: var(--color-brand-700);
+}
+@utility badge-soon {
+  background-color: var(--color-amber-50);
+  color: var(--color-amber-800);
+}
+@utility badge-muted {
+  background-color: var(--color-slate-100);
+  color: var(--color-slate-600);
+}
+@utility badge-ok {
+  background-color: var(--color-green-50);
+  color: var(--color-green-800);
+}
+@utility badge-error {
+  background-color: var(--color-red-50);
+  color: var(--color-red-700);
 }
 
 @layer base {

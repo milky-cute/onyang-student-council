@@ -1,44 +1,52 @@
-import { applyStatus, PROJECT_STATUS_LABEL, projectStatus, type Project } from "@/lib/projects";
+import {
+  applyStatus,
+  PROJECT_STATUS_LABEL,
+  projectStatus,
+  type ApplyStatus,
+  type Project,
+} from "@/lib/projects";
 
+/** 색은 상태 뜻으로만: 진행 중 brand, 상시 brand 연하게, 예정 · 종료 slate (globals.css 의 badge-*) */
 const STATUS_CLASS = {
-  always: "bg-violet-50 text-violet-700",
-  ongoing: "bg-brand-700 text-white",
-  upcoming: "bg-brand-50 text-brand-700",
-  ended: "bg-slate-200 text-slate-600",
+  always: "badge-info",
+  ongoing: "badge-active",
+  upcoming: "badge-muted",
+  ended: "badge-muted",
 } as const;
 
-const APPLY_CLASS = {
-  open: "bg-emerald-50 text-emerald-700",
-  upcoming: "bg-slate-100 text-slate-700",
-  closed: "bg-slate-100 text-slate-500",
-} as const;
+/** 마감까지 이 날수 이하로 남으면 "마감 임박"(amber) 으로 보여준다. */
+const CLOSING_SOON_DAYS = 3;
 
-const badge = "rounded-full px-2.5 py-0.5 text-xs font-semibold";
+function applyClass(apply: ApplyStatus) {
+  if (apply.kind !== "open") return "badge-muted";
+  return apply.daysLeft !== null && apply.daysLeft <= CLOSING_SOON_DAYS
+    ? "badge-soon"
+    : "badge-active";
+}
 
 /**
- * 사업 상태 · 신청 상태 · 입장권 배지. 목록 카드 · 상세 · 관리 화면이 같이 쓴다.
+ * 사업 상태 · 신청 상태 · 입장권 배지. 홈 카드 · 목록 카드 · 상세 · 관리 화면이 같이 쓴다.
  * 끝난 사업은 "종료" 배지만 붙이고 신청 상태는 따로 보여주지 않는다(겹치는 정보).
  */
 export function ProjectBadges({
   project,
   todayKey,
 }: {
-  project: Pick<
-    Project,
-    "is_always" | "start_date" | "end_date" | "apply_start" | "apply_end" | "has_pass"
-  >;
+  project: Pick<Project, "is_always" | "start_date" | "end_date" | "apply_start" | "apply_end"> & {
+    has_pass?: boolean;
+  };
   todayKey: string;
 }) {
   const status = projectStatus(project, todayKey);
   const apply = status === "ended" ? null : applyStatus(project, todayKey);
 
   return (
-    <span className="flex flex-wrap items-center gap-1.5">
-      <span className={`${badge} ${STATUS_CLASS[status]}`}>
+    <span className="flex flex-wrap items-center gap-1">
+      <span className={`badge ${STATUS_CLASS[status]}`}>
         {status === "ended" ? "종료" : PROJECT_STATUS_LABEL[status]}
       </span>
-      {apply && <span className={`${badge} ${APPLY_CLASS[apply.kind]}`}>{apply.label}</span>}
-      {project.has_pass && <span className={`${badge} bg-amber-50 text-amber-700`}>입장권</span>}
+      {apply && <span className={`badge ${applyClass(apply)}`}>{apply.label}</span>}
+      {project.has_pass && <span className="badge badge-info">입장권</span>}
     </span>
   );
 }

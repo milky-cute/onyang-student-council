@@ -2,8 +2,9 @@ import Link from "next/link";
 
 import { HomeLostFoundCard } from "@/components/home-lost-found-card";
 import { HomeProjectsCard, type HomeProject } from "@/components/home-projects-card";
-import { HomeDdayCard, HomeWeekCard } from "@/components/home-schedule-cards";
-import { InstagramIcon, MapPinIcon, ClockIcon, NAV_ICONS } from "@/components/icons";
+import { HomeWeekCard } from "@/components/home-schedule-cards";
+import { ChevronRightIcon, InstagramIcon, MapPinIcon, ClockIcon, NAV_ICONS } from "@/components/icons";
+import { SectionHeader } from "@/components/section-header";
 import { TodayMealCard } from "@/components/today-meal-card";
 import { dateLabel, homeWeekKeys, seoulToday } from "@/lib/calendar-utils";
 import { getPickupSettings } from "@/lib/lost-found-settings";
@@ -12,16 +13,9 @@ import { sortForHome } from "@/lib/projects";
 import { NAV_ITEMS, SITE } from "@/lib/site-config";
 import { createClient } from "@/lib/supabase/server";
 
-/** "학생자치회 서비스" 타일의 파스텔 아이콘 배경 */
-const TILE_COLORS: Record<string, string> = {
-  "/projects": "bg-violet-50 text-violet-700",
-  "/lost-found": "bg-blue-50 text-blue-700",
-  "/board": "bg-indigo-50 text-indigo-700",
-  "/monthly": "bg-amber-50 text-amber-700",
-  "/archive": "bg-emerald-50 text-emerald-700",
-  "/requests": "bg-rose-50 text-rose-700",
-  "/calendar": "bg-sky-50 text-sky-700",
-};
+/** "학생자치회 서비스" 목록에서 빼는 메뉴 — 하단 탭(사업 · 분실물 · 일정)과 홈 카드가 이미 링크한다. */
+const TAB_HREFS = ["/projects", "/lost-found", "/calendar"];
+const SERVICE_ITEMS = NAV_ITEMS.filter((item) => !TAB_HREFS.includes(item.href));
 
 export default async function HomePage() {
   const supabase = await createClient();
@@ -106,72 +100,62 @@ export default async function HomePage() {
   }));
 
   return (
-    <div className="mx-auto flex w-full max-w-6xl flex-col gap-4 px-4 pt-5 pb-8 lg:gap-6 lg:pt-10 lg:pb-14">
-      {/* 짧은 소개 */}
-      <section className="flex items-start justify-between gap-3">
-        <div className="min-w-0">
-          <h1 className="text-2xl font-bold text-slate-900 lg:text-3xl">{SITE.shortName}</h1>
-          <p className="mt-1 text-sm text-slate-600 lg:text-base">{SITE.tagline}</p>
-        </div>
-        <p className="mt-1 shrink-0 rounded-full border border-slate-200 bg-white px-3 py-1 text-xs font-semibold text-slate-700">
+    <div className="mx-auto flex w-full max-w-6xl flex-col gap-4 px-4 pt-5 pb-8 lg:gap-6 lg:pt-8">
+      {/* 맨 위: 오늘 날짜 + 한 줄 문구. 학생자치회 이름은 헤더에 있으니 h1 은 화면 읽기 프로그램용으로만 둔다. */}
+      <div>
+        <h1 className="sr-only">{SITE.shortName}</h1>
+        <p className="text-title font-bold text-slate-900">
           <time dateTime={today.dateKey}>{dateLabel(today.dateKey)}</time>
         </p>
-      </section>
+        <p className="mt-1 text-body-sm text-slate-600 lg:text-body">{SITE.tagline}</p>
+      </div>
 
-      {/* 중요도 순: 급식 → 학생회 사업 → 분실물센터. 컴퓨터에서는 급식 | 사업, 그 아래 분실물 가로 전체 */}
-      <div className="grid grid-cols-1 gap-4 lg:grid-cols-2 lg:gap-6">
-        <TodayMealCard dateKey={today.dateKey} meal={meal} />
-        <HomeProjectsCard projects={homeProjects} todayKey={today.dateKey} />
+      {/*
+        중요도 순: 급식 → 학생회 사업 → 분실물센터 → 일정. 휴대폰에서는 이 순서로 한 줄씩.
+        컴퓨터에서는 5칸 격자의 3:2 — 급식 | 사업, 분실물 | 일정, 서비스 | 학생회실 안내.
+      */}
+      <div className="grid grid-cols-1 gap-4 lg:grid-cols-5 lg:gap-6">
+        <div className="lg:col-span-3">
+          <TodayMealCard meal={meal} />
+        </div>
         <div className="lg:col-span-2">
+          <HomeProjectsCard projects={homeProjects} todayKey={today.dateKey} />
+        </div>
+        <div className="lg:col-span-3">
           <HomeLostFoundCard
             count={lostFoundError ? null : (lostFoundCount ?? 0)}
             items={recentLostItems ?? []}
           />
         </div>
-      </div>
-
-      {/* 2행: D-day + 이번 주 일정. D-day 가 없으면 이번 주 일정이 가로 전체를 쓴다. */}
-      <div className="grid grid-cols-2 gap-3 lg:gap-6">
-        {ddayEvent && <HomeDdayCard event={ddayEvent} todayKey={today.dateKey} />}
-        <div className={ddayEvent ? "" : "col-span-2"}>
+        <div className="lg:col-span-2">
           <HomeWeekCard
             weekKeys={weekKeys}
             isNextWeek={isNextWeek}
             todayKey={today.dateKey}
+            dday={ddayEvent}
             weekEvents={weekEvents ?? []}
             upcoming={upcoming ?? []}
           />
         </div>
-      </div>
 
-      <div className="mt-4 grid grid-cols-1 gap-4 lg:mt-2 lg:grid-cols-[minmax(0,2fr)_minmax(0,1fr)] lg:gap-6">
-        {/* 학생자치회 서비스 */}
-        <section aria-labelledby="home-services-heading">
-          <h2 id="home-services-heading" className="text-lg font-bold text-slate-900">
-            학생자치회 서비스
-          </h2>
-          <ul className="mt-3 grid grid-cols-2 gap-3 lg:grid-cols-3">
-            {NAV_ITEMS.map((item) => {
+        {/* 학생자치회 서비스 — 하단 탭에 없는 메뉴만 가벼운 목록으로 */}
+        <section aria-labelledby="home-services-heading" className="card p-5 lg:col-span-3">
+          <SectionHeader id="home-services-heading" title="학생자치회 서비스" />
+          <ul className="mt-2 flex flex-col divide-y divide-slate-100">
+            {SERVICE_ITEMS.map((item) => {
               const Icon = NAV_ICONS[item.href];
               return (
                 <li key={item.href}>
                   <Link
                     href={item.href}
-                    className="card flex h-full flex-col gap-3 p-4 transition-colors hover:border-brand-200 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-700"
+                    className="-mx-2 flex min-h-16 items-center gap-3 rounded-control px-2 py-3 hover:bg-slate-50 focus-visible:outline-2 focus-visible:outline-brand-700"
                   >
-                    <span
-                      className={`flex size-10 items-center justify-center rounded-xl ${TILE_COLORS[item.href] ?? "bg-slate-50 text-slate-700"}`}
-                    >
-                      {Icon && <Icon />}
+                    <span className="icon-tile">{Icon && <Icon />}</span>
+                    <span className="flex min-w-0 flex-1 flex-col">
+                      <span className="text-body font-semibold text-slate-900">{item.label}</span>
+                      <span className="text-body-sm text-slate-600">{item.shortDescription}</span>
                     </span>
-                    <span>
-                      <span className="block text-[15px] font-semibold text-slate-900">
-                        {item.label}
-                      </span>
-                      <span className="mt-0.5 block text-xs text-slate-500">
-                        {item.shortDescription}
-                      </span>
-                    </span>
+                    <ChevronRightIcon className="size-5 shrink-0 text-slate-400" />
                   </Link>
                 </li>
               );
@@ -180,32 +164,27 @@ export default async function HomePage() {
         </section>
 
         {/* 학생회실 안내 — 값은 임원이 관리 화면에서 고치는 "찾으러 오는 법" 설정 */}
-        <section
-          aria-labelledby="home-office-heading"
-          className="card self-start p-5 lg:mt-10"
-        >
-          <h2 id="home-office-heading" className="text-base font-bold text-slate-900">
-            학생회실 안내
-          </h2>
-          <dl className="mt-3 flex flex-col gap-2 text-sm">
+        <section aria-labelledby="home-office-heading" className="card self-start p-5 lg:col-span-2">
+          <SectionHeader id="home-office-heading" title="학생회실 안내" />
+          <dl className="mt-3 flex flex-col gap-2 text-body-sm">
             <div className="flex items-start gap-2">
               <MapPinIcon className="mt-0.5 size-4 shrink-0 text-brand-700" />
-              <dt className="w-16 shrink-0 text-slate-500">위치</dt>
-              <dd className="font-medium text-slate-900">{pickup.place}</dd>
+              <dt className="w-16 shrink-0 text-slate-600">위치</dt>
+              <dd className="font-semibold text-slate-900">{pickup.place}</dd>
             </div>
             <div className="flex items-start gap-2">
               <ClockIcon className="mt-0.5 size-4 shrink-0 text-brand-700" />
-              <dt className="w-16 shrink-0 text-slate-500">운영 시간</dt>
-              <dd className="font-medium text-slate-900">{pickup.hours}</dd>
+              <dt className="w-16 shrink-0 text-slate-600">운영 시간</dt>
+              <dd className="font-semibold text-slate-900">{pickup.hours}</dd>
             </div>
           </dl>
           <a
             href="https://www.instagram.com/onyang_high_official/"
             target="_blank"
             rel="noopener noreferrer"
-            className="mt-4 flex min-h-11 items-center gap-2 rounded-xl bg-slate-50 px-3 text-sm text-slate-700 hover:bg-slate-100 focus-visible:outline-2 focus-visible:outline-brand-700"
+            className="mt-4 flex min-h-11 items-center gap-2 rounded-control bg-slate-50 px-3 text-body-sm text-slate-700 hover:bg-slate-100 focus-visible:outline-2 focus-visible:outline-brand-700"
           >
-            <InstagramIcon className="size-5 shrink-0 text-rose-600" />
+            <InstagramIcon className="size-5 shrink-0 text-slate-700" />
             <span>
               온양고 공식 인스타그램{" "}
               <span className="font-semibold text-slate-900">@onyang_high_official</span>

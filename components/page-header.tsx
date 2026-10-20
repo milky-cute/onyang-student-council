@@ -16,7 +16,7 @@ export function PageHeader({
   backHref?: string;
 }) {
   return (
-    <div className="mx-auto w-full max-w-6xl px-4 pt-3 pb-1 lg:pt-10 lg:pb-2">
+    <div className="mx-auto w-full max-w-6xl px-4 pt-3 pb-1 lg:pt-8 lg:pb-2">
       <div className="flex items-center gap-1">
         {backHref && (
           <Link
@@ -27,9 +27,9 @@ export function PageHeader({
             <ChevronLeftIcon className="size-6" />
           </Link>
         )}
-        <h1 className="text-xl font-bold text-slate-900 lg:text-3xl">{title}</h1>
+        <h1 className="text-title font-bold text-slate-900">{title}</h1>
       </div>
-      <p className="mt-1 max-w-2xl text-sm leading-relaxed text-slate-600 lg:mt-2 lg:text-base">
+      <p className="mt-1 max-w-2xl text-body-sm leading-relaxed text-slate-600 lg:mt-2 lg:text-body">
         {description}
       </p>
     </div>

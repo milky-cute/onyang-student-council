@@ -22,7 +22,7 @@ export function SiteHeader() {
       <div className="mx-auto flex h-14 w-full max-w-6xl items-center justify-between px-4 lg:h-16">
         <Link
           href="/"
-          className="flex min-h-11 items-center gap-2.5 rounded-lg focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-700"
+          className="flex min-h-11 items-center gap-3 rounded-chip focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-700"
         >
           <Image
             src="/logo.jpg"
@@ -32,10 +32,10 @@ export function SiteHeader() {
             className="size-8 shrink-0 rounded-full lg:size-9"
           />
           <span className="flex flex-col leading-tight">
-            <span className="text-[11px] font-medium text-slate-500 lg:text-xs">
+            <span className="text-caption text-slate-600">
               {SITE.schoolName}
             </span>
-            <span className="text-[17px] font-bold text-slate-900 lg:text-base">
+            <span className="text-body font-bold text-slate-900">
               {SITE.councilName}
             </span>
           </span>
@@ -48,7 +48,7 @@ export function SiteHeader() {
                 <Link
                   href={item.href}
                   aria-current={isActive(item.href) ? "page" : undefined}
-                  className={`flex h-11 items-center rounded-lg px-3 text-sm font-medium transition-colors ${
+                  className={`flex h-11 items-center rounded-chip px-3 text-body-sm font-semibold transition-colors ${
                     isActive(item.href)
                       ? "bg-brand-50 text-brand-700"
                       : "text-slate-600 hover:bg-slate-50 hover:text-brand-700"
@@ -61,7 +61,7 @@ export function SiteHeader() {
             <li className="ml-2">
               <Link
                 href="/admin"
-                className="flex h-11 items-center rounded-lg border border-brand-700 px-3 text-sm font-semibold text-brand-700 transition-colors hover:bg-brand-700 hover:text-white"
+                className="flex h-11 items-center rounded-chip border border-brand-700 px-3 text-body-sm font-semibold text-brand-700 transition-colors hover:bg-brand-50"
               >
                 임원 로그인
               </Link>
