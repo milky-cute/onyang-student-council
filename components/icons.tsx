@@ -144,15 +144,6 @@ export function BoxIcon(p: IconProps) {
   );
 }
 
-export function MegaphoneIcon(p: IconProps) {
-  return (
-    <Svg {...p}>
-      <path d="M3 10v4h3l6 4V6L6 10z" />
-      <path d="M16 9a4 4 0 0 1 0 6M19 6a8 8 0 0 1 0 12" />
-    </Svg>
-  );
-}
-
 export function SparklesIcon(p: IconProps) {
   return (
     <Svg {...p}>
@@ -203,7 +194,6 @@ export function InstagramIcon(p: IconProps) {
 export const NAV_ICONS: Record<string, (p: IconProps) => React.JSX.Element> = {
   "/projects": FlagIcon,
   "/lost-found": BoxIcon,
-  "/board": MegaphoneIcon,
   "/monthly": SparklesIcon,
   "/archive": PhotoIcon,
   "/requests": MessageIcon,

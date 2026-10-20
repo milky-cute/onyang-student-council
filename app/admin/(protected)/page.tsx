@@ -17,11 +17,6 @@ const SECTIONS = [
     description: "습득물을 등록하고, 주인이 찾아가면 완료 표시합니다.",
   },
   {
-    href: "/admin/board",
-    label: "학생자치회 게시판 관리",
-    description: "공지사항과 활동 포스터를 작성·수정·삭제합니다.",
-  },
-  {
     href: "/admin/monthly",
     label: "이달의 학생자치회 관리",
     description: "부서별 월간 활동을 작성·수정·삭제합니다.",

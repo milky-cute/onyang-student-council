@@ -20,7 +20,7 @@ export function ImageUploadField({
   /** 폼에 실릴 hidden input 의 name */
   name: string;
   /** media 버킷 안의 폴더 */
-  folder: "board" | "monthly";
+  folder: "monthly";
   defaultValue?: string | null;
 }) {
   const [url, setUrl] = useState(defaultValue ?? "");
