@@ -46,6 +46,61 @@
   --radius-chip: 0.5rem;
   --radius-control: 0.75rem;
   --radius-card: 1.25rem;
+
+  /* 모션 곡선(16-2): 등장 · 닫힘은 enter, 위치 이동은 move. `ease-enter` · `ease-move` 클래스로도 쓴다. */
+  --ease-enter: cubic-bezier(0.23, 1, 0.32, 1);
+  --ease-move: cubic-bezier(0.65, 0, 0.35, 1);
+
+  /* 열리는 요소의 등장: 투명도 + 아래에서 8px. 동작 줄이기에서는 --motion-distance 가 0 이 되어 투명도만 남는다. */
+  --animate-enter: enter var(--motion-enter) var(--ease-enter) both;
+  --animate-fade-in: fade-in var(--motion-enter) var(--ease-enter) both;
+
+  @keyframes enter {
+    from {
+      opacity: 0;
+      transform: translateY(var(--motion-distance));
+    }
+  }
+  @keyframes fade-in {
+    from {
+      opacity: 0;
+    }
+  }
+}
+
+/**
+ * 모션 시간 3단계(16-2). 누름 반응 120ms · 일반 UI(색 · 탭 표시 이동) 200ms · 등장 280ms.
+ * transform 과 opacity 만 움직인다(width · height · top · left 는 애니메이션하지 않는다).
+ */
+:root {
+  --motion-press: 120ms;
+  --motion-ui: 200ms;
+  --motion-enter: 280ms;
+  --motion-distance: 8px;
+  --motion-press-scale: 0.97;
+}
+
+/**
+ * 동작 줄이기: 이동 · 확대를 끄고 투명도 전환만 남긴다.
+ * ⚠️ 입장권(components/pass-card.tsx)의 초 단위 시계와 흐르는 띠는 캡처 위조 방지 기능이라 여기서 멈추지 않는다.
+ *    (띠는 JS Web Animations 로 돌아 이 규칙의 영향을 받지 않는다. 전역 animation: none 같은 규칙을 넣지 말 것.)
+ */
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --motion-distance: 0px;
+    --motion-press-scale: 1;
+  }
+}
+
+/** 누름 반응: 눌린 동안 0.97 로 살짝 줄어든다. 색 전환(200ms)도 함께 맡으니 transition-colors 와 같이 쓰지 않는다. */
+@utility press {
+  transition-property: transform, color, background-color, border-color, box-shadow;
+  transition-duration: var(--motion-press), var(--motion-ui), var(--motion-ui), var(--motion-ui), var(--motion-ui);
+  transition-timing-function: var(--ease-enter);
+
+  &:active {
+    transform: scale(var(--motion-press-scale));
+  }
 }
 
 /** 공통 카드. 홈 · 분실물 · 나머지 페이지가 같은 모양을 쓰도록 여기 한 곳에서 정의한다. */
@@ -83,12 +138,23 @@
   min-height: 2.75rem;
   border-radius: var(--radius-control);
   font-weight: 600;
-  transition-property: color, background-color, border-color;
-  transition-duration: 150ms;
+  /* 누름 반응은 press 와 같다(utility 끼리는 섞어 쓸 수 없어 그대로 옮겨 둔다). */
+  transition-property: transform, color, background-color, border-color;
+  transition-duration: var(--motion-press), var(--motion-ui), var(--motion-ui), var(--motion-ui);
+  transition-timing-function: var(--ease-enter);
+
+  &:active {
+    transform: scale(var(--motion-press-scale));
+  }
 
   &:focus-visible {
     outline: 2px solid var(--color-brand-700);
     outline-offset: 2px;
+  }
+
+  &:disabled {
+    opacity: 0.6;
+    transform: none;
   }
 }
 @utility btn-primary {
@@ -173,6 +239,12 @@
   textarea,
   select {
     background-color: #ffffff;
+  }
+
+  /* 포커스 링은 brand 하나. 키보드로 옮겨 다닐 때 모든 링크 · 버튼에서 보이게 기본값으로 둔다. */
+  :focus-visible {
+    outline: 2px solid var(--color-brand-700);
+    outline-offset: 2px;
   }
 }
 

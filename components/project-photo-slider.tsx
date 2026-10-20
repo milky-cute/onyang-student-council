@@ -31,7 +31,8 @@ export function ProjectPhotoSlider({
   function goTo(index: number) {
     const track = trackRef.current;
     if (!track) return;
-    track.scrollTo({ left: index * track.clientWidth, behavior: "smooth" });
+    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    track.scrollTo({ left: index * track.clientWidth, behavior: reduceMotion ? "auto" : "smooth" });
   }
 
   return (
@@ -49,9 +50,10 @@ export function ProjectPhotoSlider({
             <Image
               src={url}
               unoptimized={needsUnoptimized(url)}
-              alt={photos.length > 1 ? `${title} 사진 ${index + 1}` : title}
+              alt={photos.length > 1 ? `${title} 사진 ${index + 1}` : `${title} 사진`}
               fill
-              sizes="(min-width: 768px) 768px, 100vw"
+              // 상세 본문 열(최대 768px) 안의 카드 폭
+              sizes="(min-width: 800px) 768px, calc(100vw - 32px)"
               preload={index === 0}
               className={`object-contain ${ended ? "opacity-70 grayscale" : ""}`}
             />
@@ -69,11 +71,13 @@ export function ProjectPhotoSlider({
                 onClick={() => goTo(index)}
                 aria-label={`사진 ${index + 1} 보기`}
                 aria-current={index === active}
-                className="flex size-6 items-center justify-center focus-visible:outline-2 focus-visible:outline-white"
+                // 보이는 칸은 24px 그대로, 누르는 영역만 가상 요소로 44px 까지 넓힌다.
+                className="relative flex size-6 items-center justify-center rounded-full before:absolute before:-inset-2.5 before:content-['']"
               >
+                {/* 활성 점은 width 대신 scaleX 로 2배(8px → 16px) 늘린다. */}
                 <span
-                  className={`block rounded-full transition-all ${
-                    index === active ? "h-2 w-4 bg-white" : "size-2 bg-white/60"
+                  className={`block size-2 rounded-full transition-[transform,background-color] duration-(--motion-ui) ease-move motion-reduce:transition-colors ${
+                    index === active ? "scale-x-200 bg-white" : "bg-white/60"
                   }`}
                 />
               </button>

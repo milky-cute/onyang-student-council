@@ -62,6 +62,9 @@ export function BottomTabBar() {
   if (pathname.startsWith("/admin")) return null;
 
   const moreActive = MORE_ITEMS.some((item) => isActivePath(pathname, item.href));
+  // 활성 표시 막대의 칸 번호(0~4). 어느 탭에도 속하지 않는 페이지면 -1 → 막대를 숨긴다.
+  const tabIndex = TABS.findIndex(({ href }) => isActivePath(pathname, href));
+  const activeIndex = tabIndex !== -1 ? tabIndex : moreActive ? TABS.length : -1;
 
   return (
     <>
@@ -72,7 +75,18 @@ export function BottomTabBar() {
         aria-label="하단 메뉴"
         className="fixed inset-x-0 bottom-0 z-40 border-t border-slate-100 bg-white/95 pb-[env(safe-area-inset-bottom)] backdrop-blur lg:hidden"
       >
-        <ul className="mx-auto grid h-16 max-w-md grid-cols-5">
+        <ul className="relative mx-auto grid h-16 max-w-md grid-cols-5">
+          {/* 활성 탭 위 막대. 칸 하나 폭(1/5)을 transform 으로만 옮긴다. */}
+          <li
+            aria-hidden
+            className="pointer-events-none absolute top-0 left-0 flex w-1/5 justify-center transition-[transform,opacity] duration-(--motion-ui) ease-move motion-reduce:transition-opacity"
+            style={{
+              transform: `translateX(${Math.max(activeIndex, 0) * 100}%)`,
+              opacity: activeIndex === -1 ? 0 : 1,
+            }}
+          >
+            <span className="h-0.5 w-8 rounded-full bg-brand-700" />
+          </li>
           {TABS.map(({ href, label, Icon }) => {
             const active = isActivePath(pathname, href);
             return (
@@ -80,7 +94,7 @@ export function BottomTabBar() {
                 <Link
                   href={href}
                   aria-current={active ? "page" : undefined}
-                  className={`flex h-full min-h-11 flex-col items-center justify-center gap-1 text-caption font-semibold focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-brand-700 ${
+                  className={`flex h-full min-h-11 w-full flex-col items-center justify-center gap-1 text-caption font-semibold transition-colors duration-(--motion-ui) focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-brand-700 ${
                     active ? "text-brand-700" : "text-slate-600"
                   }`}
                 >
@@ -98,7 +112,7 @@ export function BottomTabBar() {
               aria-haspopup="dialog"
               aria-expanded={open}
               aria-controls="more-sheet"
-              className={`flex h-full min-h-11 w-full flex-col items-center justify-center gap-1 text-caption font-semibold focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-brand-700 ${
+              className={`flex h-full min-h-11 w-full flex-col items-center justify-center gap-1 text-caption font-semibold transition-colors duration-(--motion-ui) focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-brand-700 ${
                 moreActive ? "text-brand-700" : "text-slate-600"
               }`}
             >
@@ -122,9 +136,9 @@ export function BottomTabBar() {
             aria-label="더보기 닫기"
             tabIndex={-1}
             onClick={closeSheet}
-            className="absolute inset-0 bg-slate-900/40"
+            className="absolute inset-0 animate-fade-in bg-slate-900/40"
           />
-          <div className="absolute inset-x-0 bottom-0 rounded-t-card bg-white px-4 pt-3 pb-[calc(1rem+env(safe-area-inset-bottom))] shadow-xl">
+          <div className="absolute inset-x-0 bottom-0 animate-enter rounded-t-card bg-white px-4 pt-3 pb-[calc(1rem+env(safe-area-inset-bottom))] shadow-xl">
             <div aria-hidden className="mx-auto h-1 w-10 rounded-full bg-slate-200" />
             <div className="mt-2 flex items-center justify-between">
               <h2 id="more-sheet-title" className="text-card-title font-bold text-slate-900">
@@ -150,7 +164,7 @@ export function BottomTabBar() {
                       href={item.href}
                       onClick={() => setOpen(false)}
                       aria-current={active ? "page" : undefined}
-                      className="flex min-h-14 items-center gap-3 rounded-control px-2 hover:bg-slate-50 focus-visible:outline-2 focus-visible:outline-brand-700"
+                      className="press flex min-h-14 items-center gap-3 rounded-control px-2 hover:bg-slate-50 focus-visible:outline-2 focus-visible:outline-brand-700"
                     >
                       <span className="icon-tile">
                         {Icon && <Icon />}
