@@ -4,6 +4,7 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useRef, useState } from "react";
 
+import { DEFAULT_SEAT_LABEL, SEAT_LABEL_LIMIT } from "@/lib/pass";
 import {
   ALLOWED_IMAGE_TYPES,
   FIELD_LIMITS,
@@ -62,9 +63,11 @@ export function ProjectForm({ project }: { project?: ProjectWithMedia }) {
     place: project?.place ?? "",
     contact: project?.contact ?? "",
     passLabel: project?.pass_label ?? "",
+    passSeatLabel: project?.pass_seat_label ?? "",
   });
   const [isAlways, setIsAlways] = useState(project?.is_always ?? false);
   const [hasPass, setHasPass] = useState(project?.has_pass ?? false);
+  const [passSeatEnabled, setPassSeatEnabled] = useState(project?.pass_seat_enabled ?? false);
   const [isPinned, setIsPinned] = useState(project?.is_pinned ?? false);
   const [photos, setPhotos] = useState<string[]>(project?.photos.map((p) => p.image_url) ?? []);
   const [links, setLinks] = useState<LinkDraft[]>(
@@ -159,6 +162,7 @@ export function ProjectForm({ project }: { project?: ProjectWithMedia }) {
           ...form,
           isAlways,
           hasPass,
+          passSeatEnabled,
           isPinned,
           photos,
           links: links.map(({ label, url, kind, showQr }) => ({ label, url, kind, showQr })),
@@ -483,6 +487,32 @@ export function ProjectForm({ project }: { project?: ProjectWithMedia }) {
               onChange={(e) => update("passLabel", e.target.value)}
               maxLength={FIELD_LIMITS.passLabel}
               placeholder={`비우면 "${form.title.trim() || "제목"} 입장권"`}
+              className={inputClass}
+            />
+          </div>
+        )}
+        {hasPass && (
+          <label className="flex items-center gap-2 text-body-sm text-slate-700">
+            <input
+              type="checkbox"
+              checked={passSeatEnabled}
+              onChange={(e) => setPassSeatEnabled(e.target.checked)}
+              className="size-4 accent-brand-700"
+            />
+            좌석 표시 (입장권에 학생별 좌석을 보여줍니다)
+          </label>
+        )}
+        {hasPass && passSeatEnabled && (
+          <div className="flex flex-col gap-2">
+            <label htmlFor="passSeatLabel" className={labelClass}>
+              좌석 표시 이름 (선택)
+            </label>
+            <input
+              id="passSeatLabel"
+              value={form.passSeatLabel}
+              onChange={(e) => update("passSeatLabel", e.target.value)}
+              maxLength={SEAT_LABEL_LIMIT}
+              placeholder={`비우면 "${DEFAULT_SEAT_LABEL}"`}
               className={inputClass}
             />
           </div>

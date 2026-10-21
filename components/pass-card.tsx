@@ -73,6 +73,7 @@ export function PassCard({
   studentName,
   studentNumber,
   validLabel,
+  seat,
 }: {
   passName: string;
   projectTitle: string;
@@ -80,6 +81,8 @@ export function PassCard({
   studentNumber: string;
   /** '상시' 또는 'M월 D일까지' */
   validLabel: string;
+  /** 좌석 표시를 쓰는 사업만 넘긴다. value 가 null 이면 미배정 */
+  seat?: { label: string; value: string | null };
 }) {
   const nowSeconds = useNowSeconds();
   const now = nowSeconds === null ? null : new Date(nowSeconds * 1000);
@@ -107,6 +110,19 @@ export function PassCard({
         <div className="px-5 pt-4 pb-5">
           <p className="text-body-sm text-slate-600">{projectTitle}</p>
           <p className="mt-3 text-display font-bold text-slate-900">{studentName}</p>
+          {seat &&
+            (seat.value ? (
+              <p className="mt-1 flex items-baseline gap-2">
+                <span className="text-body font-semibold text-slate-600">{seat.label}</span>
+                <span className="text-display font-bold text-brand-700 tabular-nums">
+                  {seat.value}
+                </span>
+              </p>
+            ) : (
+              <p className="mt-1 text-body-sm text-slate-600">
+                {seat.label} 미배정 · 학생회실에 문의해 주세요
+              </p>
+            ))}
           <dl className="mt-4 grid grid-cols-2 gap-3 rounded-control bg-slate-50 px-4 py-3 text-body-sm">
             <div>
               <dt className="text-caption text-slate-600">학번</dt>

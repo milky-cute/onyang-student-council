@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
 import { AdminBackLink } from "@/components/admin-back-link";
+import { DEFAULT_SEAT_LABEL } from "@/lib/pass";
 import { passLabel } from "@/lib/projects";
 import { createClient } from "@/lib/supabase/server";
 
@@ -21,11 +22,15 @@ export default async function AdminPassPage({ params }: Props) {
   const supabase = await createClient();
 
   const [{ data: project }, { data: holders }] = await Promise.all([
-    supabase.from("projects").select("id, title, pass_label, has_pass").eq("id", id).maybeSingle(),
+    supabase
+      .from("projects")
+      .select("id, title, pass_label, has_pass, pass_seat_enabled, pass_seat_label")
+      .eq("id", id)
+      .maybeSingle(),
     // 임원 전용. RLS 가 임원이 아니면 빈 결과를 돌려준다.
     supabase
       .from("pass_holders")
-      .select("id, student_number, student_name, is_suspended")
+      .select("id, student_number, student_name, is_suspended, seat")
       .eq("project_id", id)
       .order("student_number", { ascending: true }),
   ]);
@@ -33,6 +38,10 @@ export default async function AdminPassPage({ params }: Props) {
   if (!project) notFound();
 
   const list = holders ?? [];
+  // 좌석 표시를 쓰는 사업에서만 좌석 칸 · 고치기를 보여준다. 끈 사업은 화면이 예전과 같다.
+  const seatLabel = project.pass_seat_enabled
+    ? project.pass_seat_label || DEFAULT_SEAT_LABEL
+    : null;
 
   return (
     <>
@@ -57,12 +66,9 @@ export default async function AdminPassPage({ params }: Props) {
           </p>
         )}
 
-        <RosterForm
-          projectId={project.id}
-          existingNumbers={list.map((holder) => holder.student_number)}
-        />
+        <RosterForm projectId={project.id} existing={list} seatLabel={seatLabel} />
 
-        <HolderList holders={list} />
+        <HolderList holders={list} seatLabel={seatLabel} />
       </div>
     </>
   );

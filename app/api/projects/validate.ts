@@ -1,5 +1,6 @@
 import { revalidatePath } from "next/cache";
 
+import { SEAT_LABEL_LIMIT } from "@/lib/pass";
 import {
   FIELD_LIMITS,
   MAX_LINKS,
@@ -63,6 +64,9 @@ export function parseProjectInput(
   const contact = text("contact");
   const hasPass = flag("hasPass");
   const passLabelText = hasPass ? text("passLabel") : "";
+  // 입장권을 끄면 좌석 표시도 끈다. 명단의 좌석(pass_holders.seat)은 지우지 않아 다시 켜면 그대로 보인다.
+  const passSeatEnabled = hasPass && flag("passSeatEnabled");
+  const passSeatLabel = passSeatEnabled ? text("passSeatLabel") : "";
 
   if (!title) return { error: "제목을 입력해주세요." };
   if (!description) return { error: "설명을 입력해주세요." };
@@ -74,7 +78,8 @@ export function parseProjectInput(
     target.length > FIELD_LIMITS.target ||
     place.length > FIELD_LIMITS.place ||
     contact.length > FIELD_LIMITS.contact ||
-    passLabelText.length > FIELD_LIMITS.passLabel;
+    passLabelText.length > FIELD_LIMITS.passLabel ||
+    passSeatLabel.length > SEAT_LABEL_LIMIT;
   if (tooLong) return { error: "입력값이 너무 깁니다. 글자 수를 줄여주세요." };
 
   for (const value of [startDate, endDate, applyStart, applyEnd]) {
@@ -139,6 +144,8 @@ export function parseProjectInput(
         contact: contact || null,
         has_pass: hasPass,
         pass_label: passLabelText || null,
+        pass_seat_enabled: passSeatEnabled,
+        pass_seat_label: passSeatLabel || null,
         is_pinned: flag("isPinned"),
       },
       photos: photos as string[],

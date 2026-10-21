@@ -189,6 +189,10 @@ export type Project = {
   has_pass: boolean;
   /** 입장권 이름. 비우면 '{제목} 입장권' */
   pass_label: string | null;
+  /** 입장권에 학생별 좌석 표시 (0015) */
+  pass_seat_enabled: boolean;
+  /** 좌석 표시 이름. 비우면 '좌석' (0015) */
+  pass_seat_label: string | null;
   is_pinned: boolean;
   created_at: string;
   updated_at: string;
@@ -228,6 +232,8 @@ export type PassHolder = {
   student_number: string;
   student_name: string;
   is_suspended: boolean;
+  /** 좌석. null 이면 미배정 (0015) */
+  seat: string | null;
   created_at: string;
 };
 
@@ -263,6 +269,8 @@ export type PassStatusRow = {
   /** 이 사업 명단에 있는지 */
   is_listed: boolean;
   is_suspended: boolean;
+  /** 이 사업 명단의 좌석. 미배정이거나 명단에 없으면 null (0015) */
+  seat: string | null;
 };
 
 type Table<Row, Insert, Update> = {
@@ -328,7 +336,14 @@ export type Database = {
         Project,
         Generated<
           Project,
-          "id" | "created_at" | "updated_at" | "is_always" | "has_pass" | "is_pinned"
+          | "id"
+          | "created_at"
+          | "updated_at"
+          | "is_always"
+          | "has_pass"
+          | "is_pinned"
+          | "pass_seat_enabled"
+          | "pass_seat_label"
         >,
         Partial<Project>
       >;
@@ -344,7 +359,7 @@ export type Database = {
       >;
       pass_holders: Table<
         PassHolder,
-        Generated<PassHolder, "id" | "created_at" | "is_suspended">,
+        Generated<PassHolder, "id" | "created_at" | "is_suspended" | "seat">,
         Partial<PassHolder>
       >;
       pass_credentials: Table<
