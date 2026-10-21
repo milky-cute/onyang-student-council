@@ -7,7 +7,7 @@ import { PassCard } from "@/components/pass-card";
 import { PassLoginForm } from "@/components/pass-login-form";
 import { PassLogoutButton } from "@/components/pass-logout-button";
 import { seoulToday } from "@/lib/calendar-utils";
-import { PASS_COOKIE } from "@/lib/pass";
+import { DEFAULT_SEAT_LABEL, PASS_COOKIE } from "@/lib/pass";
 import { isLinkEnabled, monthDayLabel, passLabel, projectStatus } from "@/lib/projects";
 import { createClient } from "@/lib/supabase/server";
 
@@ -30,7 +30,9 @@ export default async function PassPage({ params }: Props) {
   // 형식이 잘못된 id 나 아직 테이블이 없을 때는 data 가 null 이 되어 notFound 로 이어진다.
   const { data: project } = await supabase
     .from("projects")
-    .select("id, title, pass_label, has_pass, is_always, start_date, end_date, apply_start, apply_end")
+    .select(
+      "id, title, pass_label, has_pass, is_always, start_date, end_date, apply_start, apply_end, pass_seat_enabled, pass_seat_label",
+    )
     .eq("id", id)
     .maybeSingle();
 
@@ -107,6 +109,14 @@ export default async function PassPage({ params }: Props) {
         studentName={student.student_name}
         studentNumber={student.student_number}
         validLabel={project.is_always || !end ? "상시" : `${monthDayLabel(end)}까지`}
+        seat={
+          project.pass_seat_enabled
+            ? {
+                label: project.pass_seat_label || DEFAULT_SEAT_LABEL,
+                value: student.seat ?? null,
+              }
+            : undefined
+        }
       />
     );
   }
