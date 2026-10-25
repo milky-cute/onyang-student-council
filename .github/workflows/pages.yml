@@ -1,0 +1,59 @@
+# 학교 와이파이에서도 열리는 읽기 전용 사이트를 GitHub Pages(github.io)에 올린다.
+# 주소: https://milky-cute.github.io/onyang-student-council/
+#
+# - main 에 push 할 때, 그리고 매시간 자동으로 다시 빌드해서
+#   급식·사업·분실물·일정이 최신 상태가 되게 한다.
+# - Actions 탭에서 "Run workflow" 를 누르면 바로 갱신할 수도 있다.
+# - 원본(Vercel) 사이트는 이 워크플로와 무관하게 그대로 동작한다.
+# - 자세한 변환 내용은 scripts/build-static.mjs 참고.
+name: GitHub Pages (읽기 전용 사이트)
+
+on:
+  push:
+    branches: [main]
+  schedule:
+    - cron: "7 * * * *" # 매시 7분 (UTC 기준이지만 매시간이라 상관없음)
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      # 둘 다 브라우저에 그대로 노출되는 공개 값이다(.env.example 참고).
+      # 실제 접근 제어는 Supabase 의 RLS 가 한다.
+      NEXT_PUBLIC_SUPABASE_URL: https://mhuqxblpjrgbanjyyaxc.supabase.co
+      NEXT_PUBLIC_SUPABASE_ANON_KEY: sb_publishable_V2eemZwW0iCwHnW66UtA5w_BYNIWWsJ
+      NEIS_API_KEY: ${{ secrets.NEIS_API_KEY }}
+      PAGES_BASE_PATH: /onyang-student-council
+      NEXT_TELEMETRY_DISABLED: 1
+      TZ: Asia/Seoul
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: node scripts/build-static.mjs
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: out
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
